@@ -1,0 +1,34 @@
+import { Container } from "@/components/shared/container";
+import { SectionHeading } from "@/components/shared/section-heading";
+import { Reveal } from "@/components/shared/reveal";
+import { ReviewCard } from "@/components/shared/review-card";
+import { panditTestimonials } from "@/features/become-a-pandit/data";
+
+export function PanditTestimonials() {
+  return (
+    <section className="py-20 sm:py-15">
+      <Container>
+        <SectionHeading
+          eyebrow="Hear From Our Pandits"
+          title="What Registered Pandits Say"
+          align="center"
+          className="mx-auto mb-12"
+        />
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+          {panditTestimonials.map((testimonial, i) => (
+            <Reveal key={testimonial.name} delay={i * 0.08}>
+              <ReviewCard
+                name={testimonial.name}
+                subtitle={testimonial.location}
+                rating={testimonial.rating}
+                quote={testimonial.quote}
+                seed={i}
+                className="h-full"
+              />
+            </Reveal>
+          ))}
+        </div>
+      </Container>
+    </section>
+  );
+}

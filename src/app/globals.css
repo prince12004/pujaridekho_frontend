@@ -1,0 +1,306 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* PujariDekho brand color tokens (usable as bg-brand-saffron, text-brand-gold, etc.) */
+  --color-brand-saffron: var(--brand-saffron);
+  --color-brand-saffron-deep: var(--brand-saffron-deep);
+  --color-brand-saffron-light: var(--brand-saffron-light);
+  --color-brand-purple: var(--brand-purple);
+  --color-brand-purple-deep: var(--brand-purple-deep);
+  --color-brand-purple-tint: var(--brand-purple-tint);
+  --color-brand-cream: var(--brand-cream);
+  --color-brand-cream-deep: var(--brand-cream-deep);
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-gold-soft: var(--brand-gold-soft);
+
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-poppins);
+  --font-ui: var(--font-poppins);
+  --font-devanagari: var(--font-devanagari);
+  --font-mono: var(--font-geist-mono);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.3);
+  --radius-2xl: calc(var(--radius) * 1.7);
+  --radius-3xl: calc(var(--radius) * 2.2);
+}
+
+:root {
+  /* Fixed brand hues — identical in light & dark, used for surfaces that are
+     always dark-purple regardless of site theme (top bar, footer, stats band). */
+  --brand-saffron: #e65a1e;
+  --brand-saffron-deep: #c7460f;
+  --brand-saffron-light: #ff8a50;
+  --brand-purple: #2d1b4e;
+  --brand-purple-deep: #1d1033;
+  --brand-purple-tint: #6b4fa0;
+  --brand-cream: #f8f3e8;
+  --brand-cream-deep: #f0e6d2;
+  --brand-gold: #d9a441;
+  --brand-gold-soft: #efd6a0;
+
+  --background: #ffffff;
+  --foreground: #241a30;
+  --card: #ffffff;
+  --card-foreground: #241a30;
+  --popover: #ffffff;
+  --popover-foreground: #241a30;
+  --primary: #e65a1e;
+  --primary-foreground: #ffffff;
+  --secondary: #2d1b4e;
+  --secondary-foreground: #f8f3e8;
+  --muted: #f7f6f3;
+  --muted-foreground: #6b6270;
+  --accent: #d9a441;
+  --accent-foreground: #2d1b4e;
+  --destructive: #d64545;
+  --destructive-foreground: #ffffff;
+  --border: #eae7e1;
+  --input: #f0eeea;
+  --ring: #e65a1e;
+  --chart-1: #e65a1e;
+  --chart-2: #d9a441;
+  --chart-3: #6b4fa0;
+  --chart-4: #2d1b4e;
+  --chart-5: #c7460f;
+  --radius: 1.125rem;
+  --sidebar: #2d1b4e;
+  --sidebar-foreground: #f8f3e8;
+  --sidebar-primary: #e65a1e;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #3a2560;
+  --sidebar-accent-foreground: #f8f3e8;
+  --sidebar-border: rgba(217, 164, 65, 0.2);
+  --sidebar-ring: #d9a441;
+}
+
+.dark {
+  --background: #180f26;
+  --foreground: #f3ebdd;
+  --card: #241a38;
+  --card-foreground: #f3ebdd;
+  --popover: #241a38;
+  --popover-foreground: #f3ebdd;
+  --primary: #e65a1e;
+  --primary-foreground: #ffffff;
+  --secondary: #3a2560;
+  --secondary-foreground: #f3ebdd;
+  --muted: #20142f;
+  --muted-foreground: #c6b9d6;
+  --accent: #d9a441;
+  --accent-foreground: #1d1033;
+  --destructive: #e5484d;
+  --destructive-foreground: #ffffff;
+  --border: rgba(217, 164, 65, 0.25);
+  --input: rgba(217, 164, 65, 0.18);
+  --ring: #d9a441;
+  --chart-1: #ff8a50;
+  --chart-2: #d9a441;
+  --chart-3: #6b4fa0;
+  --chart-4: #efd6a0;
+  --chart-5: #c7460f;
+  --sidebar: #1d1033;
+  --sidebar-foreground: #f3ebdd;
+  --sidebar-primary: #e65a1e;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #3a2560;
+  --sidebar-accent-foreground: #f3ebdd;
+  --sidebar-border: rgba(217, 164, 65, 0.2);
+  --sidebar-ring: #d9a441;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading font-bold text-secondary dark:text-brand-gold-soft;
+  }
+  /* Buttons and anything acting as one should always show a pointer cursor,
+     regardless of Tailwind's preflight default. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    cursor: pointer;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .lang-hi {
+    font-family: var(--font-devanagari);
+    font-weight: 700;
+  }
+}
+
+@keyframes diya-flicker {
+  0%,
+  100% {
+    transform: scaleY(1) scaleX(1);
+  }
+  25% {
+    transform: scaleY(1.08) scaleX(0.96) translateY(-1px);
+  }
+  50% {
+    transform: scaleY(0.94) scaleX(1.05);
+  }
+  75% {
+    transform: scaleY(1.05) scaleX(0.98);
+  }
+}
+.animate-diya-flicker {
+  transform-origin: bottom center;
+  animation: diya-flicker 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-diya-flicker {
+    animation: none;
+  }
+}
+
+/*
+ * Rich-text typography for long-form content (Blog Detail, Policy pages).
+ * Additive only — does not alter any existing token or component style.
+ */
+@layer components {
+  .prose-policy {
+    color: var(--foreground);
+    line-height: 1.75;
+  }
+  .prose-policy > :first-child {
+    margin-top: 0;
+  }
+  .prose-policy h2 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    scroll-margin-top: 6rem;
+  }
+  .prose-policy h3 {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    scroll-margin-top: 6rem;
+  }
+  .prose-policy p {
+    margin-bottom: 1.1rem;
+    color: var(--muted-foreground);
+  }
+  .prose-policy ul,
+  .prose-policy ol {
+    margin-bottom: 1.1rem;
+    padding-left: 1.4rem;
+    color: var(--muted-foreground);
+  }
+  .prose-policy ul {
+    list-style: disc;
+  }
+  .prose-policy ol {
+    list-style: decimal;
+  }
+  .prose-policy li {
+    margin-bottom: 0.4rem;
+  }
+  .prose-policy li::marker {
+    color: var(--primary);
+  }
+  .prose-policy a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklch, var(--primary), transparent 60%);
+  }
+  .prose-policy strong {
+    color: var(--foreground);
+    font-weight: 700;
+  }
+  .prose-policy blockquote {
+    border-left: 3px solid var(--accent);
+    background: var(--muted);
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: var(--foreground);
+  }
+  .prose-policy img {
+    border-radius: var(--radius-lg);
+    margin: 1.75rem 0;
+  }
+  .prose-policy hr {
+    border-color: var(--border);
+    margin: 2.5rem 0;
+  }
+}
+
+.max-w-2xl{
+  max-width: 100% !important;
+}
+.px-8{
+  padding: 0px !important;
+}
+.main_books{
+padding: 18px 15px !important;
+    font-size: 14px;
+}
+.group\/button {
+    padding: 20px 15px !important;
+    font-size: 16px;
+}
+.shadow-sm{
+  font-size: 14px !important;
+}
+.white{
+  color: #fff !important;
+}
