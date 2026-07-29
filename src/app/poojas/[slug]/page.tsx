@@ -111,7 +111,7 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
             </div>
             {galleryItems.length > 0 ? <PoojaGallery images={galleryItems} alt={pooja.name} /> : null}
 
-            <div className="mt-6 flex flex-wrap items-start justify-between gap-4">
+            <div className="mains_details mt-6 flex flex-wrap items-start justify-between gap-4">
               <div>
                 <span className="font-ui text-xs font-bold uppercase tracking-wide text-primary">{typeof pooja.category === "string" ? pooja.category : pooja.category?.name}</span>
                 <h1 className="font-heading mt-1 text-3xl font-bold sm:text-4xl">{pooja.name}</h1>

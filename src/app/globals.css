@@ -5,8 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: var(
-    --background);
+  --color-background: var(--background);
   --color-foreground: var(--foreground);
 
   /* PujariDekho brand color tokens (usable as bg-brand-saffron, text-brand-gold, etc.) */
@@ -143,8 +142,8 @@
   --input: rgba(217, 164, 65, 0.18);
   --ring: #d9a441;
   --chart-1: #ff8a50;
---blur-xs: 5px;
-    --blur-sm: 8px;
+  --blur-xs: 5px;
+  --blur-sm: 8px;
   --chart-2: #d9a441;
   --chart-3: #6b4fa0;
   --chart-4: #efd6a0;
@@ -163,15 +162,18 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground font-sans;
   }
+
   h1,
   h2,
   h3,
   h4 {
     @apply font-heading font-bold text-secondary dark:text-brand-gold-soft;
   }
+
   /* Buttons and anything acting as one should always show a pointer cursor,
      regardless of Tailwind's preflight default. */
   button:not(:disabled),
@@ -184,31 +186,55 @@
   .text-balance {
     text-wrap: balance;
   }
+
   .lang-hi {
     font-family: var(--font-devanagari);
     font-weight: 700;
   }
 }
 
+@keyframes hero-badge-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-hero-badge-marquee {
+  animation: hero-badge-marquee 18s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-badge-marquee {
+    animation: none;
+  }
+}
+
 @keyframes diya-flicker {
+
   0%,
   100% {
     transform: scaleY(1) scaleX(1);
   }
+
   25% {
     transform: scaleY(1.08) scaleX(0.96) translateY(-1px);
   }
+
   50% {
     transform: scaleY(0.94) scaleX(1.05);
   }
+
   75% {
     transform: scaleY(1.05) scaleX(0.98);
   }
 }
+
 .animate-diya-flicker {
   transform-origin: bottom center;
   animation: diya-flicker 1.6s ease-in-out infinite;
 }
+
 @media (prefers-reduced-motion: reduce) {
   .animate-diya-flicker {
     animation: none;
@@ -224,9 +250,11 @@
     color: var(--foreground);
     line-height: 1.75;
   }
-  .prose-policy > :first-child {
+
+  .prose-policy> :first-child {
     margin-top: 0;
   }
+
   .prose-policy h2 {
     font-family: var(--font-heading);
     font-size: 1.5rem;
@@ -235,6 +263,7 @@
     margin-bottom: 1rem;
     scroll-margin-top: 6rem;
   }
+
   .prose-policy h3 {
     font-family: var(--font-heading);
     font-size: 1.2rem;
@@ -243,38 +272,47 @@
     margin-bottom: 0.75rem;
     scroll-margin-top: 6rem;
   }
+
   .prose-policy p {
     margin-bottom: 1.1rem;
     color: var(--muted-foreground);
   }
+
   .prose-policy ul,
   .prose-policy ol {
     margin-bottom: 1.1rem;
     padding-left: 1.4rem;
     color: var(--muted-foreground);
   }
+
   .prose-policy ul {
     list-style: disc;
   }
+
   .prose-policy ol {
     list-style: decimal;
   }
+
   .prose-policy li {
     margin-bottom: 0.4rem;
   }
+
   .prose-policy li::marker {
     color: var(--primary);
   }
+
   .prose-policy a {
     color: var(--primary);
     font-weight: 600;
     text-decoration: underline;
     text-decoration-color: color-mix(in oklch, var(--primary), transparent 60%);
   }
+
   .prose-policy strong {
     color: var(--foreground);
     font-weight: 700;
   }
+
   .prose-policy blockquote {
     border-left: 3px solid var(--accent);
     background: var(--muted);
@@ -284,60 +322,79 @@
     font-style: italic;
     color: var(--foreground);
   }
+
   .prose-policy img {
     border-radius: var(--radius-lg);
     margin: 1.75rem 0;
   }
+
   .prose-policy hr {
     border-color: var(--border);
     margin: 2.5rem 0;
   }
 }
 
-.px-8{
+.px-8 {
   padding: 0px !important;
 }
-.main_books{
-padding: 18px 15px !important;
-    font-size: 14px;
+
+.main_books {
+  padding: 18px 15px !important;
+  font-size: 14px;
 }
+
 .group\/button {
-    padding: 20px 15px !important;
-    font-size: 16px;
+  padding: 20px 15px !important;
+  font-size: 16px;
 }
-.shadow-sm{
+
+.shadow-sm {
   font-size: 14px !important;
 }
-.white{
+
+.white {
   color: #fff !important;
 }
-.shrink-0{
+
+.shrink-0 {
   cursor: pointer !important;
 }
 
 ::-webkit-inner-spin-button,
-::-webkit-outer-spin-button{
+::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-.footers{
+
+.footers {
   border-radius: 80px 80px 0px 0px;
+}
+.sliderss{
+  max-width: 600px !important;
 }
 
 @media (max-width: 768px) {
-  .home_ui{
+  .home_ui {
     padding: 20px 15px !important;
   }
+
   .py-20 {
     padding: 22px 0px;
   }
-  .shadow-sm{
+
+  .shadow-sm {
     font-size: 10px !important;
   }
-  .mains_consult{
+
+  .mains_consult {
     flex-direction: column !important;
   }
-  .booking_forms{
+
+  .booking_forms {
     padding: 15px !important;
+  }
+
+  .mains_details {
+    justify-content: end !important;
   }
 }

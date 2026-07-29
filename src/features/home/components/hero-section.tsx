@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Flame, ShieldCheck, Star, User } from "lucide-react";
+import { CheckCircle2, Flame, Package, ShieldCheck, Star, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/shared/reveal";
 import { BookingWidget } from "@/components/shared/booking-widget";
@@ -13,6 +13,13 @@ const heroPoints = [
   "Complete puja samagri included",
   "Fixed, transparent pricing — no surprises",
   "Same-day booking across Delhi NCR",
+];
+
+const heroBadges = [
+  { icon: ShieldCheck, label: "10+ Verified Pandits", iconClassName: "text-primary" },
+  { icon: Star, label: "4.8 Rated by Families", iconClassName: "fill-accent text-accent" },
+  { icon: Package, label: "Top Rated Puja Samagiri", iconClassName: "text-primary" },
+  { icon: CheckCircle2, label: "97+ Puja Completed Last Month", iconClassName: "text-accent" },
 ];
 
 export function HeroSection() {
@@ -33,13 +40,18 @@ export function HeroSection() {
 
       <div className="home_ui relative mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-12 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <Reveal>
-          <div className="flex flex-wrap gap-2.5">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3.5 py-1.5 text-xs font-bold text-secondary shadow-sm">
-              <ShieldCheck size={15} className="text-primary" /> 10+ Verified Pandits
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3.5 py-1.5 text-xs font-bold text-secondary shadow-sm">
-              <Star size={15} className="fill-accent text-accent" /> 4.9 Rated by Families
-            </span>
+          <div className="sliderss overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_2rem,black_calc(100%-2rem),transparent)]">
+            <div className="animate-hero-badge-marquee flex w-max gap-2.5">
+              {[...heroBadges, ...heroBadges].map((badge, i) => (
+                <span
+                  key={i}
+                  className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white/95 px-3.5 py-1.5 text-xs font-bold text-secondary shadow-sm"
+                >
+                  <badge.icon size={15} className={`shrink-0 ${badge.iconClassName}`} />
+                  {badge.label}
+                </span>
+              ))}
+            </div>
           </div>
 
           <h1 className="mt-6 text-balance">
