@@ -106,7 +106,7 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
         <PoojaBookingProvider>
         <Container className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_380px]">
           <div>
-            <div className="relative h-[420px] overflow-hidden rounded-3xl">
+            <div className="relative hidden h-[420px] overflow-hidden rounded-3xl lg:block">
               <img src={headingImage} alt={pooja.name} className="h-full w-full object-cover" />
             </div>
             {galleryItems.length > 0 ? <PoojaGallery images={galleryItems} alt={pooja.name} /> : null}
