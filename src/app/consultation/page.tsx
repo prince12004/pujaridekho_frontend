@@ -28,7 +28,7 @@ export default function ConsultationPage() {
 
             <section className="py-16 sm:py-20">
                 <Container className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] mains_consult">
-                    <div className="space-y-8">
+                    <div className="order-2 space-y-8 lg:order-1">
                         <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
                             <h2 className="font-heading text-2xl font-bold">What our consultation covers</h2>
                             <ul className="mt-6 grid gap-4 text-sm text-muted-foreground sm:grid-cols-2">
@@ -60,7 +60,7 @@ export default function ConsultationPage() {
                         </div>
                     </div>
 
-                    <div className="space-y-6 rounded-3xl border border-border bg-card p-8 shadow-sm">
+                    <div className="order-1 space-y-6 rounded-3xl border border-border bg-card p-8 shadow-sm lg:order-2">
                         <div>
                             <h3 className="font-heading text-xl font-bold">Ready to consult?</h3>
                             <p className="mt-2 text-sm text-muted-foreground">
