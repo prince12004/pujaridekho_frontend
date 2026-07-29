@@ -57,7 +57,11 @@ export function MobileNav() {
 
         <div className="mt-auto flex flex-col gap-3 px-5 py-6">
           {isLoggedIn ? (
-            <div className="flex items-center gap-3 rounded-xl border border-white/15 px-4 py-3">
+            <Link
+              href="/account"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 rounded-xl border border-white/15 px-4 py-3 transition-colors hover:bg-white/5"
+            >
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-xs font-bold text-white">
                 {mobile?.slice(0, 2)}
               </span>
@@ -65,7 +69,7 @@ export function MobileNav() {
                 <div className="text-sm font-bold">+91 {mobile}</div>
                 <div className="text-xs text-brand-cream/60">Logged in</div>
               </div>
-            </div>
+            </Link>
           ) : (
             <Button
               className="font-ui bg-gradient-to-r from-accent to-brand-gold-soft font-bold text-secondary hover:opacity-90"
