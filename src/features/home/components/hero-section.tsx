@@ -31,7 +31,7 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-t from-brand-purple-deep via-transparent to-brand-purple-deep/40" />
       </div>
 
-      <div className="relative mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-12 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+      <div className="home_ui relative mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-12 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <Reveal>
           <div className="flex flex-wrap gap-2.5">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3.5 py-1.5 text-xs font-bold text-secondary shadow-sm">
@@ -45,7 +45,7 @@ export function HeroSection() {
           <h1 className="mt-6 text-balance">
             <span className="lang-hi block text-3xl text-primary sm:text-4xl">पूजा हो तो,</span>
             <span className="block font-heading text-5xl font-bold text-brand-cream sm:text-6xl">
-              PujariDekho.
+              PujariDekho
             </span>
           </h1>
 

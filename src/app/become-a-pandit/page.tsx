@@ -42,7 +42,7 @@ export default function BecomeAPanditPage() {
       <RegistrationForm />
 
       <section className="bg-muted/40 pb-20 sm:pb-28">
-        <Container className="max-w-[820px]">
+        <Container className="max-w-[820px] pt-10">
           <SectionHeading eyebrow="Good to Know" title="Frequently Asked Questions" className="mb-8" />
           <FaqAccordion items={panditFaq} />
         </Container>

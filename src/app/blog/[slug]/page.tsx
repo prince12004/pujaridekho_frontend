@@ -1,76 +1,59 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { AuthorByline } from "@/components/shared/author-byline";
 import { SocialShare } from "@/components/shared/social-share";
 import { TableOfContents } from "@/components/shared/table-of-contents";
-import { FaqAccordion } from "@/components/shared/faq-accordion";
-import { RelatedSection } from "@/components/shared/related-section";
-import { NewsletterSection } from "@/components/shared/newsletter-section";
-import { CommentsSection } from "@/components/shared/comments-section";
 import { PrevNextNav } from "@/components/shared/prev-next-nav";
 import { Container } from "@/components/shared/container";
-import { MediaCard, MediaCardBody, MediaCardImage } from "@/components/shared/media-card";
 import { JsonLd, breadcrumbSchema } from "@/components/shared/json-ld";
-import { PoojaCard } from "@/features/home/components/pooja-card";
-import { featuredPoojas, religiousProducts } from "@/features/home/data";
-import { blogPosts, getAdjacentPosts, getPostBySlug } from "@/features/blog/data";
 import { buildMetadata } from "@/lib/seo";
 import { extractToc } from "@/lib/toc";
-import { images } from "@/lib/images";
 import { env } from "@/lib/env";
+import type { PublicBlogDetail } from "@/features/blog/api/use-blogs";
 
-export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
+const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1604881991720-f91add269bed?w=1600&auto=format&fit=crop";
+
+async function fetchBlog(slug: string): Promise<PublicBlogDetail | null> {
+  const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/blogs/${slug}`, { cache: "no-store" });
+  if (!response.ok) return null;
+  const json = await response.json();
+  return json.data;
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
+function estimateReadTime(html: string) {
+  const words = html.replace(/<[^>]+>/g, " ").trim().split(/\s+/).filter(Boolean).length;
+  return `${Math.max(1, Math.ceil(words / 200))} min read`;
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
-  if (!post) return {};
+  const data = await fetchBlog(slug);
+  if (!data) return {};
 
   return buildMetadata({
-    title: post.title,
-    description: post.excerpt,
-    path: `/blog/${post.slug}`,
-    image: images[post.image],
+    title: data.blog.title,
+    description: data.blog.excerpt ?? data.blog.title,
+    path: `/blog/${data.blog.slug}`,
+    image: data.blog.coverImage ?? FALLBACK_IMAGE,
   });
 }
 
-const demoComments = [
-  { name: "Sunita Rao", date: "2 days ago", message: "This was so helpful — we followed the vidhi order exactly and our pandit said we'd prepared well." },
-  { name: "Manoj Gupta", date: "5 days ago", message: "Didn't know about the Shunya Maas restriction, glad I checked before finalising our date." },
-];
-
-export default async function BlogDetailPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
-  if (!post) notFound();
+  const data = await fetchBlog(slug);
+  if (!data) notFound();
+  const { blog: post, previous, next } = data;
 
-  const toc = extractToc(post.contentHtml);
-  const { prev, next } = getAdjacentPosts(post.slug);
-  const relatedPoojas = featuredPoojas.filter((p) => post.relatedPoojaSlugs.includes(p.slug));
-  const relatedProducts = religiousProducts.filter((p) => post.relatedProductSlugs.includes(p.slug));
-  const relatedBlogs = blogPosts.filter((p) => p.slug !== post.slug && p.category === post.category).slice(0, 3);
+  const toc = extractToc(post.content);
+  const category = typeof post.category === "object" ? post.category?.name : post.category;
   const postUrl = `${env.NEXT_PUBLIC_SITE_URL}/blog/${post.slug}`;
 
   return (
     <>
       <JsonLd
         data={breadcrumbSchema(
-          [
-            { name: "Blog", path: "/blog" },
-            { name: post.title, path: `/blog/${post.slug}` },
-          ],
+          [{ name: "Blog", path: "/blog" }, { name: post.title, path: `/blog/${post.slug}` }],
           env.NEXT_PUBLIC_SITE_URL,
         )}
       />
@@ -80,23 +63,22 @@ export default async function BlogDetailPage({
           "@type": "Article",
           headline: post.title,
           description: post.excerpt,
-          image: images[post.image],
-          datePublished: post.publishDate,
-          author: { "@type": "Person", name: post.author.name },
+          image: post.coverImage ?? FALLBACK_IMAGE,
+          datePublished: post.publishedAt,
+          author: { "@type": "Organization", name: post.author ?? "PujariDekho Team" },
           publisher: { "@type": "Organization", name: "PujariDekho" },
         }}
       />
-      {post.faq.length > 0 ? <JsonLd data={{ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: post.faq.map((f) => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })) }} /> : null}
 
       <div className="relative h-[350px] w-full overflow-hidden sm:h-[420px]">
-        <Image src={images[post.image]} alt={post.title} fill priority className="object-cover" sizes="100vw" />
+        <img src={post.coverImage ?? FALLBACK_IMAGE} alt={post.title} className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-brand-purple-deep/85 via-brand-purple-deep/20 to-transparent" />
         <Container className="absolute inset-0 flex flex-col justify-end pb-10">
           <Breadcrumb
             items={[{ label: "Blog", href: "/blog" }, { label: post.title }]}
             className="mb-4 [&_a]:text-brand-cream/70 [&_span]:text-brand-gold-soft [&_svg]:text-brand-cream/40"
           />
-          <span className="font-ui text-xs font-bold uppercase tracking-wide text-brand-gold-soft">{post.category}</span>
+          {category && <span className="font-ui text-xs font-bold uppercase tracking-wide text-brand-gold-soft">{category}</span>}
           <h1 className="mt-2 max-w-3xl text-balance font-heading text-3xl font-bold text-brand-cream sm:text-4xl">
             {post.title}
           </h1>
@@ -105,7 +87,12 @@ export default async function BlogDetailPage({
 
       <Container className="py-10">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-6">
-          <AuthorByline name={post.author.name} role={post.author.role} date={new Date(post.publishDate).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })} readTime={post.readTime} />
+          <AuthorByline
+            name={post.author ?? "PujariDekho Team"}
+            role="Ritual Experts"
+            date={post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }) : ""}
+            readTime={estimateReadTime(post.content)}
+          />
           <SocialShare url={postUrl} title={post.title} />
         </div>
       </Container>
@@ -117,63 +104,16 @@ export default async function BlogDetailPage({
           </div>
         </aside>
 
-        <div className="min-w-0 max-w-2xl">
-          <div className="prose-policy" dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
-
-          {post.faq.length > 0 ? (
-            <div className="mt-12">
-              <h2 className="font-heading mb-5 text-2xl">Frequently Asked Questions</h2>
-              <FaqAccordion items={post.faq} />
-            </div>
-          ) : null}
-
-          {relatedPoojas.length > 0 ? (
-            <RelatedSection title="Related Poojas">
-              {relatedPoojas.map((pooja) => (
-                <PoojaCard key={pooja.slug} pooja={pooja} />
-              ))}
-            </RelatedSection>
-          ) : null}
-
-          {relatedProducts.length > 0 ? (
-            <RelatedSection title="Related Products">
-              {relatedProducts.map((product) => (
-                <MediaCard key={product.slug}>
-                  <MediaCardImage src={images[product.image]} alt={product.name} height="h-36" />
-                  <MediaCardBody>
-                    <span className="font-heading text-sm">{product.name}</span>
-                    <span className="font-heading text-base text-secondary">₹{product.price.toLocaleString("en-IN")}</span>
-                  </MediaCardBody>
-                </MediaCard>
-              ))}
-            </RelatedSection>
-          ) : null}
-
-          {relatedBlogs.length > 0 ? (
-            <RelatedSection title="Related Blogs">
-              {relatedBlogs.map((blog) => (
-                <MediaCard key={blog.slug} href={`/blog/${blog.slug}`}>
-                  <MediaCardImage src={images[blog.image]} alt={blog.title} height="h-36" />
-                  <MediaCardBody>
-                    <span className="text-xs font-semibold text-muted-foreground">{blog.readTime}</span>
-                    <span className="font-heading text-sm leading-snug">{blog.title}</span>
-                  </MediaCardBody>
-                </MediaCard>
-              ))}
-            </RelatedSection>
-          ) : null}
+        <div className="min-w-0 max-w-6xl">
+          <div className="prose-policy" dangerouslySetInnerHTML={{ __html: post.content }} />
 
           <PrevNextNav
-            prev={prev ? { label: "Previous", title: prev.title, href: `/blog/${prev.slug}` } : undefined}
+            prev={previous ? { label: "Previous", title: previous.title, href: `/blog/${previous.slug}` } : undefined}
             next={next ? { label: "Next", title: next.title, href: `/blog/${next.slug}` } : undefined}
             className="mt-12"
           />
-
-          <CommentsSection initialComments={demoComments} className="mt-14" />
         </div>
       </Container>
-
-      <NewsletterSection />
     </>
   );
 }

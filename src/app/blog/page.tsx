@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { PageBanner } from "@/components/shared/page-banner";
-import { NewsletterSection } from "@/components/shared/newsletter-section";
 import { CtaBanner } from "@/components/shared/cta-banner";
 import { JsonLd, breadcrumbSchema } from "@/components/shared/json-ld";
 import { Container } from "@/components/shared/container";
 import { FeaturedBlogCard } from "@/features/blog/components/featured-blog-card";
 import { BlogListingClient } from "@/features/blog/components/blog-listing-client";
-import { blogPosts } from "@/features/blog/data";
+import type { PublicBlog } from "@/features/blog/api/use-blogs";
 import { buildMetadata } from "@/lib/seo";
 import { images } from "@/lib/images";
 import { env } from "@/lib/env";
@@ -18,9 +17,15 @@ export const metadata: Metadata = buildMetadata({
   path: "/blog",
 });
 
-export default function BlogListingPage() {
-  const featured = blogPosts.find((post) => post.featured) ?? blogPosts[0];
-  const rest = blogPosts.filter((post) => post.slug !== featured.slug);
+async function fetchLatestPost(): Promise<PublicBlog | null> {
+  const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/blogs?limit=1`, { cache: "no-store" });
+  if (!response.ok) return null;
+  const json = await response.json();
+  return json.data?.items?.[0] ?? null;
+}
+
+export default async function BlogListingPage() {
+  const featured = await fetchLatestPost();
 
   return (
     <>
@@ -33,17 +38,17 @@ export default function BlogListingPage() {
         image={images.marigold}
       />
 
-      <section className="py-16 sm:py-20">
-        <Container>
-          <FeaturedBlogCard post={featured} />
-        </Container>
-      </section>
+      {featured && (
+        <section className="py-16 sm:py-20">
+          <Container>
+            <FeaturedBlogCard post={featured} />
+          </Container>
+        </section>
+      )}
 
       <section className="pb-20 sm:pb-28">
-        <BlogListingClient posts={rest} />
+        <BlogListingClient excludeSlug={featured?.slug} />
       </section>
-
-      <NewsletterSection />
 
       <CtaBanner
         eyebrow="Need a Pandit?"

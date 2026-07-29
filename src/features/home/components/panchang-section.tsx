@@ -5,10 +5,25 @@ import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { Button } from "@/components/ui/button";
-import { PanchangCard } from "@/features/home/components/panchang-card";
+import { PanchangCard, type PanchangCardData } from "@/features/home/components/panchang-card";
 import { images } from "@/lib/images";
+import { env } from "@/lib/env";
 
-export function PanchangSection() {
+async function fetchTodayPanchang(): Promise<PanchangCardData | null> {
+  try {
+    const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/panchang`, { cache: "no-store" });
+    if (!response.ok) return null;
+    const json = await response.json();
+    return json.data;
+  } catch {
+    return null;
+  }
+}
+
+export async function PanchangSection() {
+  const panchang = await fetchTodayPanchang();
+  const todayIso = panchang?.date ?? new Date().toISOString().slice(0, 10);
+
   return (
     <section className="py-20 sm:py-15">
       <Container>
@@ -20,7 +35,7 @@ export function PanchangSection() {
         />
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_0.85fr]">
-          <PanchangCard />
+          <PanchangCard initialPanchang={panchang} initialDate={todayIso} />
 
           <Reveal delay={0.1}>
             <Link
@@ -39,7 +54,7 @@ export function PanchangSection() {
                 Need Guidance?
               </span>
               <h3 className="white relative mt-1.5 font-heading text-2xl font-bold">
-                Talk to a Verified Astrologer
+                Book a Consultation
               </h3>
               <p className="relative mt-2 max-w-xs text-sm text-white/85">
                 Call, chat or video — get clarity on muhurat, doshas and life questions.

@@ -46,7 +46,7 @@ export function CtaBanner({
                 <Button
                   size="lg"
                   variant="outline"
-                  className="font-ui border-white/25 bg-transparent font-bold text-brand-cream hover:bg-white/10"
+                  className="font-ui border-white/25 bg-transparent font-bold text-brand-cream "
                   asChild
                 >
                   <Link href={secondaryAction.href}>{secondaryAction.label}</Link>

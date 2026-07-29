@@ -4,9 +4,29 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { Button } from "@/components/ui/button";
 import { PoojaCard } from "@/features/home/components/pooja-card";
-import { featuredPoojas } from "@/features/home/data";
+import { env } from "@/lib/env";
 
-export function FeaturedPoojas() {
+interface PublicPooja {
+  _id: string;
+  slug: string;
+  name: string;
+  featuredImage?: string;
+  startingPrice: number;
+  marketPrice?: number;
+  category?: { name: string };
+}
+
+async function fetchFeaturedPoojas(): Promise<PublicPooja[]> {
+  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/poojas?limit=9`, { cache: "no-store" });
+  if (!res.ok) return [];
+  const json = await res.json();
+  return json.data?.items ?? [];
+}
+
+export async function FeaturedPoojas() {
+  const poojas = await fetchFeaturedPoojas();
+  if (poojas.length === 0) return null;
+
   return (
     <section id="poojas" className="py-20 sm:py-15">
       <Container>
@@ -22,9 +42,18 @@ export function FeaturedPoojas() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredPoojas.map((pooja, i) => (
-            <Reveal key={pooja.slug} delay={(i % 3) * 0.08}>
-              <PoojaCard pooja={pooja} />
+          {poojas.map((pooja, i) => (
+            <Reveal key={pooja._id} delay={(i % 3) * 0.08}>
+              <PoojaCard
+                pooja={{
+                  slug: pooja.slug,
+                  name: pooja.name,
+                  location: pooja.category?.name,
+                  price: pooja.startingPrice,
+                  marketPrice: pooja.marketPrice,
+                  image: pooja.featuredImage ?? "bowlWoodenTable",
+                }}
+              />
             </Reveal>
           ))}
         </div>

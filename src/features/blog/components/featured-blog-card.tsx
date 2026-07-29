@@ -1,34 +1,32 @@
 import Link from "next/link";
-import Image from "next/image";
-import { ArrowRight, Calendar, Clock } from "lucide-react";
+import { ArrowRight, Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { images } from "@/lib/images";
-import type { BlogPost } from "@/features/blog/types";
+import type { PublicBlog } from "@/features/blog/api/use-blogs";
 
-export function FeaturedBlogCard({ post }: { post: BlogPost }) {
+const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1604881991720-f91add269bed?w=1200&auto=format&fit=crop";
+
+export function FeaturedBlogCard({ post }: { post: PublicBlog }) {
+  const category = typeof post.category === "object" ? post.category?.name : post.category;
+
   return (
     <Link
       href={`/blog/${post.slug}`}
       className="group relative flex min-h-[360px] flex-col justify-end overflow-hidden rounded-[1.75rem] p-8 text-white shadow-lg sm:p-10"
     >
-      <Image
-        src={images[post.image]}
+      <img
+        src={post.coverImage ?? FALLBACK_IMAGE}
         alt={post.title}
-        fill
-        priority
-        className="object-cover transition-transform duration-500 group-hover:scale-105"
-        sizes="100vw"
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-brand-purple-deep via-brand-purple-deep/55 to-transparent" />
       <Badge className="relative mb-4 w-fit bg-primary font-ui text-[11px] font-bold">Featured</Badge>
       <div className="relative flex items-center gap-3 text-xs font-semibold text-brand-cream/80">
-        <span>{post.category}</span>
-        <span className="flex items-center gap-1">
-          <Calendar size={12} /> {new Date(post.publishDate).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
-        </span>
-        <span className="flex items-center gap-1">
-          <Clock size={12} /> {post.readTime}
-        </span>
+        {category && <span>{category}</span>}
+        {post.publishedAt && (
+          <span className="flex items-center gap-1">
+            <Calendar size={12} /> {new Date(post.publishedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+          </span>
+        )}
       </div>
       <h2 className="relative mt-3 max-w-2xl text-balance font-heading text-2xl font-bold text-brand-cream sm:text-3xl">
         {post.title}

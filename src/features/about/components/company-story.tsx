@@ -34,8 +34,8 @@ export function CompanyStory() {
           </div>
         </Reveal>
         <Reveal delay={0.1}>
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] shadow-lg">
-            <Image src={images.heroTemple} alt="Temple at golden hour" fill className="object-cover" sizes="(min-width: 1024px) 40vw, 90vw" />
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] shadow-lg" style={{ maxHeight: '500px' }}>
+            <Image src={images.candleGroupTable} alt="Puja ceremony setting" fill className="object-cover" sizes="(min-width: 1024px) 40vw, 90vw" />
           </div>
         </Reveal>
       </Container>

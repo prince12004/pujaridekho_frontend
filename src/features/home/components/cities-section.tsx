@@ -5,9 +5,26 @@ import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { images } from "@/lib/images";
-import { cities } from "@/features/home/data";
+import { env } from "@/lib/env";
 
-export function CitiesSection() {
+interface PublicCity {
+  _id: string;
+  name: string;
+  slug: string;
+  panditCount: number;
+}
+
+async function fetchCities(): Promise<PublicCity[]> {
+  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/cities`, { cache: "no-store" });
+  if (!res.ok) return [];
+  const json = await res.json();
+  return json.data ?? [];
+}
+
+export async function CitiesSection() {
+  const cities = await fetchCities();
+  if (cities.length === 0) return null;
+
   return (
     <section className="relative overflow-hidden py-20 sm:py-15">
       <div className="absolute inset-x-0 top-0 h-64 opacity-[0.14]">
@@ -25,9 +42,9 @@ export function CitiesSection() {
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {cities.map((city, i) => (
-            <Reveal key={city.slug} delay={(i % 5) * 0.06}>
+            <Reveal key={city._id} delay={(i % 5) * 0.06}>
               <Link
-                href={`/cities/${city.slug}`}
+                href="/pandits"
                 className="flex items-center gap-3 rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
               >
                 <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-secondary text-brand-gold-soft">
@@ -35,7 +52,9 @@ export function CitiesSection() {
                 </span>
                 <div>
                   <div className="font-heading text-sm leading-tight">{city.name}</div>
-                  <div className="text-xs font-semibold text-muted-foreground">{city.panditCount}</div>
+                  <div className="text-xs font-semibold text-muted-foreground">
+                    {city.panditCount > 0 ? `${city.panditCount}+ Pandits` : "Pandits available"}
+                  </div>
                 </div>
               </Link>
             </Reveal>

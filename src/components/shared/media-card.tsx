@@ -29,7 +29,7 @@ export function MediaCard({
 export function MediaCardImage({
   src,
   alt,
-  height = "h-44",
+  height = "h-60",
   overlay = false,
   badge,
   sizes = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw",

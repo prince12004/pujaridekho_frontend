@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Download, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/shared/reveal";
 import { Button } from "@/components/ui/button";
@@ -28,8 +28,8 @@ export function KundliCta() {
                   Generate Your Free Janam Kundli
                 </h2>
                 <p className="mt-3 text-brand-cream/80">
-                  Accurate birth-chart in seconds — download as PDF or book a live consultation
-                  with our astrologers to understand it in depth.
+                  Real planetary positions computed in seconds — then book a live consultation
+                  with our team to understand it in depth.
                 </p>
               </div>
               <div className="flex flex-wrap justify-center gap-3">
@@ -42,17 +42,7 @@ export function KundliCta() {
                   className="font-ui border-white/25 bg-transparent font-bold text-brand-cream hover:bg-white/10"
                   asChild
                 >
-                  <Link href="/kundli">
-                    <Download size={16} /> Download PDF
-                  </Link>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="font-ui border-white/25 bg-transparent font-bold text-brand-cream hover:bg-white/10"
-                  asChild
-                >
-                  <Link href="/consultation">Consult Astrologer</Link>
+                  <Link href="/consultation">Book a Consultation</Link>
                 </Button>
               </div>
             </div>

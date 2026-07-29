@@ -1,3 +1,4 @@
+import { HomepageBannerStrip } from "@/features/home/components/homepage-banner-strip";
 import { HeroSection } from "@/features/home/components/hero-section";
 import { TrustNumbers } from "@/features/home/components/trust-numbers";
 import { FeaturedPoojas } from "@/features/home/components/featured-poojas";
@@ -17,6 +18,7 @@ import { FaqSection } from "@/features/home/components/faq-section";
 export default function Home() {
   return (
     <>
+      <HomepageBannerStrip />
       <HeroSection />
       <TrustNumbers />
       <FeaturedPoojas />

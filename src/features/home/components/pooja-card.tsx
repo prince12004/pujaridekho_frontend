@@ -5,14 +5,25 @@ import { Button } from "@/components/ui/button";
 import { MediaCard, MediaCardBody, MediaCardFooter, MediaCardImage } from "@/components/shared/media-card";
 import { images } from "@/lib/images";
 import type { Pooja } from "@/features/home/types";
+import type { ImageKey } from "@/lib/images";
 
-export function PoojaCard({ pooja }: { pooja: Pooja }) {
+function resolveImage(src: string) {
+  return (src in images ? images[src as ImageKey] : src) || images.bowlWoodenTable;
+}
+
+export function PoojaCard({
+  pooja,
+  hrefBase = "/poojas",
+}: {
+  pooja: Pooja | { slug: string; name: string; duration?: string; location?: string; price: number; marketPrice?: number; image: string; tag?: string };
+  hrefBase?: string;
+}) {
   return (
     <MediaCard>
       <MediaCardImage
-        src={images[pooja.image]}
+        src={resolveImage(pooja.image)}
         alt={pooja.name}
-        height="h-40"
+        height="h-60"
         overlay
         badge={
           pooja.tag ? (
@@ -24,14 +35,20 @@ export function PoojaCard({ pooja }: { pooja: Pooja }) {
       />
       <MediaCardBody>
         <h3 className="font-heading text-lg leading-snug">{pooja.name}</h3>
-        <div className="flex flex-wrap gap-3 text-xs font-semibold text-muted-foreground">
-          <span className="flex items-center gap-1">
-            <Clock size={13} className="text-primary" /> {pooja.duration}
-          </span>
-          <span className="flex items-center gap-1">
-            <MapPin size={13} className="text-primary" /> {pooja.location}
-          </span>
-        </div>
+        {(pooja.duration || pooja.location) && (
+          <div className="flex flex-wrap gap-3 text-xs font-semibold text-muted-foreground">
+            {pooja.duration && (
+              <span className="flex items-center gap-1">
+                <Clock size={13} className="text-primary" /> {pooja.duration}
+              </span>
+            )}
+            {pooja.location && (
+              <span className="flex items-center gap-1">
+                <MapPin size={13} className="text-primary" /> {pooja.location}
+              </span>
+            )}
+          </div>
+        )}
         <MediaCardFooter>
           <div>
             <div className="flex items-baseline gap-1.5">
@@ -42,10 +59,10 @@ export function PoojaCard({ pooja }: { pooja: Pooja }) {
                 </span>
               ) : null}
             </div>
-            <div className="text-[11px] font-semibold text-muted-foreground">Fixed · Samagri included</div>
+            <div className="text-[11px] font-semibold text-muted-foreground">Fixed price · Samagri optional</div>
           </div>
           <Button size="sm" className="main_books font-ui font-bold" asChild>
-            <Link href={`/poojas/${pooja.slug}`}>Book Now</Link>
+            <Link href={`${hrefBase}/${pooja.slug}`}>Book Now</Link>
           </Button>
         </MediaCardFooter>
       </MediaCardBody>

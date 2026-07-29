@@ -5,7 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: var(--background);
+  --color-background: var(
+    --background);
   --color-foreground: var(--foreground);
 
   /* PujariDekho brand color tokens (usable as bg-brand-saffron, text-brand-gold, etc.) */
@@ -19,6 +20,8 @@
   --color-brand-cream-deep: var(--brand-cream-deep);
   --color-brand-gold: var(--brand-gold);
   --color-brand-gold-soft: var(--brand-gold-soft);
+  --color-brand-cocoa: var(--brand-cocoa);
+  --color-brand-cocoa-deep: var(--brand-cocoa-deep);
 
   --font-sans: var(--font-inter);
   --font-heading: var(--font-poppins);
@@ -78,6 +81,11 @@
   --brand-cream-deep: #f0e6d2;
   --brand-gold: #d9a441;
   --brand-gold-soft: #efd6a0;
+  /* Warm cocoa-brown — matches the logo's wordmark ink; used for the Admin
+     Panel's sidebar/login screen and the public site footer so branding
+     follows the logo rather than a plain purple. */
+  --brand-cocoa: #3d1f0e;
+  --brand-cocoa-deep: #23110a;
 
   --background: #ffffff;
   --foreground: #241a30;
@@ -104,13 +112,13 @@
   --chart-4: #2d1b4e;
   --chart-5: #c7460f;
   --radius: 1.125rem;
-  --sidebar: #2d1b4e;
+  --sidebar: var(--brand-cocoa-deep);
   --sidebar-foreground: #f8f3e8;
   --sidebar-primary: #e65a1e;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #3a2560;
+  --sidebar-accent: #4a2712;
   --sidebar-accent-foreground: #f8f3e8;
-  --sidebar-border: rgba(217, 164, 65, 0.2);
+  --sidebar-border: rgba(230, 90, 30, 0.25);
   --sidebar-ring: #d9a441;
 }
 
@@ -135,17 +143,19 @@
   --input: rgba(217, 164, 65, 0.18);
   --ring: #d9a441;
   --chart-1: #ff8a50;
+--blur-xs: 5px;
+    --blur-sm: 8px;
   --chart-2: #d9a441;
   --chart-3: #6b4fa0;
   --chart-4: #efd6a0;
   --chart-5: #c7460f;
-  --sidebar: #1d1033;
+  --sidebar: #170a05;
   --sidebar-foreground: #f3ebdd;
   --sidebar-primary: #e65a1e;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #3a2560;
+  --sidebar-accent: #3d1f0e;
   --sidebar-accent-foreground: #f3ebdd;
-  --sidebar-border: rgba(217, 164, 65, 0.2);
+  --sidebar-border: rgba(230, 90, 30, 0.25);
   --sidebar-ring: #d9a441;
 }
 
@@ -284,9 +294,6 @@
   }
 }
 
-.max-w-2xl{
-  max-width: 100% !important;
-}
 .px-8{
   padding: 0px !important;
 }
@@ -303,4 +310,25 @@ padding: 18px 15px !important;
 }
 .white{
   color: #fff !important;
+}
+.shrink-0{
+  cursor: pointer !important;
+}
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button{
+  -webkit-appearance: none;
+  margin: 0;
+}
+.footers{
+  border-radius: 80px 80px 0px 0px;
+}
+
+@media (max-width: 768px) {
+  .home_ui{
+    padding: 20px;
+  }
+  .py-20 {
+    padding: 22px 0px;
+  }
 }

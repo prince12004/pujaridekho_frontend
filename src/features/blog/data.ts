@@ -116,7 +116,10 @@ export const blogPosts: BlogPost[] = [
     author: { name: "Pandit Vinod Mishra Ji", role: "Shiv Puja Specialist" },
     contentHtml: sawanContent,
     faq: [
-      { question: "Can pregnant women or the elderly observe a modified fast?", answer: "Yes — a Phalahari (fruit-only) fast or even a single-meal fast is an accepted modification; the intention matters more than strict austerity." },
+      {
+        question: "What foods are allowed during the fast?",
+        answer: "Fruits, milk, curd, nuts, dry fruits, and other permitted Phalahari foods can be consumed during the fast. Regular grains, onion, garlic, and non-vegetarian foods are generally avoided."
+      },
     ],
     relatedPoojaSlugs: ["mahashivratri"],
     relatedProductSlugs: ["panchmukhi-rudraksha-mala"],

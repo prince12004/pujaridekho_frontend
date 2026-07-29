@@ -16,6 +16,7 @@ import { MegaMenuContent } from "@/components/layout/mega-menu-content";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { SearchOverlay } from "@/components/shared/search-overlay";
 import { useAuthModal } from "@/providers/auth-modal-provider";
+import { useCart } from "@/features/cart/cart-context";
 import { shopCategories } from "@/features/home/data";
 
 const poojaColumns = [
@@ -42,11 +43,11 @@ const poojaColumns = [
 const shopColumns = [
   {
     heading: "Shop by Category",
-    links: shopCategories.slice(0, 4).map((c) => ({ label: c.name, href: `/Products/${c.slug}` })),
+    links: shopCategories.slice(0, 4).map((c) => ({ label: c.name, href: `/products?category=${c.slug}` })),
   },
   {
     heading: "More Categories",
-    links: shopCategories.slice(4, 8).map((c) => ({ label: c.name, href: `/Products/${c.slug}` })),
+    links: shopCategories.slice(4, 8).map((c) => ({ label: c.name, href: `/products?category=${c.slug}` })),
   },
 ];
 
@@ -62,6 +63,7 @@ const navLinks = [
 export function SiteHeader() {
   const [searchOpen, setSearchOpen] = useState(false);
   const { isLoggedIn, mobile, openLogin } = useAuthModal();
+  const { count: cartCount } = useCart();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">
@@ -108,7 +110,7 @@ export function SiteHeader() {
                   promo={{
                     title: "Puja Essentials",
                     description: "Temple-grade samagri, delivered",
-                    href: "/Products",
+                    href: "/products",
                     image: "brassBells",
                   }}
                 />
@@ -139,30 +141,34 @@ export function SiteHeader() {
             <Search />
           </Button>
           <div className="relative hidden sm:inline-flex">
-            <Button variant="ghost" size="icon" className="text-secondary" aria-label="Cart">
-              <ShoppingCart />
+            <Button variant="ghost" size="icon" className="text-secondary" aria-label="Cart" asChild>
+              <Link href="/cart">
+                <ShoppingCart />
+              </Link>
             </Button>
-            <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">
-              2
-            </span>
+            {cartCount > 0 && (
+              <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">
+                {cartCount > 9 ? "9+" : cartCount}
+              </span>
+            )}
           </div>
           {isLoggedIn ? (
-            <button
-              type="button"
+            <Link
+              href="/account"
               className="hidden items-center gap-2 rounded-full bg-muted py-1 pl-1 pr-3 sm:inline-flex"
             >
               <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-[11px] font-bold text-white">
                 {mobile?.slice(0, 2)}
               </span>
-              <span className="font-ui text-xs font-bold">Account</span>
-            </button>
+              <span className="font-ui text-xs font-bold">My Account</span>
+            </Link>
           ) : (
             <Button
               variant="ghost"
               size="icon"
               className="hidden text-secondary sm:inline-flex"
               aria-label="Login"
-              onClick={openLogin}
+              onClick={() => openLogin()}
             >
               <User />
             </Button>
