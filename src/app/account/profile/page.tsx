@@ -95,14 +95,14 @@ export default function ProfilePage() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <Label htmlFor="name" className="mb-1.5">Full Name</Label>
-              <Input id="name" value={form.name ?? ""} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+              <Input id="name" placeholder="Your full name" value={form.name ?? ""} onChange={(e) => setForm({ ...form, name: e.target.value })} />
             </div>
 
             <div>
               <Label htmlFor="email" className="mb-1.5 flex items-center gap-1.5">
                 <Mail className="size-3.5" /> Email (optional)
               </Label>
-              <Input id="email" type="email" value={form.email ?? ""} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+              <Input id="email" type="email" placeholder="you@example.com" value={form.email ?? ""} onChange={(e) => setForm({ ...form, email: e.target.value })} />
             </div>
 
             <div>
@@ -130,12 +130,12 @@ export default function ProfilePage() {
               <Label htmlFor="city" className="mb-1.5 flex items-center gap-1.5">
                 <MapPin className="size-3.5" /> City
               </Label>
-              <Input id="city" value={form.city ?? ""} onChange={(e) => setForm({ ...form, city: e.target.value })} />
+              <Input id="city" placeholder="e.g. Noida" value={form.city ?? ""} onChange={(e) => setForm({ ...form, city: e.target.value })} />
             </div>
 
             <div>
               <Label htmlFor="language" className="mb-1.5">Preferred Language</Label>
-              <Input id="language" value={form.preferredLanguage ?? ""} onChange={(e) => setForm({ ...form, preferredLanguage: e.target.value })} />
+              <Input id="language" placeholder="e.g. Hindi" value={form.preferredLanguage ?? ""} onChange={(e) => setForm({ ...form, preferredLanguage: e.target.value })} />
             </div>
           </div>
 
@@ -273,7 +273,7 @@ function ChangeMobileDialog({ currentMobile, onChanged }: { currentMobile: strin
           <div className="space-y-3">
             <div>
               <Label htmlFor="new-mobile" className="mb-1.5">New Mobile Number</Label>
-              <Input id="new-mobile" inputMode="numeric" maxLength={10} value={newMobile} onChange={(e) => setNewMobile(e.target.value.replace(/\D/g, ""))} />
+              <Input id="new-mobile" inputMode="numeric" maxLength={10} placeholder="98765 43210" value={newMobile} onChange={(e) => setNewMobile(e.target.value.replace(/\D/g, ""))} />
             </div>
           </div>
         ) : (
@@ -286,7 +286,7 @@ function ChangeMobileDialog({ currentMobile, onChanged }: { currentMobile: strin
             )}
             <div>
               <Label htmlFor="mobile-otp" className="mb-1.5">OTP</Label>
-              <Input id="mobile-otp" inputMode="numeric" maxLength={6} value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))} />
+              <Input id="mobile-otp" inputMode="numeric" maxLength={6} placeholder="6-digit OTP" value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))} />
             </div>
           </div>
         )}

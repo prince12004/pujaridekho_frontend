@@ -39,7 +39,7 @@ export function MobileNav() {
       >
         <SheetTitle className="sr-only">Navigation menu</SheetTitle>
         <div className="flex items-center justify-between border-b border-white/10 px-5 py-4">
-          <Logo light />
+          <Logo light onClick={() => setOpen(false)} />
         </div>
 
         <nav className="flex flex-col overflow-y-auto px-5 py-2">

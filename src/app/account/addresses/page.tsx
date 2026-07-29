@@ -170,35 +170,35 @@ export default function AddressesPage() {
           <div className="grid grid-cols-2 gap-3">
             <div className="col-span-2">
               <Label htmlFor="full-name" className="mb-1.5">Full Name</Label>
-              <Input id="full-name" value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} />
+              <Input id="full-name" placeholder="Recipient's name" value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} />
             </div>
             <div className="col-span-2">
               <Label htmlFor="mobile" className="mb-1.5">Mobile Number</Label>
-              <Input id="mobile" value={form.mobile} onChange={(e) => setForm({ ...form, mobile: e.target.value })} />
+              <Input id="mobile" placeholder="98765 43210" value={form.mobile} onChange={(e) => setForm({ ...form, mobile: e.target.value })} />
             </div>
             <div className="col-span-2">
               <Label htmlFor="line1" className="mb-1.5">Address Line 1</Label>
-              <Input id="line1" value={form.addressLine1} onChange={(e) => setForm({ ...form, addressLine1: e.target.value })} />
+              <Input id="line1" placeholder="House / flat no., street, area" value={form.addressLine1} onChange={(e) => setForm({ ...form, addressLine1: e.target.value })} />
             </div>
             <div className="col-span-2">
               <Label htmlFor="line2" className="mb-1.5">Address Line 2</Label>
-              <Input id="line2" value={form.addressLine2} onChange={(e) => setForm({ ...form, addressLine2: e.target.value })} />
+              <Input id="line2" placeholder="Apartment, suite, etc. (optional)" value={form.addressLine2} onChange={(e) => setForm({ ...form, addressLine2: e.target.value })} />
             </div>
             <div className="col-span-2">
               <Label htmlFor="landmark" className="mb-1.5">Landmark</Label>
-              <Input id="landmark" value={form.landmark} onChange={(e) => setForm({ ...form, landmark: e.target.value })} />
+              <Input id="landmark" placeholder="Nearby landmark (optional)" value={form.landmark} onChange={(e) => setForm({ ...form, landmark: e.target.value })} />
             </div>
             <div>
               <Label htmlFor="city" className="mb-1.5">City</Label>
-              <Input id="city" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />
+              <Input id="city" placeholder="e.g. Noida" value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />
             </div>
             <div>
               <Label htmlFor="state" className="mb-1.5">State</Label>
-              <Input id="state" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })} />
+              <Input id="state" placeholder="e.g. Uttar Pradesh" value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })} />
             </div>
             <div>
               <Label htmlFor="pincode" className="mb-1.5">Pincode</Label>
-              <Input id="pincode" value={form.pincode} onChange={(e) => setForm({ ...form, pincode: e.target.value })} />
+              <Input id="pincode" placeholder="6-digit pincode" value={form.pincode} onChange={(e) => setForm({ ...form, pincode: e.target.value })} />
             </div>
             <div>
               <Label htmlFor="type" className="mb-1.5">Type</Label>

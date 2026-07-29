@@ -108,11 +108,11 @@ export default function SupportPage() {
                 </div>
                 <div>
                   <Label htmlFor="subject" className="mb-1.5">Subject</Label>
-                  <Input id="subject" value={subject} onChange={(e) => setSubject(e.target.value)} />
+                  <Input id="subject" placeholder="Briefly describe the issue" value={subject} onChange={(e) => setSubject(e.target.value)} />
                 </div>
                 <div>
                   <Label htmlFor="message" className="mb-1.5">Message</Label>
-                  <Textarea id="message" value={message} onChange={(e) => setMessage(e.target.value)} />
+                  <Textarea id="message" placeholder="Share the details of your issue..." value={message} onChange={(e) => setMessage(e.target.value)} />
                 </div>
               </div>
               <DialogFooter>

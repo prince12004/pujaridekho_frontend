@@ -35,7 +35,7 @@ export function HeroSection() {
         <Reveal>
           <div className="flex flex-wrap gap-2.5">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3.5 py-1.5 text-xs font-bold text-secondary shadow-sm">
-              <ShieldCheck size={15} className="text-primary" /> 500+ Verified Pandits
+              <ShieldCheck size={15} className="text-primary" /> 10+ Verified Pandits
             </span>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/95 px-3.5 py-1.5 text-xs font-bold text-secondary shadow-sm">
               <Star size={15} className="fill-accent text-accent" /> 4.9 Rated by Families

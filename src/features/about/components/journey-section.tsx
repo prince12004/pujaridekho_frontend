@@ -7,7 +7,7 @@ export function JourneySection() {
   return (
     <section className="bg-muted/40 py-20 sm:py-15">
       <Container className="max-w-3xl">
-        <SectionHeading eyebrow="Since 2021" title="Our Journey" className="mb-12" />
+        <SectionHeading eyebrow="Since 2025" title="Our Journey" className="mb-12" />
         <Timeline items={journeyItems} />
       </Container>
     </section>

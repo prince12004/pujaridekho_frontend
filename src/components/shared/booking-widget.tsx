@@ -267,7 +267,7 @@ export function BookingWidget({
     <div
       ref={rootRef}
       className={cn(
-        "relative overflow-hidden rounded-[1.75rem] bg-card p-6 shadow-2xl ring-1 ring-border",
+        "relative overflow-hidden rounded-[1.75rem] bg-card p-6 shadow-2xl ring-1 ring-border booking_forms",
         className,
       )}
     >

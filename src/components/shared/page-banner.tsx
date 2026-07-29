@@ -19,7 +19,7 @@ export function PageBanner({
   className?: string;
 }) {
   return (
-    <section className={cn("relative overflow-hidden bg-brand-purple-deep py-14 sm:py-20", className)}>
+    <section className={cn("relative overflow-hidden bg-brand-purple-deep py-8 sm:py-12", className)}>
       {image ? (
         <div className="absolute inset-0">
           <Image src={image} alt="" fill className="object-cover opacity-30" sizes="100vw" />

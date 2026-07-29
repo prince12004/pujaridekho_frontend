@@ -137,7 +137,19 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
               </div>
             </div>
 
-            <div id="book" className="mt-6 scroll-mt-24 lg:hidden">
+            <div className="mt-10 flex flex-col gap-10">
+              <Reveal>
+                <h2 className="font-heading mb-4 text-2xl">Samagri</h2>
+                <SamagriSelector basePrice={Number(pooja.startingPrice)} samagri={pooja.samagri ?? []} />
+              </Reveal>
+
+              <Reveal>
+                <h2 className="font-heading mb-6 text-2xl">Packages &amp; Pricing</h2>
+                <PoojaPackages packages={pooja.packages ?? []} />
+              </Reveal>
+            </div>
+
+            <div id="book" className="mt-10 scroll-mt-24 lg:hidden">
               <BookingWidget
                 cities={bookingCities}
                 poojas={[]}
@@ -177,16 +189,6 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
                   <User size={20} className="text-primary" /> Who Should Perform This Puja
                 </h2>
                 <p className="text-muted-foreground">{pooja.whoShouldPerform}</p>
-              </Reveal>
-
-              <Reveal>
-                <h2 className="font-heading mb-4 text-2xl">Samagri</h2>
-                <SamagriSelector basePrice={Number(pooja.startingPrice)} samagri={pooja.samagri ?? []} />
-              </Reveal>
-
-              <Reveal>
-                <h2 className="font-heading mb-6 text-2xl">Packages &amp; Pricing</h2>
-                <PoojaPackages packages={pooja.packages ?? []} />
               </Reveal>
 
               <Reveal>

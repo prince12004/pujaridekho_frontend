@@ -65,7 +65,7 @@ export default function KundliListPage() {
         <div className="space-y-3">
           <div>
             <Label htmlFor="person-name" className="mb-1.5">Name</Label>
-            <Input id="person-name" value={personName} onChange={(e) => setPersonName(e.target.value)} />
+            <Input id="person-name" placeholder="Full name" value={personName} onChange={(e) => setPersonName(e.target.value)} />
           </div>
           <div>
             <Label htmlFor="dob" className="mb-1.5">Date of Birth</Label>

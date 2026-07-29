@@ -2,39 +2,33 @@ import type { TimelineItem } from "@/components/shared/timeline";
 import { Award, Handshake, HeartHandshake, ShieldCheck } from "lucide-react";
 
 export const aboutStats = [
-  { value: "500+", label: "Verified Pandits" },
-  { value: "10,000+", label: "Poojas Completed" },
+  { value: "10+", label: "Verified Pandits" },
+  { value: "1,000+", label: "Poojas Completed" },
   { value: "10", label: "Cities Served" },
   { value: "4.9★", label: "Average Rating" },
 ];
 
 export const journeyItems: TimelineItem[] = [
   {
-    label: "2021",
+    label: "2025",
     title: "The Idea Takes Shape",
     description:
-      "After struggling to find a reliable, verified pandit for a family Griha Pravesh in Noida, our founders started mapping local pandits across Delhi NCR by hand.",
+      "After struggling to find a reliable, verified pandit for a family Griha Pravesh in Noida, our founder started mapping local pandits across Delhi NCR by hand.",
   },
   {
-    label: "2022",
-    title: "First 50 Verified Pandits Onboarded",
+    label: "2025",
+    title: "First 10 Verified Pandits Onboarded",
     description:
-      "We built our verification process — identity checks, ritual experience review, and family references — and onboarded our first cohort of pandits across Delhi and Noida.",
-  },
-  {
-    label: "2023",
-    title: "Expanded Across Delhi NCR",
-    description:
-      "Grew to Gurgaon, Ghaziabad, Faridabad and Greater Noida, and introduced fixed, transparent pricing with samagri included in every booking.",
-  },
-  {
-    label: "2024",
-    title: "10,000th Puja Completed",
-    description:
-      "Crossed 10,000 completed poojas and launched festival-season advance booking so families never have to scramble during Diwali or Navratri.",
+      "We built our verification process — identity checks, ritual experience review, and family references — and onboarded our first cohort of pandits across Delhi NCR.",
   },
   {
     label: "2025–26",
+    title: "1,000+ Poojas Completed",
+    description:
+      "Crossed 1,000 completed poojas across Delhi NCR, with fixed, transparent pricing and samagri included in every booking.",
+  },
+  {
+    label: "2026",
     title: "Astrology & Puja Essentials",
     description:
       "Added free Kundli generation, live astrologer consultations, and a curated shop for temple-grade puja samagri, murtis and rudraksha.",
@@ -61,10 +55,9 @@ export const whyChooseAbout = [
 ];
 
 export const teamMembers = [
-  { name: "Ankit Sharma", role: "Co-Founder & CEO", initials: "AS" },
-  { name: "Priya Nair", role: "Co-Founder & Head of Pandit Relations", initials: "PN" },
-  { name: "Rohit Malhotra", role: "Head of Operations", initials: "RM" },
-  { name: "Kavita Desai", role: "Head of Customer Experience", initials: "KD" },
+  { name: "Akhilanand Mishra", role: "Founder", initials: "AM" },
+  { name: "Anurag Pandey", role: "App Developer", initials: "AP" },
+  { name: "Prince Kushwah", role: "Frontend Developer", initials: "PK" },
 ];
 
 export const aboutFaq = [

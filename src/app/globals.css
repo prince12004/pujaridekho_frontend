@@ -326,9 +326,18 @@ padding: 18px 15px !important;
 
 @media (max-width: 768px) {
   .home_ui{
-    padding: 20px;
+    padding: 20px 15px !important;
   }
   .py-20 {
     padding: 22px 0px;
+  }
+  .shadow-sm{
+    font-size: 10px !important;
+  }
+  .mains_consult{
+    flex-direction: column !important;
+  }
+  .booking_forms{
+    padding: 15px !important;
   }
 }

@@ -27,7 +27,7 @@ export default function ConsultationPage() {
             />
 
             <section className="py-16 sm:py-20">
-                <Container className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+                <Container className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] mains_consult">
                     <div className="space-y-8">
                         <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
                             <h2 className="font-heading text-2xl font-bold">What our consultation covers</h2>

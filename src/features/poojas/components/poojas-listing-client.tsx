@@ -3,19 +3,15 @@
 import { useMemo, useState } from "react";
 import { SearchBar } from "@/components/shared/search-bar";
 import { FilterBar } from "@/components/shared/filter-bar";
-import { Pagination } from "@/components/shared/pagination";
 import { Reveal } from "@/components/shared/reveal";
 import { PoojaCard } from "@/features/home/components/pooja-card";
 import { bookingCities } from "@/features/home/data";
 import { usePoojas } from "@/features/poojas/api/use-poojas";
 import { poojaCategories } from "@/features/poojas/data";
 
-const PER_PAGE = 6;
-
 export function PoojasListingClient() {
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState<Record<string, string>>({});
-  const [page, setPage] = useState(1);
   const { data, isLoading, error } = usePoojas({ search: query, page: 1, limit: 100 });
 
   const items = (data?.items ?? []) as Array<{
@@ -42,12 +38,6 @@ export function PoojasListingClient() {
     });
   }, [filters, items]);
 
-  const displayed = useMemo(() => {
-    return filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
-  }, [filtered, page]);
-
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
-
   return (
     <div>
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -56,7 +46,6 @@ export function PoojasListingClient() {
           values={filters}
           onChange={(key, value) => {
             setFilters((prev) => ({ ...prev, [key]: value }));
-            setPage(1);
           }}
           onClear={() => setFilters({})}
           filters={[
@@ -78,7 +67,6 @@ export function PoojasListingClient() {
           value={query}
           onChange={(v) => {
             setQuery(v);
-            setPage(1);
           }}
           placeholder="Search poojas…"
           className="max-w-xs"
@@ -89,11 +77,11 @@ export function PoojasListingClient() {
         <p className="py-16 text-center text-muted-foreground">Loading poojas…</p>
       ) : error ? (
         <p className="py-16 text-center text-destructive">Unable to load poojas right now.</p>
-      ) : displayed.length === 0 ? (
+      ) : filtered.length === 0 ? (
         <p className="py-16 text-center text-muted-foreground">No poojas match your filters.</p>
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {displayed.map((pooja, i) => (
+          {filtered.map((pooja, i) => (
             <Reveal key={pooja._id} delay={(i % 3) * 0.08}>
               <PoojaCard
                 pooja={{
@@ -111,8 +99,6 @@ export function PoojasListingClient() {
           ))}
         </div>
       )}
-
-      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} className="mt-10" />
     </div>
   );
 }

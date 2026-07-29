@@ -86,17 +86,17 @@ export function ConsultationForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="space-y-1.5">
         <Label htmlFor="name">Name</Label>
-        <Input id="name" {...register("name")} />
+        <Input id="name" placeholder="Your name" {...register("name")} />
         {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
       </div>
       <div className="space-y-1.5">
         <Label htmlFor="mobile">Mobile</Label>
-        <Input id="mobile" {...register("mobile")} />
+        <Input id="mobile" placeholder="98765 43210" {...register("mobile")} />
         {errors.mobile && <p className="text-xs text-destructive">{errors.mobile.message}</p>}
       </div>
       <div className="space-y-1.5">
         <Label htmlFor="email">Email (optional)</Label>
-        <Input id="email" {...register("email")} />
+        <Input id="email" placeholder="you@example.com" {...register("email")} />
       </div>
       <div className="space-y-1.5">
         <Label htmlFor="topic">What do you need help with?</Label>

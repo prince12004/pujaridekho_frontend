@@ -17,7 +17,7 @@ export function CompanyStory() {
           </h2>
           <div className="mt-5 flex flex-col gap-4 text-muted-foreground">
             <p>
-              In 2021, our co-founder spent four days calling temples and asking neighbours just to
+              In 2025, our founder spent four days calling temples and asking neighbours just to
               find a pandit for a family Griha Pravesh in Noida — and still ended up with someone
               whose experience nobody could vouch for.
             </p>
@@ -27,7 +27,7 @@ export function CompanyStory() {
               no separate trip to the market the morning of.
             </p>
             <p>
-              Five years on, we&apos;ve stayed close to that original problem. We&apos;re still run
+              A year on, we&apos;ve stayed close to that original problem. We&apos;re still run
               by people who plan their own family&apos;s poojas on the platform, and we measure
               ourselves by whether we&apos;d trust the pandit we just booked.
             </p>

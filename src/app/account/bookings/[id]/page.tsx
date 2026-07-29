@@ -261,7 +261,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
                 </div>
                 <div>
                   <Label htmlFor="reschedule-reason" className="mb-1.5">Reason (optional)</Label>
-                  <Textarea id="reschedule-reason" value={rescheduleReason} onChange={(e) => setRescheduleReason(e.target.value)} />
+                  <Textarea id="reschedule-reason" placeholder="Let us know why you'd like to reschedule..." value={rescheduleReason} onChange={(e) => setRescheduleReason(e.target.value)} />
                 </div>
               </div>
               <DialogFooter>
@@ -292,7 +292,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
               <div className="space-y-3">
                 <div>
                   <Label htmlFor="cancel-reason" className="mb-1.5">Reason for cancellation</Label>
-                  <Textarea id="cancel-reason" value={cancelReason} onChange={(e) => setCancelReason(e.target.value)} />
+                  <Textarea id="cancel-reason" placeholder="Tell us why you're cancelling..." value={cancelReason} onChange={(e) => setCancelReason(e.target.value)} />
                 </div>
               </div>
               <DialogFooter>

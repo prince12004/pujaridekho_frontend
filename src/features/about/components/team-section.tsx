@@ -15,9 +15,9 @@ export function TeamSection() {
           align="center"
           className="mx-auto mb-12"
         />
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+        <div className="flex flex-wrap justify-center gap-x-12 gap-y-8">
           {teamMembers.map((member, i) => (
-            <Reveal key={member.name} delay={i * 0.06} className="flex flex-col items-center gap-3 text-center">
+            <Reveal key={member.name} delay={i * 0.06} className="flex w-32 flex-col items-center gap-3 text-center">
               <MonogramAvatar initials={member.initials} seed={i} className="h-20 w-20 text-xl" />
               <div>
                 <div className="font-heading text-sm">{member.name}</div>

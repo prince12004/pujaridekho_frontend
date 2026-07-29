@@ -20,9 +20,9 @@ export function LogoMark({ light = false, className }: { light?: boolean; classN
   return <span className="inline-flex items-center rounded-lg bg-white px-2 py-1.5">{img}</span>;
 }
 
-export function Logo({ light = false }: { light?: boolean }) {
+export function Logo({ light = false, onClick }: { light?: boolean; onClick?: () => void }) {
   return (
-    <Link href="/" className="flex items-center" aria-label="PujariDekho home">
+    <Link href="/" onClick={onClick} className="flex items-center" aria-label="PujariDekho home">
       <LogoMark light={light} />
     </Link>
   );

@@ -163,11 +163,11 @@ export default function ConsultationDetailPage({ params }: { params: Promise<{ i
                 </div>
                 <div>
                   <Label htmlFor="c-time" className="mb-1.5">Preferred Time (optional)</Label>
-                  <Input id="c-time" value={requestedTime} onChange={(e) => setRequestedTime(e.target.value)} />
+                  <Input id="c-time" placeholder="e.g. Morning, 10 AM" value={requestedTime} onChange={(e) => setRequestedTime(e.target.value)} />
                 </div>
                 <div>
                   <Label htmlFor="c-reason" className="mb-1.5">Reason (optional)</Label>
-                  <Textarea id="c-reason" value={rescheduleReason} onChange={(e) => setRescheduleReason(e.target.value)} />
+                  <Textarea id="c-reason" placeholder="Let us know why you'd like to reschedule..." value={rescheduleReason} onChange={(e) => setRescheduleReason(e.target.value)} />
                 </div>
               </div>
               <DialogFooter>
@@ -194,7 +194,7 @@ export default function ConsultationDetailPage({ params }: { params: Promise<{ i
               <div className="space-y-3">
                 <div>
                   <Label htmlFor="cc-reason" className="mb-1.5">Reason for cancellation</Label>
-                  <Textarea id="cc-reason" value={cancelReason} onChange={(e) => setCancelReason(e.target.value)} />
+                  <Textarea id="cc-reason" placeholder="Tell us why you're cancelling..." value={cancelReason} onChange={(e) => setCancelReason(e.target.value)} />
                 </div>
               </div>
               <DialogFooter>

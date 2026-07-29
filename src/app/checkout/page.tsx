@@ -108,33 +108,33 @@ export default function CheckoutPage() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label>Full Name</Label>
-              <Input {...register("name")} />
+              <Input placeholder="Your name" {...register("name")} />
               {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
             </div>
             <div className="space-y-1.5">
               <Label>Mobile</Label>
-              <Input {...register("mobile")} />
+              <Input placeholder="98765 43210" {...register("mobile")} />
               {errors.mobile && <p className="text-xs text-destructive">{errors.mobile.message}</p>}
             </div>
           </div>
           <div className="space-y-1.5">
             <Label>Email (optional)</Label>
-            <Input {...register("email")} />
+            <Input placeholder="you@example.com" {...register("email")} />
           </div>
           <div className="space-y-1.5">
             <Label>Address</Label>
-            <Textarea rows={2} {...register("address")} />
+            <Textarea rows={2} placeholder="House / flat no., street, area..." {...register("address")} />
             {errors.address && <p className="text-xs text-destructive">{errors.address.message}</p>}
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label>City</Label>
-              <Input {...register("city")} />
+              <Input placeholder="e.g. Noida" {...register("city")} />
               {errors.city && <p className="text-xs text-destructive">{errors.city.message}</p>}
             </div>
             <div className="space-y-1.5">
               <Label>Pincode</Label>
-              <Input {...register("pincode")} />
+              <Input placeholder="6-digit pincode" {...register("pincode")} />
               {errors.pincode && <p className="text-xs text-destructive">{errors.pincode.message}</p>}
             </div>
           </div>
