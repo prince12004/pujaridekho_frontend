@@ -54,8 +54,8 @@ type OfflineBookingValues = z.infer<typeof offlineBookingSchema>;
 export default function CreateOfflineBookingPage() {
   const router = useRouter();
   const [poojaSearch, setPoojaSearch] = useState("");
-  const { data: poojasResult } = usePoojas({ search: poojaSearch || undefined, status: "published" });
-  const { data: festivalsResult } = useFestivals({ status: "published" });
+  const { data: poojasResult } = usePoojas({ search: poojaSearch || undefined, status: "Published" });
+  const { data: festivalsResult } = useFestivals({ status: "Published" });
   const { data: panditsResult } = usePandits({ verificationStatus: "verified" });
   const createOfflineBooking = useCreateOfflineBooking();
 

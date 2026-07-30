@@ -24,7 +24,7 @@ const pageSchema = z.object({
   content: z.string().optional(),
   metaTitle: z.string().optional(),
   metaDescription: z.string().optional(),
-  status: z.enum(["draft", "published"]),
+  status: z.enum(["draft", "Published"]),
 });
 
 function slugify(value: string) {
@@ -98,7 +98,7 @@ export default function PagesCmsPage() {
     <div>
       <AdminPageHeader
         title="Pages CMS"
-        description="Create simple standalone content pages (e.g. FAQs, offers) — published pages are live at /pages/[slug]."
+        description="Create simple standalone content pages (e.g. FAQs, offers) — Published pages are live at /pages/[slug]."
         actions={
           <Button onClick={openCreate}>
             <Plus /> Add Page
@@ -135,7 +135,7 @@ export default function PagesCmsPage() {
                     <TableCell className="font-medium">{page.title}</TableCell>
                     <TableCell className="text-muted-foreground">/pages/{page.slug}</TableCell>
                     <TableCell>
-                      <Badge variant={page.status === "published" ? "default" : "outline"}>{page.status}</Badge>
+                      <Badge variant={page.status === "Published" ? "default" : "outline"}>{page.status}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="icon-sm" onClick={() => openEdit(page)}>
@@ -193,7 +193,7 @@ export default function PagesCmsPage() {
             </div>
             <select {...register("status")} className="h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none">
               <option value="draft">Draft</option>
-              <option value="published">Published</option>
+              <option value="Published">Published</option>
             </select>
             <DialogFooter>
               <Button type="submit" disabled={isSubmitting}>

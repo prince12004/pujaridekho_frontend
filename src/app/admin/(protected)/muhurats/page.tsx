@@ -47,7 +47,7 @@ export default function AdminMuhuratsPage() {
   const [filterDate, setFilterDate] = useState<string>("");
   const [search, setSearch] = useState("");
 
-  const { data: poojas } = usePoojas({ limit: 500, status: "published" });
+  const { data: poojas } = usePoojas({ limit: 500, status: "Published" });
   const { data: muhurats, isLoading } = useMuhurats({
     poojaId: filterPoojaId || undefined,
     date: filterDate || undefined,

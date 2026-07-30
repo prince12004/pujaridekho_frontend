@@ -13,7 +13,7 @@ export interface Festival {
   gallery?: string[];
   startingPrice: number;
   marketPrice?: number;
-  status: "draft" | "published" | "archived";
+  status: "draft" | "Published" | "archived";
   featured: boolean;
 }
 

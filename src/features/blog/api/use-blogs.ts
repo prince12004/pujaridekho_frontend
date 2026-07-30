@@ -10,7 +10,7 @@ export interface PublicBlog {
   coverImage?: string;
   author?: string;
   tags: string[];
-  publishedAt?: string;
+  PublishedAt?: string;
   category?: { name: string; slug: string } | string;
 }
 

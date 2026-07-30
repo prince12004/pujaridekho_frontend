@@ -14,12 +14,13 @@ import { TimePicker } from "@/components/shared/time-picker";
 import { PaymentOptionSelector, ADVANCE_AMOUNT, type PaymentOption } from "@/components/shared/payment-option-selector";
 import { apiClient } from "@/lib/api-client";
 import { useAuthModal } from "@/providers/auth-modal-provider";
+import { mobileSchema } from "@/lib/validators";
 
 const CONSULTATION_FEE = 500;
 
 const consultationSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  mobile: z.string().min(10, "Enter a valid mobile number"),
+  mobile: mobileSchema,
   email: z.string().email().optional().or(z.literal("")),
   topic: z.string().optional(),
   message: z.string().optional(),

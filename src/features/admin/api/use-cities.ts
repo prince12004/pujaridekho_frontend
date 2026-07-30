@@ -7,7 +7,7 @@ export interface City {
   slug: string;
   state?: string;
   isServiceable: boolean;
-  status: "draft" | "published";
+  status: "draft" | "Published";
 }
 
 export function useCities() {

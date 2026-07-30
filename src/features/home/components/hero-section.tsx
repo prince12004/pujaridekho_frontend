@@ -38,7 +38,7 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-t from-brand-purple-deep via-transparent to-brand-purple-deep/40" />
       </div>
 
-      <div className="home_ui relative mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-12 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+      <div className="home_ui relative mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-12 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
         <Reveal>
           <div className="sliderss overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_2rem,black_calc(100%-2rem),transparent)]">
             <div className="animate-hero-badge-marquee flex w-max gap-2.5">
@@ -112,7 +112,7 @@ export function HeroSection() {
         </Reveal>
 
         <Reveal delay={0.15}>
-          <BookingWidget cities={bookingCities} poojas={poojaOptions} navigateOnSubmit />
+          <BookingWidget cities={bookingCities} poojas={poojaOptions} />
         </Reveal>
       </div>
     </section>

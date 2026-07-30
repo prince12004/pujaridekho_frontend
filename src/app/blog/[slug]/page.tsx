@@ -64,7 +64,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           headline: post.title,
           description: post.excerpt,
           image: post.coverImage ?? FALLBACK_IMAGE,
-          datePublished: post.publishedAt,
+          datePublished: post.PublishedAt,
           author: { "@type": "Organization", name: post.author ?? "PujariDekho Team" },
           publisher: { "@type": "Organization", name: "PujariDekho" },
         }}
@@ -90,7 +90,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           <AuthorByline
             name={post.author ?? "PujariDekho Team"}
             role="Ritual Experts"
-            date={post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }) : ""}
+            date={post.PublishedAt ? new Date(post.PublishedAt).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }) : ""}
             readTime={estimateReadTime(post.content)}
           />
           <SocialShare url={postUrl} title={post.title} />

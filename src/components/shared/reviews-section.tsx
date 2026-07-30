@@ -58,7 +58,7 @@ export function ReviewsSection({ entityType, entityId }: { entityType: ReviewEnt
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
               <DialogTitle>Write a Review</DialogTitle>
-              <DialogDescription>Your review is published after our team reviews it.</DialogDescription>
+              <DialogDescription>Your review is Published after our team reviews it.</DialogDescription>
             </DialogHeader>
             <div className="space-y-3">
               <div>

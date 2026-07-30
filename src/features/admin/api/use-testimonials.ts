@@ -9,7 +9,7 @@ export interface Testimonial {
   quote: string;
   photo?: string;
   featured: boolean;
-  status: "draft" | "published";
+  status: "draft" | "Published";
 }
 
 export function useTestimonials() {

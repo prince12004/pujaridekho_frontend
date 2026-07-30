@@ -28,7 +28,7 @@ const productFormSchema = z.object({
   stockQuantity: z.coerce.number().optional(),
   inStock: z.boolean().optional(),
   featured: z.boolean().optional(),
-  status: z.enum(["draft", "published", "archived"]),
+  status: z.enum(["draft", "Published", "archived"]),
 });
 
 function slugify(value: string) {
@@ -123,7 +123,7 @@ export function ProductForm({ product }: { product?: Product }) {
             <Label>Status</Label>
             <select {...register("status")} className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none">
               <option value="draft">Draft</option>
-              <option value="published">Published</option>
+              <option value="Published">Published</option>
               <option value="archived">Archived</option>
             </select>
           </div>

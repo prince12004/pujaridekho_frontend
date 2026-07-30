@@ -376,6 +376,7 @@
 @media (max-width: 768px) {
   .home_ui {
     padding: 20px 15px !important;
+    align-items: start !important;
   }
 
   .py-20 {

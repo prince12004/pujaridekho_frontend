@@ -13,9 +13,10 @@ import { Label } from "@/components/ui/label";
 import { LogoMark } from "@/components/layout/logo";
 import { env } from "@/lib/env";
 import type { CustomerProfile } from "@/providers/auth-modal-provider";
+import { mobileSchema as mobileFieldSchema } from "@/lib/validators";
 
 const mobileSchema = z.object({
-  mobile: z.string().regex(/^\d{10}$/, "Enter a valid 10-digit mobile number"),
+  mobile: mobileFieldSchema,
 });
 
 type MobileValues = z.infer<typeof mobileSchema>;

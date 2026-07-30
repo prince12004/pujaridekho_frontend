@@ -31,7 +31,7 @@ const categorySchema = z.object({
     .min(1, "Slug is required")
     .regex(/^[a-z0-9-]+$/, "Lowercase letters, numbers and hyphens only"),
   description: z.string().optional(),
-  status: z.enum(["draft", "published"]),
+  status: z.enum(["draft", "Published"]),
 });
 
 type CategoryValues = z.infer<typeof categorySchema>;
@@ -137,7 +137,7 @@ export default function BlogCategoriesPage() {
                     <TableCell className="font-medium">{category.name}</TableCell>
                     <TableCell className="text-muted-foreground">{category.slug}</TableCell>
                     <TableCell>
-                      <Badge variant={category.status === "published" ? "default" : "outline"}>{category.status}</Badge>
+                      <Badge variant={category.status === "Published" ? "default" : "outline"}>{category.status}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="icon-sm" onClick={() => openEdit(category)}>
@@ -190,7 +190,7 @@ export default function BlogCategoriesPage() {
                 className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none"
               >
                 <option value="draft">Draft</option>
-                <option value="published">Published</option>
+                <option value="Published">Published</option>
               </select>
             </div>
             <DialogFooter>

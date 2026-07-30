@@ -84,7 +84,7 @@ export default function ProductsListPage() {
                     <TableCell>₹{product.sellingPrice.toLocaleString("en-IN")}</TableCell>
                     <TableCell className="text-muted-foreground">{product.stockQuantity}</TableCell>
                     <TableCell>
-                      <Badge variant={product.status === "published" ? "default" : "outline"}>{product.status}</Badge>
+                      <Badge variant={product.status === "Published" ? "default" : "outline"}>{product.status}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="icon-sm" asChild>

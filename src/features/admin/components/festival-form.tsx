@@ -27,7 +27,7 @@ const festivalFormSchema = z.object({
   gallery: z.array(z.object({ url: z.string().min(1, "Required") })),
   startingPrice: z.coerce.number().min(0, "Required"),
   marketPrice: z.coerce.number().optional(),
-  status: z.enum(["draft", "published", "archived"]),
+  status: z.enum(["draft", "Published", "archived"]),
   featured: z.boolean().optional(),
 });
 
@@ -118,7 +118,7 @@ export function FestivalForm({ festival }: { festival?: Festival }) {
             <Label>Status</Label>
             <select {...register("status")} className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none">
               <option value="draft">Draft</option>
-              <option value="published">Published</option>
+              <option value="Published">Published</option>
               <option value="archived">Archived</option>
             </select>
           </div>

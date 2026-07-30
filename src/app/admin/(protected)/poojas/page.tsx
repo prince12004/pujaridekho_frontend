@@ -82,7 +82,7 @@ export default function PoojasListPage() {
                     </TableCell>
                     <TableCell>₹{pooja.startingPrice.toLocaleString("en-IN")}</TableCell>
                     <TableCell>
-                      <Badge variant={pooja.status === "published" ? "default" : "outline"}>{pooja.status}</Badge>
+                      <Badge variant={pooja.status === "Published" ? "default" : "outline"}>{pooja.status}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="icon-sm" asChild>

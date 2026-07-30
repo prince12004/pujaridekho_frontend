@@ -22,9 +22,9 @@ export function FeaturedBlogCard({ post }: { post: PublicBlog }) {
       <Badge className="relative mb-4 w-fit bg-primary font-ui text-[11px] font-bold">Featured</Badge>
       <div className="relative flex items-center gap-3 text-xs font-semibold text-brand-cream/80">
         {category && <span>{category}</span>}
-        {post.publishedAt && (
+        {post.PublishedAt && (
           <span className="flex items-center gap-1">
-            <Calendar size={12} /> {new Date(post.publishedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
+            <Calendar size={12} /> {new Date(post.PublishedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
           </span>
         )}
       </div>

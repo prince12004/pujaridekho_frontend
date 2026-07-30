@@ -80,7 +80,7 @@ export default function BlogsListPage() {
                       {typeof blog.category === "object" ? blog.category?.name : "—"}
                     </TableCell>
                     <TableCell>
-                      <Badge variant={blog.status === "published" ? "default" : "outline"}>{blog.status}</Badge>
+                      <Badge variant={blog.status === "Published" ? "default" : "outline"}>{blog.status}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="icon-sm" asChild>

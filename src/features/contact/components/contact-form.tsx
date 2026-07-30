@@ -17,11 +17,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { contactSubjects } from "@/features/contact/data";
+import { mobileSchema } from "@/lib/validators";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Please enter your name"),
   email: z.string().email("Enter a valid email address"),
-  phone: z.string().regex(/^\d{10}$/, "Enter a valid 10-digit mobile number"),
+  phone: mobileSchema,
   subject: z.string().min(1, "Please select a subject"),
   message: z.string().min(10, "Message should be at least 10 characters"),
 });

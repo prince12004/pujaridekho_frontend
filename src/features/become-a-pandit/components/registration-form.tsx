@@ -19,10 +19,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { bookingCities } from "@/features/home/data";
+import { mobileSchema } from "@/lib/validators";
 
 const registrationSchema = z.object({
   name: z.string().min(2, "Please enter your full name"),
-  mobile: z.string().regex(/^\d{10}$/, "Enter a valid 10-digit mobile number"),
+  mobile: mobileSchema,
   email: z.string().email("Enter a valid email address"),
   city: z.string().min(1, "Please select your city"),
   experience: z.string().min(1, "Please select your experience"),

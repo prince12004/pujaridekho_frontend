@@ -8,14 +8,13 @@ import { Timeline } from "@/components/shared/timeline";
 import { FaqAccordion } from "@/components/shared/faq-accordion";
 import { ReviewsSection } from "@/components/shared/reviews-section";
 import { RelatedSection } from "@/components/shared/related-section";
-import { BookingWidget } from "@/components/shared/booking-widget";
 import { MediaCard, MediaCardBody, MediaCardImage } from "@/components/shared/media-card";
 import { JsonLd, breadcrumbSchema } from "@/components/shared/json-ld";
 import { PoojaGallery } from "@/features/poojas/components/pooja-gallery";
 import { PoojaPackages } from "@/features/poojas/components/pooja-packages";
 import { SamagriSelector } from "@/features/poojas/components/samagri-selector";
+import { CheckoutCta } from "@/features/poojas/components/checkout-cta";
 import { PoojaBookingProvider } from "@/features/poojas/components/pooja-booking-context";
-import { bookingCities } from "@/features/home/data";
 import { blogPosts } from "@/features/blog/data";
 import { religiousProducts } from "@/features/home/data";
 import { buildMetadata } from "@/lib/seo";
@@ -149,14 +148,11 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
             </div>
 
             <div id="book" className="mt-10 scroll-mt-24 lg:hidden">
-              <BookingWidget
-                cities={bookingCities}
-                poojas={[]}
-                selectedPooja={pooja.slug}
-                selectedPoojaLabel={pooja.name}
+              <CheckoutCta
+                slug={pooja.slug}
+                name={pooja.name}
+                serviceType="pooja"
                 basePrice={Number(pooja.startingPrice)}
-                title={`Book ${pooja.name}`}
-                subtitle="Fixed price · Samagri optional add-on"
               />
             </div>
 
@@ -244,14 +240,11 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
 
           <div className="hidden lg:block">
             <div className="sticky top-24">
-              <BookingWidget
-                cities={bookingCities}
-                poojas={[]}
-                selectedPooja={pooja.slug}
-                selectedPoojaLabel={pooja.name}
+              <CheckoutCta
+                slug={pooja.slug}
+                name={pooja.name}
+                serviceType="pooja"
                 basePrice={Number(pooja.startingPrice)}
-                title={`Book ${pooja.name}`}
-                subtitle="Fixed price · Samagri optional add-on"
               />
             </div>
           </div>

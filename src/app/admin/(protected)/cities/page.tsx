@@ -22,7 +22,7 @@ const citySchema = z.object({
   slug: z.string().min(1, "Slug is required").regex(/^[a-z0-9-]+$/, "Lowercase letters, numbers and hyphens only"),
   state: z.string().optional(),
   isServiceable: z.boolean().optional(),
-  status: z.enum(["draft", "published"]),
+  status: z.enum(["draft", "Published"]),
 });
 
 function slugify(value: string) {
@@ -45,12 +45,12 @@ export default function CitiesPage() {
     formState: { errors, isSubmitting },
   } = useForm<z.infer<typeof citySchema>>({
     resolver: zodResolver(citySchema),
-    defaultValues: { name: "", slug: "", state: "", isServiceable: true, status: "published" },
+    defaultValues: { name: "", slug: "", state: "", isServiceable: true, status: "Published" },
   });
 
   const openCreate = () => {
     setEditing(null);
-    reset({ name: "", slug: "", state: "", isServiceable: true, status: "published" });
+    reset({ name: "", slug: "", state: "", isServiceable: true, status: "Published" });
     setDialogOpen(true);
   };
 
@@ -130,7 +130,7 @@ export default function CitiesPage() {
                       <Badge variant={city.isServiceable ? "default" : "destructive"}>{city.isServiceable ? "Yes" : "No"}</Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge variant={city.status === "published" ? "default" : "outline"}>{city.status}</Badge>
+                      <Badge variant={city.status === "Published" ? "default" : "outline"}>{city.status}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="icon-sm" onClick={() => openEdit(city)}>
@@ -180,7 +180,7 @@ export default function CitiesPage() {
               </label>
               <select {...register("status")} className="h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none">
                 <option value="draft">Draft</option>
-                <option value="published">Published</option>
+                <option value="Published">Published</option>
               </select>
             </div>
             <DialogFooter>

@@ -19,11 +19,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { openPositions } from "@/features/careers/data";
+import { mobileSchema } from "@/lib/validators";
 
 const applySchema = z.object({
   name: z.string().min(2, "Please enter your full name"),
   email: z.string().email("Enter a valid email address"),
-  phone: z.string().regex(/^\d{10}$/, "Enter a valid 10-digit mobile number"),
+  phone: mobileSchema,
   position: z.string().min(1, "Please select a position"),
   resumeUrl: z.string().url("Share a valid link (Google Drive, LinkedIn, portfolio, etc.)"),
   message: z.string().optional(),

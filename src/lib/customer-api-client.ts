@@ -17,6 +17,11 @@ function getAccessToken() {
   return window.localStorage.getItem(CUSTOMER_ACCESS_TOKEN_KEY);
 }
 
+// Exposed for callers that must hit an endpoint outside customerApiClient's
+// `/account` base path (e.g. the public-but-now-login-gated /bookings and
+// /orders creation endpoints) yet still need the bearer token attached.
+export const getCustomerAccessToken = getAccessToken;
+
 function getRefreshToken() {
   if (typeof window === "undefined") return null;
   return window.localStorage.getItem(CUSTOMER_REFRESH_TOKEN_KEY);

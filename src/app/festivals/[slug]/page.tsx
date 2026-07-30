@@ -7,13 +7,12 @@ import { Reveal } from "@/components/shared/reveal";
 import { Timeline } from "@/components/shared/timeline";
 import { FaqAccordion } from "@/components/shared/faq-accordion";
 import { ReviewsSection } from "@/components/shared/reviews-section";
-import { BookingWidget } from "@/components/shared/booking-widget";
 import { JsonLd, breadcrumbSchema } from "@/components/shared/json-ld";
 import { PoojaGallery } from "@/features/poojas/components/pooja-gallery";
 import { PoojaPackages } from "@/features/poojas/components/pooja-packages";
 import { SamagriSelector } from "@/features/poojas/components/samagri-selector";
+import { CheckoutCta } from "@/features/poojas/components/checkout-cta";
 import { PoojaBookingProvider } from "@/features/poojas/components/pooja-booking-context";
-import { bookingCities } from "@/features/home/data";
 import { buildMetadata } from "@/lib/seo";
 import { images } from "@/lib/images";
 import { env } from "@/lib/env";
@@ -148,15 +147,11 @@ export default async function FestivalDetailPage({ params }: { params: Promise<{
             </div>
 
             <div id="book" className="mt-10 scroll-mt-24 lg:hidden">
-              <BookingWidget
-                cities={bookingCities}
-                poojas={[]}
-                selectedPooja={festival.slug}
-                selectedPoojaLabel={festival.name}
-                basePrice={Number(festival.startingPrice)}
+              <CheckoutCta
+                slug={festival.slug}
+                name={festival.name}
                 serviceType="festival"
-                title={`Book ${festival.name}`}
-                subtitle="Fixed price · Samagri optional add-on"
+                basePrice={Number(festival.startingPrice)}
               />
             </div>
 
@@ -217,15 +212,11 @@ export default async function FestivalDetailPage({ params }: { params: Promise<{
 
           <div className="hidden lg:block">
             <div className="sticky top-24">
-              <BookingWidget
-                cities={bookingCities}
-                poojas={[]}
-                selectedPooja={festival.slug}
-                selectedPoojaLabel={festival.name}
-                basePrice={Number(festival.startingPrice)}
+              <CheckoutCta
+                slug={festival.slug}
+                name={festival.name}
                 serviceType="festival"
-                title={`Book ${festival.name}`}
-                subtitle="Fixed price · Samagri optional add-on"
+                basePrice={Number(festival.startingPrice)}
               />
             </div>
           </div>

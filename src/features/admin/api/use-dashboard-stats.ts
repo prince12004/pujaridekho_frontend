@@ -9,7 +9,7 @@ export interface DashboardStats {
   totalPandits: number;
   verifiedPandits: number;
   pendingApplications: number;
-  publishedPoojas: number;
+  PublishedPoojas: number;
   totalRevenue: number;
 }
 

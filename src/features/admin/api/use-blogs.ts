@@ -11,8 +11,8 @@ export interface Blog {
   coverImage?: string;
   author?: string;
   tags: string[];
-  status: "draft" | "published";
-  publishedAt?: string;
+  status: "draft" | "Published";
+  PublishedAt?: string;
 }
 
 export interface BlogListResult {

@@ -80,7 +80,7 @@ export default function FestivalsListPage() {
                     <TableCell className="text-muted-foreground">{festival.dateLabel ?? "—"}</TableCell>
                     <TableCell>₹{festival.startingPrice.toLocaleString("en-IN")}</TableCell>
                     <TableCell>
-                      <Badge variant={festival.status === "published" ? "default" : "outline"}>{festival.status}</Badge>
+                      <Badge variant={festival.status === "Published" ? "default" : "outline"}>{festival.status}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="icon-sm" asChild>

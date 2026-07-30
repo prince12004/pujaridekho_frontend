@@ -13,12 +13,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useCart } from "@/features/cart/cart-context";
 import { apiClient } from "@/lib/api-client";
+import { getCustomerAccessToken } from "@/lib/customer-api-client";
 import { useAuthModal } from "@/providers/auth-modal-provider";
 import { DELIVERY_CHARGE, FREE_DELIVERY_THRESHOLD } from "@/lib/constants";
+import { mobileSchema } from "@/lib/validators";
 
 const checkoutSchema = z.object({
   name: z.string().min(1, "Please enter your name"),
-  mobile: z.string().min(10, "Enter a valid mobile number"),
+  mobile: mobileSchema,
   email: z.string().email().optional().or(z.literal("")),
   address: z.string().min(5, "Please enter your full address"),
   city: z.string().min(1, "Please enter your city"),
@@ -63,11 +65,18 @@ export default function CheckoutPage() {
   const placeOrder = async (values: CheckoutValues) => {
     setIsPlacing(true);
     try {
-      const orderRes = await apiClient.post("/orders", {
-        customer: { name: values.name, mobile: values.mobile, email: values.email || undefined },
-        items: items.map((i) => ({ productSlug: i.productSlug, quantity: i.quantity })),
-        shippingAddress: { name: values.name, phone: values.mobile, address: values.address, city: values.city, pincode: values.pincode },
-      });
+      const orderRes = await apiClient.post(
+        "/orders",
+        {
+          customer: { name: values.name, mobile: values.mobile, email: values.email || undefined },
+          items: items.map((i) => ({ productSlug: i.productSlug, quantity: i.quantity })),
+          shippingAddress: { name: values.name, phone: values.mobile, address: values.address, city: values.city, pincode: values.pincode },
+        },
+        // /orders now requires a logged-in customer — apiClient doesn't
+        // auto-attach this token since it's shared with unauthenticated
+        // public browsing endpoints too.
+        { headers: { Authorization: `Bearer ${getCustomerAccessToken()}` } },
+      );
       const order = orderRes.data.data;
 
       const payRes = await apiClient.post("/payments/payu/initiate", {
@@ -102,7 +111,7 @@ export default function CheckoutPage() {
   return (
     <Container className="py-10">
       <h1 className="font-heading mb-6 text-3xl font-bold">Checkout</h1>
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_340px]">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_380px]">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 rounded-2xl border border-border bg-card p-6">
           <h2 className="font-heading text-lg font-bold">Shipping Details</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -145,7 +154,7 @@ export default function CheckoutPage() {
           </Button>
         </form>
 
-        <div className="h-fit rounded-2xl border border-border bg-card p-6">
+        <div className="h-fit rounded-3xl border border-border bg-card p-6">
           <h2 className="font-heading text-lg font-bold">Order Summary</h2>
           <div className="mt-4 space-y-2">
             {items.map((item) => (

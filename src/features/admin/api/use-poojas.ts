@@ -34,7 +34,7 @@ export interface Pooja {
   marketPrice?: number;
   samagri: SamagriItem[];
   packages: PoojaPackage[];
-  status: "draft" | "published" | "archived";
+  status: "draft" | "Published" | "archived";
   featured: boolean;
   popular: boolean;
   createdAt: string;

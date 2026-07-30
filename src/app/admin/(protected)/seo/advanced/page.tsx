@@ -35,7 +35,7 @@ const createSchema = z.object({
 export default function AdvancedSeoPage() {
   const { data: entries, isLoading } = useCityPoojaSeoList();
   const { data: cities } = useCities();
-  const { data: poojasResult } = usePoojas({ status: "published" });
+  const { data: poojasResult } = usePoojas({ status: "Published" });
   const createMutation = useCreateCityPoojaSeo();
   const updateMutation = useUpdateCityPoojaSeo();
   const deleteMutation = useDeleteCityPoojaSeo();

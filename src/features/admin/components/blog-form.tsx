@@ -25,7 +25,7 @@ const blogFormSchema = z.object({
   coverImage: z.string().optional(),
   author: z.string().optional(),
   tags: z.string().optional(),
-  status: z.enum(["draft", "published"]),
+  status: z.enum(["draft", "Published"]),
 });
 
 function slugify(value: string) {
@@ -117,7 +117,7 @@ export function BlogForm({ blog }: { blog?: Blog }) {
             <Label>Status</Label>
             <select {...register("status")} className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none">
               <option value="draft">Draft</option>
-              <option value="published">Published</option>
+              <option value="Published">Published</option>
             </select>
           </div>
           <div className="space-y-1.5">

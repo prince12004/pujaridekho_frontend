@@ -38,7 +38,7 @@ export function BlogListingClient({ excludeSlug }: { excludeSlug?: string }) {
   const currentPosts = filtered.slice((page - 1) * POSTS_PER_PAGE, page * POSTS_PER_PAGE);
 
   const recent = [...posts]
-    .sort((a, b) => (a.publishedAt && b.publishedAt ? (a.publishedAt < b.publishedAt ? 1 : -1) : 0))
+    .sort((a, b) => (a.PublishedAt && b.PublishedAt ? (a.PublishedAt < b.PublishedAt ? 1 : -1) : 0))
     .slice(0, 4);
 
   return (

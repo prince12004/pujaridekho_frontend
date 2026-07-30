@@ -32,7 +32,7 @@ const testimonialSchema = z.object({
   quote: z.string().min(1, "Quote is required"),
   photo: z.string().optional(),
   featured: z.boolean().optional(),
-  status: z.enum(["draft", "published"]),
+  status: z.enum(["draft", "Published"]),
 });
 
 export default function TestimonialsPage() {
@@ -139,7 +139,7 @@ export default function TestimonialsPage() {
                     </TableCell>
                     <TableCell className="max-w-sm truncate text-muted-foreground">{t.quote}</TableCell>
                     <TableCell>
-                      <Badge variant={t.status === "published" ? "default" : "outline"}>{t.status}</Badge>
+                      <Badge variant={t.status === "Published" ? "default" : "outline"}>{t.status}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="icon-sm" onClick={() => openEdit(t)}>
@@ -191,7 +191,7 @@ export default function TestimonialsPage() {
               </label>
               <select {...register("status")} className="h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none">
                 <option value="draft">Draft</option>
-                <option value="published">Published</option>
+                <option value="Published">Published</option>
               </select>
             </div>
             <DialogFooter>

@@ -67,7 +67,7 @@ export default function NotificationsPage() {
           {data.items.map((notification) => {
             const Icon = ICON_BY_TYPE[notification.type] ?? Bell;
             const content = (
-              <Card key={notification._id} className={notification.read ? "" : "border-primary/30 bg-primary/5"}>
+              <Card key={notification._id} className={notification.read ? "" : "border-primary/30 bg-primary/5  mb-2 "}>
                 <CardContent
                   className="flex cursor-pointer items-start gap-3 p-4"
                   onClick={() => !notification.read && markReadMutation.mutate(notification._id)}

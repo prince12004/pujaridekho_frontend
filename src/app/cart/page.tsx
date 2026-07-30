@@ -29,7 +29,7 @@ export default function CartPage() {
   return (
     <Container className="py-10">
       <h1 className="font-heading mb-6 text-3xl font-bold">Your Cart</h1>
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_340px]">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_380px]">
         <div className="space-y-3">
           {items.map((item) => (
             <div key={item.productSlug} className="flex items-center gap-4 rounded-2xl border border-border bg-card p-4">
@@ -67,7 +67,7 @@ export default function CartPage() {
           ))}
         </div>
 
-        <div className="h-fit rounded-2xl border border-border bg-card p-6">
+        <div className="h-fit rounded-3xl border border-border bg-card p-6">
           <h2 className="font-heading text-lg font-bold">Order Summary</h2>
           <div className="mt-4 flex items-center justify-between text-sm">
             <span className="text-muted-foreground">Subtotal</span>
