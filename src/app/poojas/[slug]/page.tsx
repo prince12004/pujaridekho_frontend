@@ -111,7 +111,7 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
             </div>
             {galleryItems.length > 0 ? <PoojaGallery images={galleryItems} alt={pooja.name} /> : null}
 
-            <div className="mains_details mt-6 flex flex-wrap items-start justify-between gap-4">
+            <div className="mains_details mt-6 flex flex-wrap items-start justify-between gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm">
               <div>
                 <span className="font-ui text-xs font-bold uppercase tracking-wide text-primary">{typeof pooja.category === "string" ? pooja.category : pooja.category?.name}</span>
                 <h1 className="font-heading mt-1 text-3xl font-bold sm:text-4xl">{pooja.name}</h1>
@@ -121,8 +121,8 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
                   <span className="flex items-center gap-1.5"><ShieldCheck size={15} className="text-primary" /> 100% Verified Pandits</span>
                 </div>
               </div>
-              <div className="text-right">
-                <div className="flex items-baseline justify-end gap-2">
+              <div className="text-right price_right">
+                <div className="flex items-baseline price_right justify-end gap-2">
                   {pooja.marketPrice ? (
                     <span className="text-sm text-muted-foreground line-through">
                       ₹{Number(pooja.marketPrice).toLocaleString("en-IN")}
@@ -137,9 +137,8 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
               </div>
             </div>
 
-            <div className="mt-10 flex flex-col gap-10">
+            <div className="mt-8 flex flex-col gap-8">
               <Reveal>
-                <h2 className="font-heading mb-4 text-2xl">Samagri</h2>
                 <SamagriSelector basePrice={Number(pooja.startingPrice)} samagri={pooja.samagri ?? []} />
               </Reveal>
 

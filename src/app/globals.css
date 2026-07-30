@@ -395,6 +395,13 @@
   }
 
   .mains_details {
-    justify-content: end !important;
+    justify-content: start !important;
+  }
+  .price_right{
+    text-align: start !important;
+    justify-content: start !important;
+  }
+  .py-8{
+    padding: 20px 0px;
   }
 }

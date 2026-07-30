@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { Check, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { PoojaPackage } from "@/features/poojas/types";
@@ -8,15 +9,28 @@ import { usePoojaBookingSelection } from "@/features/poojas/components/pooja-boo
 export function PoojaPackages({ packages }: { packages: PoojaPackage[] }) {
   const { selectedPackage, setSelectedPackage } = usePoojaBookingSelection();
 
+  // Pre-select the first package on load so the price estimate and booking
+  // widget always have a package to work with — guarded by a ref so it only
+  // fires once and doesn't fight the customer's own choice afterwards
+  // (including deliberately deselecting).
+  const hasAutoSelected = useRef(false);
+  useEffect(() => {
+    if (hasAutoSelected.current || packages.length === 0) return;
+    hasAutoSelected.current = true;
+    if (!selectedPackage) {
+      setSelectedPackage({ name: packages[0].name, price: packages[0].price });
+    }
+  }, [packages, selectedPackage, setSelectedPackage]);
+
   return (
     <div className={`grid grid-cols-1 gap-5 ${packages.length > 1 ? "sm:grid-cols-2" : ""}`}>
-      {packages.map((pkg, i) => {
+      {packages.map((pkg) => {
         const isSelected = selectedPackage?.name === pkg.name;
         return (
           <div
             key={pkg.name}
             className={`flex flex-col gap-4 rounded-2xl border p-6 ${
-              isSelected || i === 1 ? "border-primary bg-primary/5" : "border-border bg-card"
+              isSelected ? "border-primary bg-primary/5" : "border-border bg-card"
             }`}
           >
             <div>
@@ -35,7 +49,7 @@ export function PoojaPackages({ packages }: { packages: PoojaPackage[] }) {
             <Button
               type="button"
               className="font-ui mt-auto font-bold"
-              variant={isSelected || i === 1 ? "default" : "outline"}
+              variant={isSelected ? "default" : "outline"}
               onClick={() => setSelectedPackage(isSelected ? null : { name: pkg.name, price: pkg.price })}
             >
               {isSelected ? (

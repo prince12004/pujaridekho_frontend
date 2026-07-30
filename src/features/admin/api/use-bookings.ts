@@ -25,6 +25,12 @@ export interface BookingListItem {
   bookingChannel: "online" | "offline";
   bookingSource: string;
   createdAt: string;
+  address?: string;
+  city?: string;
+  landmark?: string;
+  pincode?: string;
+  gotra?: string;
+  specialInstructions?: string;
 }
 
 export interface BookingListResult {
@@ -36,12 +42,6 @@ export interface BookingListResult {
 }
 
 export interface BookingDetail extends BookingListItem {
-  address?: string;
-  city?: string;
-  landmark?: string;
-  pincode?: string;
-  gotra?: string;
-  specialInstructions?: string;
   pricing: Record<string, number | string | undefined>;
   payments: BookingPayment[];
   selectedSamagri: { name: string; price: number }[];

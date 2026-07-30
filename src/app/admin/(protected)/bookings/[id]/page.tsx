@@ -347,8 +347,25 @@ export default function BookingDetailPage() {
             <CardHeader>
               <CardTitle>Address Details</CardTitle>
             </CardHeader>
-            <CardContent className="text-sm">
-              <p className="font-medium">{[booking.address, booking.landmark, booking.city, booking.pincode].filter(Boolean).join(", ") || "—"}</p>
+            <CardContent className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+              <div>
+                <p className="text-xs text-muted-foreground">City</p>
+                <p className="font-medium">{booking.city || "—"}</p>
+              </div>
+              <div className="sm:col-span-2">
+                <p className="text-xs text-muted-foreground">Address</p>
+                <p className="font-medium">{booking.address || "—"}</p>
+              </div>
+              <div>
+                <p className="text-xs text-muted-foreground">Pincode</p>
+                <p className="font-medium">{booking.pincode || "—"}</p>
+              </div>
+              {booking.landmark && (
+                <div className="sm:col-span-4">
+                  <p className="text-xs text-muted-foreground">Landmark</p>
+                  <p className="font-medium">{booking.landmark}</p>
+                </div>
+              )}
             </CardContent>
           </Card>
 

@@ -68,6 +68,7 @@ export default function BookingsListPage() {
                 <TableRow>
                   <TableHead>Booking ID</TableHead>
                   <TableHead>Customer</TableHead>
+                  <TableHead>City</TableHead>
                   <TableHead>Service</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead>Channel</TableHead>
@@ -79,7 +80,7 @@ export default function BookingsListPage() {
               <TableBody>
                 {data?.items.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center text-muted-foreground">
+                    <TableCell colSpan={9} className="text-center text-muted-foreground">
                       No bookings found.
                     </TableCell>
                   </TableRow>
@@ -92,6 +93,7 @@ export default function BookingsListPage() {
                       </Link>
                     </TableCell>
                     <TableCell>{booking.customerSnapshot?.name}</TableCell>
+                    <TableCell className="text-muted-foreground">{booking.city ?? "—"}</TableCell>
                     <TableCell className="text-muted-foreground">
                       {booking.pooja?.name ?? booking.festival?.name ?? booking.serviceType}
                     </TableCell>
