@@ -48,3 +48,13 @@ export function useUpdateOrderStatus() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin", "orders"] }),
   });
 }
+
+export function useDeleteOrder() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      await adminApiClient.delete(`/orders/${id}`);
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin", "orders"] }),
+  });
+}

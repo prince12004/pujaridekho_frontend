@@ -50,7 +50,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${fontVariables} ${geistMono.variable} antialiased`}>
+      <body className={`${fontVariables} ${geistMono.variable} antialiased`} suppressHydrationWarning>
         <AppProviders>
           <ConditionalPublicChrome>{children}</ConditionalPublicChrome>
           <Toaster />
