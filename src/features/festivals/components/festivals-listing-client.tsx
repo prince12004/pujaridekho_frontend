@@ -1,35 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
 import { SearchBar } from "@/components/shared/search-bar";
-import { Pagination } from "@/components/shared/pagination";
 import { Reveal } from "@/components/shared/reveal";
 import { PoojaCard } from "@/features/home/components/pooja-card";
 import { useFestivals } from "@/features/festivals/api/use-festivals";
+import { useInfiniteScrollSentinel } from "@/lib/use-infinite-scroll";
 
 const PER_PAGE = 9;
 
 export function FestivalsListingClient() {
   const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
+  const [visibleCount, setVisibleCount] = useState(PER_PAGE);
   const { data, isLoading, error } = useFestivals({ search: query, page: 1, limit: 100 });
 
   const items = data?.items ?? [];
-  const displayed = items.slice((page - 1) * PER_PAGE, page * PER_PAGE);
-  const totalPages = Math.max(1, Math.ceil(items.length / PER_PAGE));
+
+  useEffect(() => setVisibleCount(PER_PAGE), [query]);
+
+  const displayed = items.slice(0, visibleCount);
+  const hasMore = visibleCount < items.length;
+  const sentinelRef = useInfiniteScrollSentinel(() => setVisibleCount((c) => Math.min(c + PER_PAGE, items.length)), hasMore);
 
   return (
     <div>
       <div className="mb-8 flex justify-end">
-        <SearchBar
-          value={query}
-          onChange={(v) => {
-            setQuery(v);
-            setPage(1);
-          }}
-          placeholder="Search festivals…"
-          className="max-w-xs"
-        />
+        <SearchBar value={query} onChange={setQuery} placeholder="Search festivals…" className="max-w-xs" />
       </div>
 
       {isLoading ? (
@@ -59,7 +56,11 @@ export function FestivalsListingClient() {
         </div>
       )}
 
-      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} className="mt-10" />
+      {hasMore && (
+        <div ref={sentinelRef} className="flex justify-center py-8">
+          <Loader2 className="size-5 animate-spin text-muted-foreground" />
+        </div>
+      )}
     </div>
   );
 }

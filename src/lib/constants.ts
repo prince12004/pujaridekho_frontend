@@ -25,8 +25,8 @@ export const siteConfig = {
 // Mirrors FREE_DELIVERY_THRESHOLD/DELIVERY_CHARGE in apps/api orders.service.ts —
 // the backend is authoritative for the actual charge; these are only for
 // showing the same numbers before an order is created.
-export const FREE_DELIVERY_THRESHOLD = 299;
-export const DELIVERY_CHARGE = 49;
+export const FREE_DELIVERY_THRESHOLD = 0;
+export const DELIVERY_CHARGE = 0;
 
 export const mainNav = [
   { label: "Poojas", href: "/poojas" },

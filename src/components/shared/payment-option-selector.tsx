@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 
 export const ADVANCE_AMOUNT = 99;
+export const DISTANCE_CHARGE = 149;
 
 export type PaymentOption = "advance" | "full";
 

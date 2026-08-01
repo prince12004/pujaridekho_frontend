@@ -1,15 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { Loader2 } from "lucide-react";
 import { SearchBar } from "@/components/shared/search-bar";
 import { FilterBar } from "@/components/shared/filter-bar";
-import { Pagination } from "@/components/shared/pagination";
 import { Reveal } from "@/components/shared/reveal";
 import { MediaCard, MediaCardBody, MediaCardFooter, MediaCardImage } from "@/components/shared/media-card";
 import { Button } from "@/components/ui/button";
 import { useProductCategories, useProducts } from "@/features/products/api/use-products";
+import { useInfiniteScrollSentinel } from "@/lib/use-infinite-scroll";
 
 const PER_PAGE = 9;
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1604882737625-4c4573c6e05f?w=600&auto=format&fit=crop";
@@ -19,14 +20,17 @@ export function ProductsListingClient() {
   const initialCategory = searchParams.get("category");
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState<Record<string, string>>(initialCategory ? { category: initialCategory } : {});
-  const [page, setPage] = useState(1);
+  const [visibleCount, setVisibleCount] = useState(PER_PAGE);
   const { data, isLoading, error } = useProducts({ search: query, category: filters.category, limit: 100 });
   const { data: categories } = useProductCategories();
 
   const items = data?.items ?? [];
 
-  const displayed = useMemo(() => items.slice((page - 1) * PER_PAGE, page * PER_PAGE), [items, page]);
-  const totalPages = Math.max(1, Math.ceil(items.length / PER_PAGE));
+  useEffect(() => setVisibleCount(PER_PAGE), [query, filters.category]);
+
+  const displayed = items.slice(0, visibleCount);
+  const hasMore = visibleCount < items.length;
+  const sentinelRef = useInfiniteScrollSentinel(() => setVisibleCount((c) => Math.min(c + PER_PAGE, items.length)), hasMore);
 
   return (
     <div>
@@ -36,7 +40,6 @@ export function ProductsListingClient() {
           values={filters}
           onChange={(key, value) => {
             setFilters((prev) => ({ ...prev, [key]: value }));
-            setPage(1);
           }}
           onClear={() => setFilters({})}
           filters={[
@@ -48,15 +51,7 @@ export function ProductsListingClient() {
             },
           ]}
         />
-        <SearchBar
-          value={query}
-          onChange={(v) => {
-            setQuery(v);
-            setPage(1);
-          }}
-          placeholder="Search products…"
-          className="max-w-xs"
-        />
+        <SearchBar value={query} onChange={setQuery} placeholder="Search products…" className="max-w-xs" />
       </div>
 
       {isLoading ? (
@@ -95,7 +90,11 @@ export function ProductsListingClient() {
         </div>
       )}
 
-      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} className="mt-10" />
+      {hasMore && (
+        <div ref={sentinelRef} className="flex justify-center py-8">
+          <Loader2 className="size-5 animate-spin text-muted-foreground" />
+        </div>
+      )}
     </div>
   );
 }

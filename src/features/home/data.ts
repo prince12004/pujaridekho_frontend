@@ -45,14 +45,15 @@ export const festivalPoojas: Festival[] = [
 ];
 
 export const shopCategories: ShopCategory[] = [
-  { slug: "puja-kits", name: "Puja Kits", itemCount: "40+ items", icon: "kit" },
-  { slug: "incense-dhoop", name: "Incense & Dhoop", itemCount: "25+ items", icon: "incense" },
-  { slug: "murti-idols", name: "Murti & Idols", itemCount: "60+ items", icon: "murti" },
-  { slug: "sacred-books", name: "Sacred Books", itemCount: "30+ items", icon: "book" },
-  { slug: "yantra", name: "Yantra", itemCount: "15+ items", icon: "yantra" },
-  { slug: "rudraksha", name: "Rudraksha", itemCount: "20+ items", icon: "rudraksha" },
-  { slug: "mala-japa-beads", name: "Mala & Japa Beads", itemCount: "35+ items", icon: "mala" },
-  { slug: "havan-samagri", name: "Havan Samagri", itemCount: "18+ items", icon: "havan" },
+  { slug: "pooja-samagri-kits", name: "Pooja Samagri Kits", itemCount: "14+ items", icon: "kit" },
+  { slug: "rudraksha", name: "Rudraksha", itemCount: "New", icon: "rudraksha" },
+  { slug: "idols-murtis", name: "Idols & Murtis", itemCount: "New", icon: "murti" },
+  { slug: "yantra", name: "Yantra", itemCount: "New", icon: "yantra" },
+  { slug: "brass-copper-items", name: "Brass & Copper Items", itemCount: "New", icon: "kit" },
+  { slug: "incense-dhoop", name: "Incense & Dhoop", itemCount: "New", icon: "incense" },
+  { slug: "hawan-samagri", name: "Hawan Samagri", itemCount: "New", icon: "havan" },
+  { slug: "spiritual-accessories", name: "Spiritual Accessories", itemCount: "New", icon: "mala" },
+  { slug: "books", name: "Books", itemCount: "New", icon: "book" },
 ];
 
 export const cities: City[] = [

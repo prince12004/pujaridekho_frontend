@@ -29,6 +29,7 @@ import {
   ScrollText,
   Mail,
   Clock,
+  ClipboardList,
 } from "lucide-react";
 
 export interface AdminNavItem {
@@ -61,6 +62,7 @@ export const ADMIN_NAV: AdminNavSection[] = [
     items: [
       { label: "All Poojas", href: "/admin/poojas", icon: Sparkles, permission: "poojas:view" },
       { label: "Pooja Categories", href: "/admin/pooja-categories", icon: FolderTree, permission: "poojas:view" },
+      { label: "Samagri Templates", href: "/admin/samagri-templates", icon: ClipboardList, permission: "poojas:view" },
       { label: "Festival Poojas", href: "/admin/festivals", icon: PartyPopper, permission: "festivals:manage" },
       { label: "Muhurat Management", href: "/admin/muhurats", icon: Clock, permission: "poojas:manage" },
     ],

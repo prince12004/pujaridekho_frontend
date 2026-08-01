@@ -372,6 +372,13 @@
 .sliderss{
   max-width: 600px !important;
 }
+.samagiri_selct li button{
+  padding: 3.5px 8px !important;
+}
+.cards_admin{
+  justify-content: space-between !important;
+  display: flex !important;
+}
 
 @media (max-width: 768px) {
   .home_ui {

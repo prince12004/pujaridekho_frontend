@@ -47,7 +47,7 @@ const shopColumns = [
   },
   {
     heading: "More Categories",
-    links: shopCategories.slice(4, 8).map((c) => ({ label: c.name, href: `/products?category=${c.slug}` })),
+    links: shopCategories.slice(4, 9).map((c) => ({ label: c.name, href: `/products?category=${c.slug}` })),
   },
 ];
 

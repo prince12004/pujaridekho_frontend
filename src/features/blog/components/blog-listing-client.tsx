@@ -1,14 +1,14 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { SearchBar } from "@/components/shared/search-bar";
 import { CategoryPills } from "@/components/shared/category-pills";
-import { Pagination } from "@/components/shared/pagination";
 import { MediaCard, MediaCardBody, MediaCardImage } from "@/components/shared/media-card";
 import { useBlogCategories, useBlogs, type PublicBlog } from "@/features/blog/api/use-blogs";
+import { useInfiniteScrollSentinel } from "@/lib/use-infinite-scroll";
 
 const POSTS_PER_PAGE = 6;
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1604881991720-f91add269bed?w=600&auto=format&fit=crop";
@@ -20,7 +20,7 @@ function categoryName(post: PublicBlog) {
 export function BlogListingClient({ excludeSlug }: { excludeSlug?: string }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
-  const [page, setPage] = useState(1);
+  const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
   const { data, isLoading } = useBlogs({ limit: 100 });
   const { data: categories } = useBlogCategories();
 
@@ -34,8 +34,14 @@ export function BlogListingClient({ excludeSlug }: { excludeSlug?: string }) {
     });
   }, [posts, category, query]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / POSTS_PER_PAGE));
-  const currentPosts = filtered.slice((page - 1) * POSTS_PER_PAGE, page * POSTS_PER_PAGE);
+  useEffect(() => setVisibleCount(POSTS_PER_PAGE), [category, query]);
+
+  const currentPosts = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
+  const sentinelRef = useInfiniteScrollSentinel(
+    () => setVisibleCount((c) => Math.min(c + POSTS_PER_PAGE, filtered.length)),
+    hasMore,
+  );
 
   const recent = [...posts]
     .sort((a, b) => (a.PublishedAt && b.PublishedAt ? (a.PublishedAt < b.PublishedAt ? 1 : -1) : 0))
@@ -47,20 +53,9 @@ export function BlogListingClient({ excludeSlug }: { excludeSlug?: string }) {
         <CategoryPills
           categories={["All", ...(categories ?? []).map((c) => c.name)]}
           active={category}
-          onChange={(c) => {
-            setCategory(c);
-            setPage(1);
-          }}
+          onChange={setCategory}
         />
-        <SearchBar
-          value={query}
-          onChange={(v) => {
-            setQuery(v);
-            setPage(1);
-          }}
-          placeholder="Search articles…"
-          className="max-w-xs"
-        />
+        <SearchBar value={query} onChange={setQuery} placeholder="Search articles…" className="max-w-xs" />
       </div>
 
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_300px]">
@@ -89,7 +84,11 @@ export function BlogListingClient({ excludeSlug }: { excludeSlug?: string }) {
             </div>
           )}
 
-          <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} className="mt-10" />
+          {hasMore && (
+            <div ref={sentinelRef} className="flex justify-center py-8">
+              <Loader2 className="size-5 animate-spin text-muted-foreground" />
+            </div>
+          )}
         </div>
 
         <aside className="flex flex-col gap-10">

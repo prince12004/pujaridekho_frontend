@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { Loader2, Pencil, Plus, Search, Trash2 } from "lucide-react";
@@ -10,8 +10,43 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { AdminPageHeader } from "@/features/admin/components/page-header";
-import { useDeletePooja, usePoojas } from "@/features/admin/api/use-poojas";
+import { useDeletePooja, usePoojas, useUpdatePooja } from "@/features/admin/api/use-poojas";
 import { getErrorMessage } from "@/features/admin/lib/get-error-message";
+
+function OrderCell({ id, value }: { id: string; value: number }) {
+  const [draft, setDraft] = useState(String(value));
+  const updateMutation = useUpdatePooja();
+
+  useEffect(() => setDraft(String(value)), [value]);
+
+  const commit = async () => {
+    const next = Number(draft);
+    if (Number.isNaN(next) || next === value) {
+      setDraft(String(value));
+      return;
+    }
+    try {
+      await updateMutation.mutateAsync({ id, input: { sortOrder: next } });
+      toast.success("Display order updated");
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+      setDraft(String(value));
+    }
+  };
+
+  return (
+    <Input
+      type="number"
+      value={draft}
+      onChange={(e) => setDraft(e.target.value)}
+      onBlur={commit}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") (e.target as HTMLInputElement).blur();
+      }}
+      className="h-8 w-16"
+    />
+  );
+}
 
 export default function PoojasListPage() {
   const [search, setSearch] = useState("");
@@ -59,6 +94,7 @@ export default function PoojasListPage() {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead>Order</TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>Starting Price</TableHead>
@@ -69,13 +105,16 @@ export default function PoojasListPage() {
               <TableBody>
                 {data?.items.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center text-muted-foreground">
+                    <TableCell colSpan={6} className="text-center text-muted-foreground">
                       No poojas found.
                     </TableCell>
                   </TableRow>
                 )}
                 {data?.items.map((pooja) => (
                   <TableRow key={pooja._id}>
+                    <TableCell>
+                      <OrderCell id={pooja._id} value={pooja.sortOrder ?? 0} />
+                    </TableCell>
                     <TableCell className="font-medium">{pooja.name}</TableCell>
                     <TableCell className="text-muted-foreground">
                       {typeof pooja.category === "object" ? pooja.category?.name : "—"}

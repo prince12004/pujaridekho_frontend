@@ -1,13 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { adminApiClient } from "@/lib/admin-api-client";
 
-export interface SamagriItem {
-  name: string;
-  description?: string;
-  price: number;
-  includedByDefault?: boolean;
-}
-
 export interface PoojaPackage {
   name: string;
   price: number;
@@ -32,11 +25,12 @@ export interface Pooja {
   category?: { _id: string; name: string; slug: string } | string;
   startingPrice: number;
   marketPrice?: number;
-  samagri: SamagriItem[];
+  samagriTemplate?: string;
   packages: PoojaPackage[];
   status: "draft" | "Published" | "archived";
   featured: boolean;
   popular: boolean;
+  sortOrder?: number;
   createdAt: string;
 }
 

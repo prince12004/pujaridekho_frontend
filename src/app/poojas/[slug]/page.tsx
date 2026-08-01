@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Clock, MapPin, ShieldCheck, Sparkles, User } from "lucide-react";
+import { Clock, MapPin, ShieldCheck, Sparkles, User, PackageX } from "lucide-react";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/shared/reveal";
@@ -138,8 +138,32 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
 
             <div className="mt-8 flex flex-col gap-8">
               <Reveal>
-                <SamagriSelector basePrice={Number(pooja.startingPrice)} samagri={pooja.samagri ?? []} />
+                <SamagriSelector
+                  basePrice={Number(pooja.startingPrice)}
+                  includedItems={pooja.samagriTemplate?.includedItems ?? []}
+                  estimatedSamagriMrp={pooja.samagriTemplate?.estimatedSamagriMrp}
+                />
               </Reveal>
+
+              {(pooja.samagriTemplate?.customerArrangeItems ?? []).length > 0 ? (
+                <Reveal>
+                  <div className="rounded-2xl border border-dashed border-border bg-card p-4">
+                    <p className="mb-3 flex items-center gap-2 text-sm font-bold text-foreground">
+                      <PackageX size={18} className="text-accent" /> Customer Will Arrange
+                    </p>
+                    <p className="mb-3 text-xs text-muted-foreground">
+                      These fresh/perishable items aren&apos;t part of the kit — please keep them ready yourself.
+                    </p>
+                    <ul className="flex flex-wrap gap-2">
+                      {pooja.samagriTemplate.customerArrangeItems.map((item: string) => (
+                        <li key={item} className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Reveal>
+              ) : null}
 
               <Reveal>
                 <h2 className="font-heading mb-6 text-2xl">Packages &amp; Pricing</h2>

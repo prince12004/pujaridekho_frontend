@@ -182,7 +182,7 @@ export default function CheckoutPage() {
           </div>
           <p className="mt-3 flex items-start gap-2 rounded-lg bg-muted/60 p-3 text-xs text-muted-foreground">
             <Truck className="mt-0.5 size-3.5 shrink-0 text-primary" />
-            Delivery Charge: ₹{DELIVERY_CHARGE}. Free delivery on orders above ₹{FREE_DELIVERY_THRESHOLD}.
+            Free delivery on all orders.
           </p>
         </div>
       </div>

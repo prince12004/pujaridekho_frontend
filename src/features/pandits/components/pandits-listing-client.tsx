@@ -1,39 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
 import { SearchBar } from "@/components/shared/search-bar";
-import { Pagination } from "@/components/shared/pagination";
 import { Reveal } from "@/components/shared/reveal";
 import { MediaCard, MediaCardBody, MediaCardFooter, MediaCardImage } from "@/components/shared/media-card";
 import { Button } from "@/components/ui/button";
-import { usePandits } from "@/features/pandits/api/use-pandits";
+import { usePandits, type PublicPandit } from "@/features/pandits/api/use-pandits";
+import { useInfiniteScrollSentinel } from "@/lib/use-infinite-scroll";
 
 export function PanditsListingClient() {
     const [search, setSearch] = useState("");
     const [page, setPage] = useState(1);
+    const [accumulated, setAccumulated] = useState<PublicPandit[]>([]);
     const { data, isLoading } = usePandits({ search, page, limit: 12 });
-    const items = data?.items ?? [];
+
+    useEffect(() => {
+        setPage(1);
+        setAccumulated([]);
+    }, [search]);
+
+    useEffect(() => {
+        if (!data) return;
+        setAccumulated((prev) => (page === 1 ? data.items : [...prev, ...data.items]));
+    }, [data, page]);
+
+    const hasMore = data ? page < data.totalPages : false;
+    const sentinelRef = useInfiniteScrollSentinel(() => setPage((p) => p + 1), hasMore);
 
     return (
         <div>
             <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <SearchBar
-                    value={search}
-                    onChange={(value) => {
-                        setSearch(value);
-                        setPage(1);
-                    }}
-                    placeholder="Search pandits…"
-                    className="max-w-xs"
-                />
+                <SearchBar value={search} onChange={setSearch} placeholder="Search pandits…" className="max-w-xs" />
             </div>
 
-            {isLoading ? (
+            {isLoading && accumulated.length === 0 ? (
                 <p className="py-16 text-center text-muted-foreground">Loading verified pandits…</p>
-            ) : data?.items.length ? (
+            ) : accumulated.length ? (
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {data.items.map((pandit) => (
+                    {accumulated.map((pandit) => (
                         <Reveal key={pandit._id} delay={0}>
                             <MediaCard>
                                 <MediaCardImage
@@ -65,9 +71,11 @@ export function PanditsListingClient() {
                 <p className="py-16 text-center text-muted-foreground">No pandits match that search yet.</p>
             )}
 
-            {data?.totalPages && data.totalPages > 1 ? (
-                <Pagination currentPage={page} totalPages={data.totalPages} onPageChange={setPage} className="mt-10" />
-            ) : null}
+            {hasMore && (
+                <div ref={sentinelRef} className="flex justify-center py-8">
+                    <Loader2 className="size-5 animate-spin text-muted-foreground" />
+                </div>
+            )}
         </div>
     );
 }

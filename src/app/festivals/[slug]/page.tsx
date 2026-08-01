@@ -135,7 +135,13 @@ export default async function FestivalDetailPage({ params }: { params: Promise<{
             <div className="mt-10 flex flex-col gap-10">
               <Reveal>
                 <h2 className="font-heading mb-4 text-2xl">Samagri</h2>
-                <SamagriSelector basePrice={Number(festival.startingPrice)} samagri={festival.samagri ?? []} />
+                <SamagriSelector
+                  basePrice={Number(festival.startingPrice)}
+                  includedItems={(festival.samagri ?? []).map((item: { name: string; price: number }) => ({
+                    itemName: item.name,
+                    estimatedPrice: item.price,
+                  }))}
+                />
               </Reveal>
 
               {festival.packages?.length > 0 && (

@@ -6,10 +6,10 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { CalendarDays, Loader2, MapPinned, Pencil, Sparkles, User, X } from "lucide-react";
+import { CalendarDays, ChevronDown, ChevronUp, Loader2, MapPinned, Pencil, Sparkles, User, X } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
-import { PaymentOptionSelector, ADVANCE_AMOUNT, type PaymentOption } from "@/components/shared/payment-option-selector";
+import { PaymentOptionSelector, ADVANCE_AMOUNT, DISTANCE_CHARGE, type PaymentOption } from "@/components/shared/payment-option-selector";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useAuthModal } from "@/providers/auth-modal-provider";
@@ -119,6 +119,7 @@ export function CheckoutClient() {
   const [paymentOption, setPaymentOption] = useState<PaymentOption>("advance");
   const [isBooking, setIsBooking] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [showSamagriDetails, setShowSamagriDetails] = useState(false);
 
   useEffect(() => {
     setPrefill(readCheckoutPrefillForSlug(slug));
@@ -183,6 +184,8 @@ export function CheckoutClient() {
   const selectedSamagriItems = prefill?.selectedSamagri ?? [];
   const samagriTotal = selectedSamagriItems.reduce((sum, item) => sum + item.price, 0);
   const poojaPrice = prefill?.selectedPackage?.price ?? Number(service?.startingPrice ?? 0);
+  // Shown struck-through as a waived charge — the customer is never actually charged for it.
+  const distanceChargeMrp = DISTANCE_CHARGE;
   const distanceCharge = 0;
   // The platform fee is what's paid upfront to confirm the booking — the same
   // ₹99 as the "Booking Amount" payment option, just itemized in the summary
@@ -343,20 +346,27 @@ export function CheckoutClient() {
               </div>
               {selectedSamagriItems.length > 0 ? (
                 <div className="flex flex-col gap-1.5 rounded-lg border border-dashed border-border bg-muted/30 px-3 py-2.5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">
+                  <button
+                    type="button"
+                    onClick={() => setShowSamagriDetails((prev) => !prev)}
+                    className="flex items-center justify-between gap-2 text-left"
+                  >
+                    <span className="flex items-center gap-1.5 text-muted-foreground">
                       Samagri Price ({selectedSamagriItems.length} item{selectedSamagriItems.length === 1 ? "" : "s"})
+                      {showSamagriDetails ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                     </span>
                     <span className="font-semibold text-foreground">₹{samagriTotal.toLocaleString("en-IN")}</span>
-                  </div>
-                  <ul className="flex flex-col gap-1">
-                    {selectedSamagriItems.map((item) => (
-                      <li key={item.name} className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>{item.name}</span>
-                        <span>₹{item.price.toLocaleString("en-IN")}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  </button>
+                  {showSamagriDetails && (
+                    <ul className="flex flex-col gap-1">
+                      {selectedSamagriItems.map((item) => (
+                        <li key={item.name} className="flex items-center justify-between text-xs text-muted-foreground">
+                          <span>{item.name}</span>
+                          <span>₹{item.price.toLocaleString("en-IN")}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               ) : (
                 <div className="flex items-center justify-between">
@@ -366,7 +376,10 @@ export function CheckoutClient() {
               )}
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Distance Charge</span>
-                <span className="font-semibold text-foreground">₹{distanceCharge.toLocaleString("en-IN")}</span>
+                <span className="flex items-center gap-1.5">
+                  <span className="text-xs text-muted-foreground line-through">₹{distanceChargeMrp.toLocaleString("en-IN")}</span>
+                  <span className="font-semibold text-emerald-600">FREE</span>
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">Platform Fee</span>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -14,14 +15,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { usePoojaCategories } from "@/features/admin/api/use-pooja-categories";
 import { Pooja, useCreatePooja, useUpdatePooja } from "@/features/admin/api/use-poojas";
+import { useSamagriTemplates } from "@/features/admin/api/use-samagri-templates";
 import { ImageUploadInput } from "@/features/admin/components/image-upload-input";
 import { getErrorMessage } from "@/features/admin/lib/get-error-message";
-
-const samagriItemSchema = z.object({
-  name: z.string().min(1, "Required"),
-  price: z.coerce.number().min(0),
-  includedByDefault: z.boolean().optional(),
-});
 
 const packageSchema = z.object({
   name: z.string().min(1, "Required"),
@@ -45,7 +41,7 @@ const poojaFormSchema = z.object({
   status: z.enum(["draft", "Published", "archived"]),
   featured: z.boolean().optional(),
   popular: z.boolean().optional(),
-  samagri: z.array(samagriItemSchema),
+  sortOrder: z.coerce.number().optional(),
   packages: z.array(packageSchema),
 });
 
@@ -58,8 +54,10 @@ function slugify(value: string) {
 export function PoojaForm({ pooja }: { pooja?: Pooja }) {
   const router = useRouter();
   const { data: categories } = usePoojaCategories();
+  const { data: samagriTemplates } = useSamagriTemplates();
   const createMutation = useCreatePooja();
   const updateMutation = useUpdatePooja();
+  const linkedTemplate = samagriTemplates?.items.find((t) => (typeof t.pooja === "object" ? t.pooja._id : t.pooja) === pooja?._id);
 
   const {
     register,
@@ -83,12 +81,11 @@ export function PoojaForm({ pooja }: { pooja?: Pooja }) {
       status: pooja?.status ?? "draft",
       featured: pooja?.featured ?? false,
       popular: pooja?.popular ?? false,
-      samagri: pooja?.samagri ?? [],
+      sortOrder: pooja?.sortOrder ?? 0,
       packages: pooja?.packages ?? [],
     },
   });
 
-  const samagriArray = useFieldArray({ control, name: "samagri" });
   const packagesArray = useFieldArray({ control, name: "packages" });
   const galleryArray = useFieldArray({ control, name: "gallery" });
 
@@ -159,6 +156,11 @@ export function PoojaForm({ pooja }: { pooja?: Pooja }) {
               <option value="Published">Published</option>
               <option value="archived">Archived</option>
             </select>
+          </div>
+          <div className="space-y-1.5">
+            <Label>Display Order</Label>
+            <Input type="number" {...register("sortOrder")} />
+            <p className="text-xs text-muted-foreground">Lower numbers show first on the Poojas page and homepage. Same order works across all pages.</p>
           </div>
           <div className="space-y-1.5">
             <Label>Starting Price (₹)</Label>
@@ -264,41 +266,34 @@ export function PoojaForm({ pooja }: { pooja?: Pooja }) {
       </Card>
 
       <Card>
-        <CardHeader className="flex-row items-center justify-between">
-          <div>
-            <CardTitle>Samagri (optional add-ons)</CardTitle>
-            <p className="text-xs text-muted-foreground">
-              Not included in the price by default — customers opt in and pay for each item they select.
-            </p>
-          </div>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => samagriArray.append({ name: "", price: 0, includedByDefault: false })}
-          >
-            <Plus /> Add item
-          </Button>
+        <CardHeader>
+          <CardTitle>Samagri Template</CardTitle>
+          <p className="text-xs text-muted-foreground">
+            The structured ritual-materials list bundled into this pooja&apos;s kit is managed separately.
+          </p>
         </CardHeader>
-        <CardContent className="space-y-3">
-          {samagriArray.fields.length === 0 && <p className="text-sm text-muted-foreground">No samagri items added yet.</p>}
-          {samagriArray.fields.map((field, index) => (
-            <div key={field.id} className="grid grid-cols-1 gap-3 rounded-lg border border-border p-3 md:grid-cols-4">
-              <div className="space-y-1 md:col-span-2">
-                <Label className="text-xs">Item name</Label>
-                <Input {...register(`samagri.${index}.name`)} />
+        <CardContent>
+          {linkedTemplate ? (
+            <div className="flex items-center justify-between rounded-lg border border-border p-3">
+              <div>
+                <p className="text-sm font-medium">{linkedTemplate.samagriTemplateName}</p>
+                <p className="text-xs text-muted-foreground">
+                  {linkedTemplate.includedItems.length} item(s) · Estimated cost ₹
+                  {linkedTemplate.estimatedSamagriCost.toLocaleString("en-IN")}
+                </p>
               </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Price (₹)</Label>
-                <Input type="number" {...register(`samagri.${index}.price`)} />
-              </div>
-              <div className="flex items-center justify-end">
-                <Button type="button" variant="ghost" size="icon-sm" onClick={() => samagriArray.remove(index)}>
-                  <Trash2 />
-                </Button>
-              </div>
+              <Button type="button" variant="outline" size="sm" asChild>
+                <Link href={`/admin/samagri-templates/${linkedTemplate._id}`}>Manage Template →</Link>
+              </Button>
             </div>
-          ))}
+          ) : (
+            <div className="flex items-center justify-between rounded-lg border border-dashed border-border p-3">
+              <p className="text-sm text-muted-foreground">No samagri template linked to this pooja yet.</p>
+              <Button type="button" variant="outline" size="sm" asChild>
+                <Link href="/admin/samagri-templates/new">Create Template →</Link>
+              </Button>
+            </div>
+          )}
         </CardContent>
       </Card>
 
