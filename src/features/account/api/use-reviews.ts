@@ -25,13 +25,14 @@ export interface SubmitReviewInput {
   photos?: string[];
 }
 
-export function useMyReviews() {
+export function useMyReviews(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ["account", "reviews"],
     queryFn: async () => {
       const res = await customerApiClient.get<{ data: MyReview[] }>("/reviews");
       return res.data.data;
     },
+    enabled: options?.enabled ?? true,
   });
 }
 

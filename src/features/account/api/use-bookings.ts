@@ -37,13 +37,14 @@ export interface MyBookingListResult {
   totalPages: number;
 }
 
-export function useMyBookings(tab: string = "all", page = 1) {
+export function useMyBookings(tab: string = "all", page = 1, options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: ["account", "bookings", tab, page],
     queryFn: async () => {
       const res = await customerApiClient.get<{ data: MyBookingListResult }>("/bookings", { params: { tab, page } });
       return res.data.data;
     },
+    enabled: options?.enabled ?? true,
   });
 }
 

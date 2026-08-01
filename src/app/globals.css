@@ -412,4 +412,7 @@
   .py-8{
     padding: 20px 0px;
   }
+  .group\/button{
+    font-size: 11px !important;
+  }
 }
