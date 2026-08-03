@@ -48,7 +48,7 @@ export function PoojaPackages({ packages }: { packages: PoojaPackage[] }) {
             </ul>
             <Button
               type="button"
-              className="font-ui mt-auto h-auto min-h-8 py-2 text-center leading-snug whitespace-normal font-bold"
+              className="font-ui mt-auto font-bold"
               variant={isSelected ? "default" : "outline"}
               onClick={() => setSelectedPackage(isSelected ? null : { name: pkg.name, price: pkg.price })}
             >
@@ -57,7 +57,7 @@ export function PoojaPackages({ packages }: { packages: PoojaPackage[] }) {
                   <CheckCircle2 size={16} /> Selected
                 </>
               ) : (
-                `Choose ${pkg.name}`
+                "Select"
               )}
             </Button>
           </div>
