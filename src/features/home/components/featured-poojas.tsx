@@ -30,16 +30,17 @@ export async function FeaturedPoojas() {
   return (
     <section id="poojas" className="py-20 sm:py-15">
       <Container>
-        <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading
-            eyebrow="Most Booked"
-            title="Popular Poojas"
-            description="Traditional rituals performed by verified pandits, with samagri and fixed pricing included."
-          />
-          <Button variant="outline" className="font-ui font-bold" asChild>
-            <Link href="/poojas">View All Poojas</Link>
-          </Button>
-        </div>
+        <SectionHeading
+          eyebrow="Most Booked"
+          title="Popular Poojas"
+          description="Traditional rituals performed by verified pandits, with samagri and fixed pricing included."
+          action={
+            <Button variant="outline" size="sm" className="font-ui font-bold sm:h-8 sm:px-2.5 sm:text-sm" asChild>
+              <Link href="/poojas">View All Poojas</Link>
+            </Button>
+          }
+          className="mb-12"
+        />
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {poojas.map((pooja, i) => (

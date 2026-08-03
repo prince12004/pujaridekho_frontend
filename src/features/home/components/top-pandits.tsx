@@ -44,16 +44,17 @@ export async function TopPandits() {
   return (
     <section id="pandits" className="bg-muted/40 py-20 sm:py-15">
       <Container>
-        <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
-          <SectionHeading
-            eyebrow="Meet Our Priests"
-            title="Top Rated Pandit Ji"
-            description="Every pandit is identity-verified, experienced and rated by the families they've served."
-          />
-          <Button variant="outline" className="font-ui font-bold" asChild>
-            <Link href="/pandits">View All Pandits</Link>
-          </Button>
-        </div>
+        <SectionHeading
+          eyebrow="Meet Our Priests"
+          title="Top Rated Pandit Ji"
+          description="Every pandit is identity-verified, experienced and rated by the families they've served."
+          action={
+            <Button variant="outline" size="sm" className="font-ui font-bold sm:h-8 sm:px-2.5 sm:text-sm" asChild>
+              <Link href="/pandits">View All Pandits</Link>
+            </Button>
+          }
+          className="mb-12"
+        />
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {pandits.map((pandit, i) => (

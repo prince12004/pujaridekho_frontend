@@ -164,7 +164,7 @@ export function CheckoutClient() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [checkedPrefill]);
 
-  function saveEdit(values: ContactDetailsValues) {
+  function saveEdit(values: ContactDetailsValues): CheckoutPrefill {
     const muhuratSlot = editMuhuratOptions.find((m) => m.slotId === values.muhurat);
     const updated: CheckoutPrefill = {
       ...prefill,
@@ -179,6 +179,7 @@ export function CheckoutClient() {
     saveCheckoutPrefill(updated);
     setPrefill(updated);
     setIsEditing(false);
+    return updated;
   }
 
   const selectedSamagriItems = prefill?.selectedSamagri ?? [];
@@ -195,6 +196,17 @@ export function CheckoutClient() {
   const advanceAmount = ADVANCE_AMOUNT;
 
   async function handleBookNow() {
+    if (showEditForm) {
+      await handleEditSubmit(async (values) => {
+        const updated = saveEdit(values);
+        if (!isLoggedIn) {
+          openLogin(() => proceedToPayment(updated), updated.mobile);
+          return;
+        }
+        await proceedToPayment(updated);
+      })();
+      return;
+    }
     if (!hasRequiredDetails(prefill)) {
       openEdit(prefill);
       return;
@@ -274,6 +286,7 @@ export function CheckoutClient() {
 
   const detailsComplete = hasRequiredDetails(prefill);
   const showEditForm = isEditing || !detailsComplete;
+  const isEditFormValid = contactDetailsSchema.safeParse(watchEdit()).success;
 
   return (
     <Container className="py-8">
@@ -313,20 +326,15 @@ export function CheckoutClient() {
 
           <div className="p-6">
             {showEditForm ? (
-              <form onSubmit={handleEditSubmit(saveEdit)}>
-                <ContactDetailsFields
-                  register={registerEdit}
-                  errors={editErrors}
-                  watch={watchEdit}
-                  setValue={setEditValue}
-                  serviceType={type}
-                  muhuratOptions={editMuhuratOptions}
-                  isLoadingMuhurats={isLoadingEditMuhurats}
-                />
-                <Button type="submit" className="mt-5 w-full font-ui font-bold sm:w-auto">
-                  Save Details
-                </Button>
-              </form>
+              <ContactDetailsFields
+                register={registerEdit}
+                errors={editErrors}
+                watch={watchEdit}
+                setValue={setEditValue}
+                serviceType={type}
+                muhuratOptions={editMuhuratOptions}
+                isLoadingMuhurats={isLoadingEditMuhurats}
+              />
             ) : hasRequiredDetails(prefill) ? (
               <YourDetailsSummary prefill={prefill} />
             ) : null}
@@ -404,7 +412,7 @@ export function CheckoutClient() {
             <Button
               type="button"
               size="lg"
-              disabled={isBooking || showEditForm}
+              disabled={isBooking || (showEditForm && !isEditFormValid)}
               onClick={handleBookNow}
               className="mt-5 w-full font-ui font-bold"
             >

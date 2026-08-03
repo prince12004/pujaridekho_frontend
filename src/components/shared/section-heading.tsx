@@ -1,15 +1,18 @@
+import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 export function SectionHeading({
   eyebrow,
   title,
   description,
+  action,
   align = "left",
   className,
 }: {
   eyebrow: string;
   title: string;
   description?: string;
+  action?: ReactNode;
   align?: "left" | "center";
   className?: string;
 }) {
@@ -25,7 +28,14 @@ export function SectionHeading({
         <span className="h-[2px] w-5 rounded-full bg-accent" />
         {eyebrow}
       </span>
-      <h2 className="text-balance text-3xl font-bold sm:text-4xl">{title}</h2>
+      {action ? (
+        <div className="flex w-full items-start justify-between gap-4">
+          <h2 className="min-w-0 flex-1 text-balance text-2xl font-bold sm:text-3xl lg:text-4xl">{title}</h2>
+          <div className="shrink-0">{action}</div>
+        </div>
+      ) : (
+        <h2 className="text-balance text-3xl font-bold sm:text-4xl">{title}</h2>
+      )}
       {description ? (
         <p
           className={cn(
