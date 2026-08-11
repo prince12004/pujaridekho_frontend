@@ -29,19 +29,33 @@ function ResultContent({ status, entityType, entityId }: { status: string; entit
           ? "Your payment has been received and your order is confirmed. Our team will be in touch shortly."
           : "Your payment could not be completed. No amount has been deducted for a failed transaction — please try again or contact support."}
       </p>
-      <div className="mt-6 flex gap-3">
-        {succeeded && entityType === "order" && entityId ? (
+      <div className="mt-6 flex flex-wrap justify-center gap-3">
+        {succeeded && entityType === "booking" && entityId ? (
+          <Button asChild>
+            <Link href={`/account/bookings/${entityId}`}>View My Booking</Link>
+          </Button>
+        ) : succeeded && entityType === "order" && entityId ? (
           <Button asChild>
             <Link href={`/orders/${entityId}`}>View Order Details</Link>
+          </Button>
+        ) : succeeded && entityType === "consultation" && entityId ? (
+          <Button asChild>
+            <Link href={`/account/consultations/${entityId}`}>View My Consultation</Link>
           </Button>
         ) : (
           <Button asChild>
             <Link href="/">Back to Home</Link>
           </Button>
         )}
-        <Button variant="outline" asChild>
-          <Link href="/contact">Contact Support</Link>
-        </Button>
+        {succeeded ? (
+          <Button variant="outline" asChild>
+            <Link href="/account/bookings">Go to Dashboard</Link>
+          </Button>
+        ) : (
+          <Button variant="outline" asChild>
+            <Link href="/contact">Contact Support</Link>
+          </Button>
+        )}
       </div>
     </Container>
   );

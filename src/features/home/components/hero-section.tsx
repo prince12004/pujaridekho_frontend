@@ -1,12 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { CheckCircle2, Flame, Package, ShieldCheck, Star, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Reveal } from "@/components/shared/reveal";
-import { BookingWidget } from "@/components/shared/booking-widget";
+import { BookingWidget, type BookingOption } from "@/components/shared/booking-widget";
 import { images } from "@/lib/images";
 import { bookingCities } from "@/features/home/data";
-import { poojaOptions } from "@/features/poojas/data";
+import { usePoojas } from "@/features/poojas/api/use-poojas";
 
 const heroPoints = [
   "Verified & background-checked pandits",
@@ -23,6 +24,10 @@ const heroBadges = [
 ];
 
 export function HeroSection() {
+  const { data: poojasData } = usePoojas({ limit: 100 });
+  const poojaOptions: BookingOption[] =
+    poojasData?.items.map((p) => ({ label: p.name, value: p.slug })) ?? [];
+
   return (
     <section id="book" className="relative overflow-hidden">
       <div className="absolute inset-0">
@@ -39,7 +44,7 @@ export function HeroSection() {
       </div>
 
       <div className="home_ui relative mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-12 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
-        <Reveal>
+        <div>
           <div className="sliderss overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_2rem,black_calc(100%-2rem),transparent)]">
             <div className="animate-hero-badge-marquee flex w-max gap-2.5">
               {[...heroBadges, ...heroBadges].map((badge, i) => (
@@ -109,11 +114,11 @@ export function HeroSection() {
             </div>
             Trusted by 10,000+ families across Delhi NCR
           </div>
-        </Reveal>
+        </div>
 
-        <Reveal delay={0.15}>
+        <div>
           <BookingWidget cities={bookingCities} poojas={poojaOptions} />
-        </Reveal>
+        </div>
       </div>
     </section>
   );
