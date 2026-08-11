@@ -17,28 +17,8 @@ import { MobileNav } from "@/components/layout/mobile-nav";
 import { SearchOverlay } from "@/components/shared/search-overlay";
 import { useAuthModal } from "@/providers/auth-modal-provider";
 import { useCart } from "@/features/cart/cart-context";
+import { usePoojas } from "@/features/poojas/api/use-poojas";
 import { shopCategories } from "@/features/home/data";
-
-const poojaColumns = [
-  {
-    heading: "Popular Poojas",
-    links: [
-      { label: "Satyanarayan Puja", href: "/poojas/satyanarayan-puja" },
-      { label: "Griha Pravesh Puja", href: "/poojas/griha-pravesh" },
-      { label: "Ganesh Puja", href: "/poojas/ganesh-puja" },
-      { label: "Lakshmi Puja", href: "/poojas/lakshmi-puja" },
-    ],
-  },
-  {
-    heading: "By Occasion",
-    links: [
-      { label: "Vastu Shanti", href: "/poojas/vastu-shanti" },
-      { label: "Navgraha Shanti", href: "/poojas/navgraha-shanti" },
-      { label: "Marriage Puja", href: "/poojas/marriage-puja" },
-      { label: "Office Opening Puja", href: "/poojas/office-puja" },
-    ],
-  },
-];
 
 const shopColumns = [
   {
@@ -64,6 +44,18 @@ export function SiteHeader() {
   const [searchOpen, setSearchOpen] = useState(false);
   const { isLoggedIn, mobile, openLogin } = useAuthModal();
   const { count: cartCount } = useCart();
+  const { data: poojaData } = usePoojas({ limit: 8 });
+  const poojas = poojaData?.items ?? [];
+  const poojaColumns = [
+    {
+      heading: "Popular Poojas",
+      links: poojas.slice(0, 4).map((p) => ({ label: p.name, href: `/poojas/${p.slug}` })),
+    },
+    {
+      heading: "More Poojas",
+      links: poojas.slice(4, 8).map((p) => ({ label: p.name, href: `/poojas/${p.slug}` })),
+    },
+  ];
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm">

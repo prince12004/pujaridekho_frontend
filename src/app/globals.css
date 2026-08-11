@@ -241,6 +241,46 @@
   }
 }
 
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.5s ease-out both;
+}
+
+@keyframes fade-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-scale {
+  animation: fade-scale 0.6s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .animate-fade-up,
+  .animate-fade-scale {
+    animation: none;
+  }
+}
+
 /*
  * Rich-text typography for long-form content (Blog Detail, Policy pages).
  * Additive only — does not alter any existing token or component style.
@@ -248,7 +288,24 @@
 @layer components {
   .prose-policy {
     color: var(--foreground);
-    line-height: 1.75;
+    font-size: 1.0625rem;
+    line-height: 1.85;
+  }
+
+  /* Old imported blogs carry Google-Docs paste junk (hardcoded 11pt spans,
+     broken font-family declarations) baked into stored content — these
+     !important rules make sure our typography always wins over that. */
+  .prose-policy,
+  .prose-policy * {
+    font-family: var(--font-heading) !important;
+  }
+
+  .prose-policy p,
+  .prose-policy li,
+  .prose-policy span,
+  .prose-policy td,
+  .prose-policy th {
+    font-size: 1.0625rem !important;
   }
 
   .prose-policy> :first-child {
@@ -256,8 +313,7 @@
   }
 
   .prose-policy h2 {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 700;
     margin-top: 2.5rem;
     margin-bottom: 1rem;
@@ -265,8 +321,7 @@
   }
 
   .prose-policy h3 {
-    font-family: var(--font-heading);
-    font-size: 1.2rem;
+    font-size: 1.35rem;
     font-weight: 700;
     margin-top: 2rem;
     margin-bottom: 0.75rem;
@@ -283,6 +338,34 @@
     margin-bottom: 1.1rem;
     padding-left: 1.4rem;
     color: var(--muted-foreground);
+  }
+
+  .prose-policy table {
+    width: 100% !important;
+    table-layout: auto;
+    border-collapse: collapse;
+    margin: 1.75rem 0;
+  }
+
+  .prose-policy col {
+    width: auto !important;
+  }
+
+  .prose-policy td,
+  .prose-policy th {
+    border: 1px solid var(--border);
+    padding: 0.65rem 1rem;
+    text-align: left;
+    color: var(--muted-foreground);
+  }
+
+  .prose-policy th {
+    color: var(--foreground);
+    font-weight: 700;
+  }
+
+  .prose-policy table p {
+    margin-bottom: 0;
   }
 
   .prose-policy ul {

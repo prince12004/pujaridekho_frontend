@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Breadcrumb } from "@/components/shared/breadcrumb";
-import { AuthorByline } from "@/components/shared/author-byline";
-import { SocialShare } from "@/components/shared/social-share";
-import { TableOfContents } from "@/components/shared/table-of-contents";
-import { PrevNextNav } from "@/components/shared/prev-next-nav";
-import { Container } from "@/components/shared/container";
 import { JsonLd, breadcrumbSchema } from "@/components/shared/json-ld";
+import { BlogDetailContent } from "@/features/blog/components/blog-detail-content";
 import { buildMetadata } from "@/lib/seo";
-import { extractToc } from "@/lib/toc";
 import { env } from "@/lib/env";
 import type { PublicBlogDetail } from "@/features/blog/api/use-blogs";
 
@@ -45,9 +39,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   if (!data) notFound();
   const { blog: post, previous, next } = data;
 
-  const toc = extractToc(post.content);
   const category = typeof post.category === "object" ? post.category?.name : post.category;
-  const postUrl = `${env.NEXT_PUBLIC_SITE_URL}/blog/${post.slug}`;
 
   return (
     <>
@@ -70,50 +62,18 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
         }}
       />
 
-      <div className="relative h-[350px] w-full overflow-hidden sm:h-[420px]">
-        <img src={post.coverImage ?? FALLBACK_IMAGE} alt={post.title} className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-purple-deep/85 via-brand-purple-deep/20 to-transparent" />
-        <Container className="absolute inset-0 flex flex-col justify-end pb-10">
-          <Breadcrumb
-            items={[{ label: "Blog", href: "/blog" }, { label: post.title }]}
-            className="mb-4 [&_a]:text-brand-cream/70 [&_span]:text-brand-gold-soft [&_svg]:text-brand-cream/40"
-          />
-          {category && <span className="font-ui text-xs font-bold uppercase tracking-wide text-brand-gold-soft">{category}</span>}
-          <h1 className="mt-2 max-w-3xl text-balance font-heading text-3xl font-bold text-brand-cream sm:text-4xl">
-            {post.title}
-          </h1>
-        </Container>
-      </div>
-
-      <Container className="py-10">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-6">
-          <AuthorByline
-            name={post.author ?? "PujariDekho Team"}
-            role="Ritual Experts"
-            date={post.PublishedAt ? new Date(post.PublishedAt).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }) : ""}
-            readTime={estimateReadTime(post.content)}
-          />
-          <SocialShare url={postUrl} title={post.title} />
-        </div>
-      </Container>
-
-      <Container className="grid grid-cols-1 gap-12 pb-10 lg:grid-cols-[220px_1fr]">
-        <aside className="hidden lg:block">
-          <div className="sticky top-24">
-            <TableOfContents items={toc} />
-          </div>
-        </aside>
-
-        <div className="min-w-0 max-w-6xl">
-          <div className="prose-policy" dangerouslySetInnerHTML={{ __html: post.content }} />
-
-          <PrevNextNav
-            prev={previous ? { label: "Previous", title: previous.title, href: `/blog/${previous.slug}` } : undefined}
-            next={next ? { label: "Next", title: next.title, href: `/blog/${next.slug}` } : undefined}
-            className="mt-12"
-          />
-        </div>
-      </Container>
+      <BlogDetailContent
+        title={post.title}
+        excerpt={post.excerpt}
+        category={category ?? undefined}
+        coverImage={post.coverImage ?? FALLBACK_IMAGE}
+        author={post.author ?? "PujariDekho Team"}
+        date={post.PublishedAt ? new Date(post.PublishedAt).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" }) : ""}
+        readTime={estimateReadTime(post.content)}
+        content={post.content}
+        previous={previous ? { label: "Previous", title: previous.title, href: `/blog/${previous.slug}` } : undefined}
+        next={next ? { label: "Next", title: next.title, href: `/blog/${next.slug}` } : undefined}
+      />
     </>
   );
 }

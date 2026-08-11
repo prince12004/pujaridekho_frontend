@@ -6,10 +6,10 @@ import { Modal } from "@/components/shared/modal";
 import { SearchBar } from "@/components/shared/search-bar";
 
 const popularSearches = [
-  { label: "Griha Pravesh Puja", href: "/poojas/griha-pravesh" },
-  { label: "Satyanarayan Puja", href: "/poojas/satyanarayan-puja" },
+  { label: "Griha Pravesh Puja", href: "/poojas/grah-pravesh-pooja" },
+  { label: "Satyanarayan Puja", href: "/poojas/satyanarayan-katha" },
   { label: "Pandit Ji in Noida", href: "/pandits?city=noida" },
-  { label: "Rudraksha Mala", href: "/shop/rudraksha" },
+  { label: "Rudraksha Mala", href: "/products?category=rudraksha" },
 ];
 
 export function SearchOverlay({

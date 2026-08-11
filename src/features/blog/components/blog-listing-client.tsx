@@ -58,64 +58,58 @@ export function BlogListingClient({ excludeSlug }: { excludeSlug?: string }) {
         <SearchBar value={query} onChange={setQuery} placeholder="Search articles…" className="max-w-xs" />
       </div>
 
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_300px]">
-        <div>
-          {isLoading ? (
-            <p className="py-16 text-center text-muted-foreground">Loading articles…</p>
-          ) : currentPosts.length === 0 ? (
-            <p className="py-16 text-center text-muted-foreground">No articles match your search yet.</p>
-          ) : (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              {currentPosts.map((post) => (
-                <MediaCard key={post.slug} href={`/blog/${post.slug}`}>
-                  <MediaCardImage src={post.coverImage ?? FALLBACK_IMAGE} alt={post.title} height="h-55" />
-                  <MediaCardBody>
-                    <div className="flex gap-2 text-xs font-semibold text-muted-foreground">
-                      <span>{categoryName(post) ?? "General"}</span>
-                    </div>
-                    <h3 className="font-heading text-lg leading-snug">{post.title}</h3>
-                    <p className="line-clamp-2 text-sm text-muted-foreground">{post.excerpt}</p>
-                    <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-bold text-primary">
-                      Read More <ArrowRight size={14} />
-                    </span>
-                  </MediaCardBody>
-                </MediaCard>
-              ))}
-            </div>
-          )}
+      <div>
+        {isLoading ? (
+          <p className="py-16 text-center text-muted-foreground">Loading articles…</p>
+        ) : currentPosts.length === 0 ? (
+          <p className="py-16 text-center text-muted-foreground">No articles match your search yet.</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {currentPosts.map((post) => (
+              <MediaCard key={post.slug} href={`/blog/${post.slug}`}>
+                <MediaCardImage src={post.coverImage ?? FALLBACK_IMAGE} alt={post.title} height="h-55" />
+                <MediaCardBody>
+                  <div className="flex gap-2 text-xs font-semibold text-muted-foreground">
+                    <span>{categoryName(post) ?? "General"}</span>
+                  </div>
+                  <h3 className="font-heading text-lg leading-snug">{post.title}</h3>
+                  <p className="line-clamp-2 text-sm text-muted-foreground">{post.excerpt}</p>
+                  <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-bold text-primary">
+                    Read More <ArrowRight size={14} />
+                  </span>
+                </MediaCardBody>
+              </MediaCard>
+            ))}
+          </div>
+        )}
 
-          {hasMore && (
-            <div ref={sentinelRef} className="flex justify-center py-8">
-              <Loader2 className="size-5 animate-spin text-muted-foreground" />
-            </div>
-          )}
-        </div>
-
-        <aside className="flex flex-col gap-10">
-          {recent.length > 0 && (
-            <div>
-              <h3 className="font-heading mb-4 text-lg">Recent Posts</h3>
-              <ul className="flex flex-col gap-4">
-                {recent.map((post) => (
-                  <li key={post.slug}>
-                    <Link href={`/blog/${post.slug}`} className="group flex gap-3">
-                      <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl">
-                        <img src={post.coverImage ?? FALLBACK_IMAGE} alt={post.title} className="h-full w-full object-cover" />
-                      </div>
-                      <div className="flex flex-col justify-center">
-                        <span className="text-xs font-semibold text-muted-foreground">{categoryName(post) ?? "General"}</span>
-                        <span className="font-heading text-sm leading-snug transition-colors group-hover:text-primary">
-                          {post.title}
-                        </span>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </aside>
+        {hasMore && (
+          <div ref={sentinelRef} className="flex justify-center py-8">
+            <Loader2 className="size-5 animate-spin text-muted-foreground" />
+          </div>
+        )}
       </div>
+
+      {recent.length > 0 && (
+        <div className="mt-16 border-t border-dashed border-border pt-10">
+          <h3 className="font-heading mb-6 text-lg">Recent Posts</h3>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {recent.map((post) => (
+              <Link key={post.slug} href={`/blog/${post.slug}`} className="group flex gap-3">
+                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl">
+                  <img src={post.coverImage ?? FALLBACK_IMAGE} alt={post.title} className="h-full w-full object-cover" />
+                </div>
+                <div className="flex flex-col justify-center">
+                  <span className="text-xs font-semibold text-muted-foreground">{categoryName(post) ?? "General"}</span>
+                  <span className="font-heading text-sm leading-snug transition-colors group-hover:text-primary">
+                    {post.title}
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </Container>
   );
 }

@@ -53,7 +53,7 @@ export function CheckoutCta({
   }
 
   return (
-    <div className="relative overflow-hidden rounded-[1.75rem] bg-card p-6 shadow-2xl ring-1 ring-border">
+    <div className="font-heading relative overflow-hidden rounded-[1.75rem] bg-card p-6 shadow-2xl ring-1 ring-border">
       <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-primary via-accent to-primary" />
 
       <div className="flex items-center gap-3">

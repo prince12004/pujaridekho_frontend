@@ -8,7 +8,7 @@ export function LanguageSwitch() {
 
   return (
     <div className="flex items-center gap-0.5 rounded-full bg-white/10 p-0.5" role="group" aria-label="Language">
-      <button
+      {/* <button
         type="button"
         onClick={() => setLang("en")}
         aria-pressed={lang === "en"}
@@ -29,7 +29,7 @@ export function LanguageSwitch() {
         )}
       >
         हिं
-      </button>
+      </button> */}
     </div>
   );
 }

@@ -62,7 +62,7 @@ export function SamagriSelector({
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+    <div className="font-heading overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
       <button type="button" onClick={toggleExpanded} className="flex w-full items-center justify-between gap-3 p-4 text-left">
         <span className="flex items-center gap-3">
           <span
