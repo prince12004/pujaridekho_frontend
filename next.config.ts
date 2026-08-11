@@ -7,6 +7,13 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+
+      // Cloudinary media
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+
       // Media Library uploads — Google Cloud Storage in production, local API disk in dev.
       {
         protocol: "https",
