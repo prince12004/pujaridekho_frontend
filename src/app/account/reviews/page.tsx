@@ -128,7 +128,7 @@ export default function ReviewsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <AccountPageHeader title="Reviews" description="Rate completed Poojas, Pandits, Products and Consultations." />
+        <AccountPageHeader title="Reviews" description="Rate completed Puja's, Pandits, Products and Consultations." />
 
         {isLoading && <AccountLoadingSkeleton />}
 

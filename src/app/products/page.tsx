@@ -40,7 +40,7 @@ export default function ProductsListingPage() {
         title="Talk to Our Team"
         description="Not sure which samagri kit fits your puja? We'll help you pick the right one."
         primaryAction={{ label: "Contact Us", href: "/contact" }}
-        secondaryAction={{ label: "Browse Poojas", href: "/poojas" }}
+        secondaryAction={{ label: "Browse Puja's", href: "/poojas" }}
       />
     </>
   );

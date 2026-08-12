@@ -177,7 +177,7 @@ export default function AccountDashboardPage() {
                   <p className="mt-1 text-sm text-muted-foreground">Book a pooja and we&apos;ll show it right here.</p>
                 </div>
                 <Button asChild className="mt-1 font-ui font-bold">
-                  <Link href="/poojas">Explore Poojas</Link>
+                  <Link href="/poojas">Explore Puja&apos;s</Link>
                 </Button>
               </CardContent>
             </Card>

@@ -3,9 +3,9 @@ import { Award, Handshake, HeartHandshake, ShieldCheck } from "lucide-react";
 
 export const aboutStats = [
   { value: "10+", label: "Verified Pandits" },
-  { value: "1,000+", label: "Poojas Completed" },
+  { value: "1,000+", label: "Puja's Completed" },
   { value: "10", label: "Cities Served" },
-  { value: "4.9★", label: "Average Rating" },
+  { value: "4.8★", label: "Average Rating" },
 ];
 
 export const journeyItems: TimelineItem[] = [
@@ -23,7 +23,7 @@ export const journeyItems: TimelineItem[] = [
   },
   {
     label: "2025–26",
-    title: "1,000+ Poojas Completed",
+    title: "1,000+ Puja's Completed",
     description:
       "Crossed 1,000 completed poojas across Delhi NCR, with fixed, transparent pricing and samagri included in every booking.",
   },

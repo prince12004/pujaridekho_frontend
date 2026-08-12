@@ -31,7 +31,7 @@ export default function FestivalsListPage() {
   return (
     <div>
       <AdminPageHeader
-        title="Festival Poojas"
+        title="Festival Puja's"
         description="Manage festival-specific pooja packages and seasonal availability."
         actions={
           <Button asChild>

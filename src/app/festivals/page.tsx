@@ -9,7 +9,7 @@ import { images } from "@/lib/images";
 import { env } from "@/lib/env";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Festival Poojas — Book Ahead for Upcoming Festivals",
+  title: "Festival Puja's — Book Ahead for Upcoming Festivals",
   description: "Browse and book poojas for upcoming Hindu festivals — Diwali, Navratri, Ganesh Chaturthi and more, with fixed pricing.",
   path: "/festivals",
 });
@@ -37,7 +37,7 @@ export default function FestivalsListingPage() {
         title="Talk to Our Team"
         description="Tell us the occasion — we'll recommend the right festival pooja and a verified pandit for it."
         primaryAction={{ label: "Contact Us", href: "/contact" }}
-        secondaryAction={{ label: "Browse Poojas", href: "/poojas" }}
+        secondaryAction={{ label: "Browse Puja's", href: "/poojas" }}
       />
     </>
   );

@@ -9,7 +9,7 @@ import { images } from "@/lib/images";
 import { env } from "@/lib/env";
 
 export const metadata: Metadata = buildMetadata({
-  title: "All Poojas — Book Verified Pandits Online",
+  title: "All Puja's — Book Verified Pandits Online",
   description:
     "Browse every puja on PujariDekho — Satyanarayan, Griha Pravesh, Navgraha Shanti and more, with fixed pricing and samagri included.",
   path: "/poojas",
@@ -18,12 +18,12 @@ export const metadata: Metadata = buildMetadata({
 export default function PoojasListingPage() {
   return (
     <>
-      <JsonLd data={breadcrumbSchema([{ name: "Poojas", path: "/poojas" }], env.NEXT_PUBLIC_SITE_URL)} />
+      <JsonLd data={breadcrumbSchema([{ name: "Puja's", path: "/poojas" }], env.NEXT_PUBLIC_SITE_URL)} />
       <PageBanner
-        eyebrow="All Poojas"
+        eyebrow="All Puja's"
         title="Every Ritual, One Fixed Price"
         description="Verified pandits, complete samagri, and transparent pricing for every puja we offer."
-        breadcrumbItems={[{ label: "Poojas" }]}
+        breadcrumbItems={[{ label: "Puja's" }]}
         image={images.ganeshIdol}
       />
 

@@ -70,7 +70,7 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
     <>
       <JsonLd
         data={breadcrumbSchema(
-          [{ name: "Poojas", path: "/poojas" }, { name: pooja.name, path: `/poojas/${pooja.slug}` }],
+          [{ name: "Puja's", path: "/poojas" }, { name: pooja.name, path: `/poojas/${pooja.slug}` }],
           env.NEXT_PUBLIC_SITE_URL,
         )}
       />
@@ -99,7 +99,7 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
       ) : null}
 
       <Container className="pt-6">
-        <Breadcrumb items={[{ label: "Poojas", href: "/poojas" }, { label: pooja.name }]} />
+        <Breadcrumb items={[{ label: "Puja's", href: "/poojas" }, { label: pooja.name }]} />
       </Container>
 
       <section className="py-8">

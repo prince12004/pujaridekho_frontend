@@ -24,13 +24,13 @@ export default function Home() {
       <FeaturedPoojas />
       <FestivalPoojasSection />
       <ShopCategories />
+      <ReligiousProducts />
       <CitiesSection />
       <TopPandits />
       <HowItWorks />
       <WhyChooseUs />
       <KundliCta />
       <PanchangSection />
-      <ReligiousProducts />
       <TestimonialsSection />
       <BlogSection />
       <FaqSection />

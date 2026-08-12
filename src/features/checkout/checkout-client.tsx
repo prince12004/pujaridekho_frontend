@@ -244,7 +244,7 @@ export function CheckoutClient() {
         <h1 className="font-heading text-2xl">No puja selected for checkout</h1>
         <p className="text-sm text-muted-foreground">Please choose a puja to book first.</p>
         <Button asChild className="mt-2">
-          <Link href="/poojas">Browse Poojas</Link>
+          <Link href="/poojas">Browse Puja&apos;s</Link>
         </Button>
       </Container>
     );
@@ -263,7 +263,7 @@ export function CheckoutClient() {
       <Container className="flex min-h-[50vh] flex-col items-center justify-center gap-3 py-16 text-center">
         <h1 className="font-heading text-2xl">We couldn&apos;t find that puja</h1>
         <Button asChild className="mt-2">
-          <Link href="/poojas">Browse Poojas</Link>
+          <Link href="/poojas">Browse Puja&apos;s</Link>
         </Button>
       </Container>
     );

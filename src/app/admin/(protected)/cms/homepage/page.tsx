@@ -64,7 +64,7 @@ export default function HomepageCmsPage() {
               </label>
               <div className="space-y-1.5">
                 <Label>Banner Text</Label>
-                <Input {...register("text")} placeholder="Diwali Offer: 20% off on Griha Pravesh Poojas!" />
+                <Input {...register("text")} placeholder="Diwali Offer: 20% off on Griha Pravesh Puja's!" />
               </div>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div className="space-y-1.5">

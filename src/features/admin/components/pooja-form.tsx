@@ -160,7 +160,7 @@ export function PoojaForm({ pooja }: { pooja?: Pooja }) {
           <div className="space-y-1.5">
             <Label>Display Order</Label>
             <Input type="number" {...register("sortOrder")} />
-            <p className="text-xs text-muted-foreground">Lower numbers show first on the Poojas page and homepage. Same order works across all pages.</p>
+            <p className="text-xs text-muted-foreground">Lower numbers show first on the Puja&apos;s page and homepage. Same order works across all pages.</p>
           </div>
           <div className="space-y-1.5">
             <Label>Starting Price (₹)</Label>

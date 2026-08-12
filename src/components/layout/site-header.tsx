@@ -48,11 +48,11 @@ export function SiteHeader() {
   const poojas = poojaData?.items ?? [];
   const poojaColumns = [
     {
-      heading: "Popular Poojas",
+      heading: "Popular Puja's",
       links: poojas.slice(0, 4).map((p) => ({ label: p.name, href: `/poojas/${p.slug}` })),
     },
     {
-      heading: "More Poojas",
+      heading: "More Puja's",
       links: poojas.slice(4, 8).map((p) => ({ label: p.name, href: `/poojas/${p.slug}` })),
     },
   ];
@@ -66,13 +66,13 @@ export function SiteHeader() {
           <NavigationMenuList className="gap-1">
             <NavigationMenuItem>
               <NavigationMenuTrigger className="font-ui bg-transparent text-[0.92rem] font-semibold">
-                Poojas
+                Puja&apos;s
               </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <MegaMenuContent
                   columns={poojaColumns}
                   promo={{
-                    title: "Festival Poojas",
+                    title: "Festival Puja's",
                     description: "Book ahead for upcoming festivals",
                     href: "/festivals",
                     image: "candlesCircleFloor",

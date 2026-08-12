@@ -121,7 +121,7 @@ export default function ReportsPage() {
       <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Top 5 Poojas by Bookings</CardTitle>
+            <CardTitle>Top 5 Puja&apos;s by Bookings</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
             {data.topPoojas.length === 0 && <p className="text-sm text-muted-foreground">No booking data yet.</p>}

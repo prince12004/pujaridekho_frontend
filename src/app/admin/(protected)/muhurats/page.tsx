@@ -168,7 +168,7 @@ export default function AdminMuhuratsPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Poojas</SelectItem>
+                <SelectItem value="all">All Puja&apos;s</SelectItem>
                 {poojas?.items.map((p) => (
                   <SelectItem key={p._id} value={p._id}>
                     {p.name}

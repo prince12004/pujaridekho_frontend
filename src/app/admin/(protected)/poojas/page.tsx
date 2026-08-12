@@ -66,7 +66,7 @@ export default function PoojasListPage() {
   return (
     <div>
       <AdminPageHeader
-        title="Poojas"
+        title="Puja's"
         description="Manage the poojas customers can browse and book on the website."
         actions={
           <Button asChild>

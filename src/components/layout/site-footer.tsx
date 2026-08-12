@@ -18,7 +18,7 @@ import { useSiteSettings } from "@/lib/use-site-settings";
 import { apiClient } from "@/lib/api-client";
 
 const quickLinks = [
-  { label: "Poojas", href: "/poojas" },
+  { label: "Puja's", href: "/poojas" },
   { label: "Pandit Ji", href: "/pandits" },
   { label: "Festival Pooja", href: "/festivals" },
   { label: "Shop", href: "/products" },

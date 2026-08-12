@@ -110,7 +110,7 @@ export async function TopPandits() {
                 )}
 
                 <div className="mt-auto flex items-center justify-between">
-                  <span className="text-sm font-bold text-secondary">{pandit.completedPoojas}+ Poojas</span>
+                  <span className="text-sm font-bold text-secondary">{pandit.completedPoojas}+ Puja&apos;s</span>
                   <Button size="sm" variant="outline" className="main_books font-ui font-bold" asChild>
                     <Link href="/poojas">Book Now</Link>
                   </Button>

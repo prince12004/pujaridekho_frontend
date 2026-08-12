@@ -47,7 +47,7 @@ export default function MyBookingsPage() {
           icon={CalendarCheck}
           title="No Puja bookings have been made yet."
           description="Book a Pooja or Festival ritual and track it right here."
-          ctaLabel="Explore Poojas"
+          ctaLabel="Explore Puja's"
           ctaHref="/poojas"
         />
       )}

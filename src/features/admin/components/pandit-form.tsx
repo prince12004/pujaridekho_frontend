@@ -28,6 +28,8 @@ const panditFormSchema = z.object({
   verificationStatus: z.enum(PANDIT_VERIFICATION_STATUSES),
   accountStatus: z.enum(["active", "inactive"]),
   featured: z.boolean().optional(),
+  rating: z.coerce.number().min(0).max(5).optional(),
+  completedPoojas: z.coerce.number().min(0).optional(),
 });
 
 type PanditFormValues = z.infer<typeof panditFormSchema>;
@@ -71,6 +73,8 @@ export function PanditForm({ pandit }: { pandit?: Pandit }) {
       verificationStatus: (pandit?.verificationStatus as PanditFormValues["verificationStatus"]) ?? "application_pending",
       accountStatus: pandit?.accountStatus ?? "active",
       featured: pandit?.featured ?? false,
+      rating: pandit?.rating ?? 0,
+      completedPoojas: pandit?.completedPoojas ?? 0,
     },
   });
 
@@ -135,6 +139,14 @@ export function PanditForm({ pandit }: { pandit?: Pandit }) {
           <div className="space-y-1.5">
             <Label>Experience (years)</Label>
             <Input type="number" {...register("experienceYears")} />
+          </div>
+          <div className="space-y-1.5">
+            <Label>Completed poojas</Label>
+            <Input type="number" min={0} {...register("completedPoojas")} />
+          </div>
+          <div className="space-y-1.5">
+            <Label>Rating (0–5)</Label>
+            <Input type="number" min={0} max={5} step={0.1} {...register("rating")} />
           </div>
           <div className="space-y-1.5">
             <Label>Verification status</Label>

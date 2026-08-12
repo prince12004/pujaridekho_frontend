@@ -31,7 +31,7 @@ export default function WishlistPage() {
 
   return (
     <div>
-      <AccountPageHeader title="Wishlist" description="Poojas, Festivals and Products you've saved for later." />
+      <AccountPageHeader title="Wishlist" description="Puja's, Festivals and Products you've saved for later." />
 
       {isLoading && <AccountLoadingSkeleton />}
       {isError && <AccountErrorState onRetry={() => refetch()} />}
@@ -40,8 +40,8 @@ export default function WishlistPage() {
         <AccountEmptyState
           icon={Heart}
           title="Your wishlist is empty."
-          description="Save Poojas, Products or Festivals you're interested in — they'll show up here."
-          ctaLabel="Explore Poojas"
+          description="Save Puja's, Products or Festivals you're interested in — they'll show up here."
+          ctaLabel="Explore Puja's"
           ctaHref="/poojas"
         />
       )}
