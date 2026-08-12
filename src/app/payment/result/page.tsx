@@ -11,8 +11,18 @@ export const metadata: Metadata = buildMetadata({
   path: "/payment/result",
 });
 
+function entityHref(entityType?: string, entityId?: string) {
+  if (!entityId) return undefined;
+  if (entityType === "booking") return `/account/bookings/${entityId}`;
+  if (entityType === "order") return `/orders/${entityId}`;
+  if (entityType === "consultation") return `/account/consultations/${entityId}`;
+  return undefined;
+}
+
 function ResultContent({ status, entityType, entityId }: { status: string; entityType?: string; entityId?: string }) {
   const succeeded = status === "success";
+  const isError = status === "error";
+  const href = entityHref(entityType, entityId);
 
   return (
     <Container className="flex min-h-[60vh] flex-col items-center justify-center py-16 text-center">
@@ -22,25 +32,19 @@ function ResultContent({ status, entityType, entityId }: { status: string; entit
         {succeeded ? <CheckCircle2 size={32} /> : <XCircle size={32} />}
       </span>
       <h1 className="font-heading mt-4 text-2xl font-bold">
-        {succeeded ? "Payment Successful" : status === "error" ? "Something Went Wrong" : "Payment Failed"}
+        {succeeded ? "Payment Successful" : isError ? "Something Went Wrong" : "Payment Failed"}
       </h1>
       <p className="mt-2 max-w-md text-sm text-muted-foreground">
         {succeeded
-          ? "Your payment has been received and your order is confirmed. Our team will be in touch shortly."
-          : "Your payment could not be completed. No amount has been deducted for a failed transaction — please try again or contact support."}
+          ? "Your payment has been received and your booking is confirmed. Our team will be in touch shortly."
+          : isError
+            ? "We couldn't confirm your payment status right away. If any amount was deducted, it will reflect in your booking shortly — please check there before retrying, or contact support."
+            : "Your payment could not be completed. No amount has been deducted for a failed transaction — please try again or contact support."}
       </p>
       <div className="mt-6 flex flex-wrap justify-center gap-3">
-        {succeeded && entityType === "booking" && entityId ? (
+        {href ? (
           <Button asChild>
-            <Link href={`/account/bookings/${entityId}`}>View My Booking</Link>
-          </Button>
-        ) : succeeded && entityType === "order" && entityId ? (
-          <Button asChild>
-            <Link href={`/orders/${entityId}`}>View Order Details</Link>
-          </Button>
-        ) : succeeded && entityType === "consultation" && entityId ? (
-          <Button asChild>
-            <Link href={`/account/consultations/${entityId}`}>View My Consultation</Link>
+            <Link href={href}>{succeeded ? "View My Booking" : "Check My Booking"}</Link>
           </Button>
         ) : (
           <Button asChild>

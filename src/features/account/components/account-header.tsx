@@ -43,7 +43,7 @@ export function AccountHeader({ onOpenMobileNav }: { onOpenMobileNav: () => void
     : "PD";
 
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-border bg-card px-4 md:px-6">
+    <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-border bg-card/90 px-4 backdrop-blur-sm md:px-6">
       <Button variant="ghost" size="icon" className="md:hidden" onClick={onOpenMobileNav}>
         <Menu className="size-5" />
       </Button>
@@ -51,11 +51,11 @@ export function AccountHeader({ onOpenMobileNav }: { onOpenMobileNav: () => void
       <h1 className="font-heading text-lg font-bold text-secondary">{title}</h1>
 
       <div className="ml-auto flex items-center gap-2">
-        <Button variant="ghost" size="icon" className="relative" asChild>
+        <Button variant="ghost" size="icon" className="relative transition-transform duration-200 hover:scale-105" asChild>
           <Link href="/account/notifications" aria-label="Notifications">
             <Bell className="size-4.5" />
             {data && data.unreadCount > 0 && (
-              <span className="absolute right-1 top-1 flex size-4 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-primary-foreground">
+              <span className="absolute right-1 top-1 flex size-4 animate-pulse items-center justify-center rounded-full bg-primary text-[9px] font-bold text-primary-foreground">
                 {data.unreadCount > 9 ? "9+" : data.unreadCount}
               </span>
             )}
@@ -64,8 +64,8 @@ export function AccountHeader({ onOpenMobileNav }: { onOpenMobileNav: () => void
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-2 rounded-lg px-1.5 py-1 hover:bg-muted">
-              <Avatar className="size-8">
+            <button className="flex items-center gap-2 rounded-lg px-1.5 py-1 transition-colors duration-200 hover:bg-muted">
+              <Avatar className="size-8 ring-2 ring-transparent transition-all duration-200 hover:ring-primary/20">
                 <AvatarFallback className="bg-primary text-xs text-primary-foreground">{initials}</AvatarFallback>
               </Avatar>
               <span className="hidden text-sm font-medium sm:inline">{customer?.name ?? "Account"}</span>

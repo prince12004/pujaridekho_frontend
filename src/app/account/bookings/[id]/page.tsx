@@ -49,7 +49,10 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
   if (isError || !booking) return <AccountErrorState onRetry={() => refetch()} />;
 
   const booking_ = booking;
-  const paidAmount = booking_.payments.filter((p) => p.status === "success").reduce((sum, p) => sum + p.amount, 0);
+  // Mirrors the backend's own definition of "counts toward paid" (payments.service.ts /
+  // admin-bookings.service.ts): every non-failed payment, not just "success" —
+  // keeps this in sync with booking.paymentStatus instead of drifting from it.
+  const paidAmount = booking_.payments.filter((p) => p.status !== "failed").reduce((sum, p) => sum + p.amount, 0);
   const balanceDue = Math.max((booking_.pricing?.finalAmount ?? 0) - paidAmount, 0);
   const eligibleForRequest = ELIGIBLE_FOR_REQUEST.includes(booking_.status);
   const canReschedule = eligibleForRequest && !booking_.rescheduleRequest;

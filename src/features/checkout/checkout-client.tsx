@@ -49,10 +49,6 @@ async function redirectToPayU(entityId: string, amount: number, name: string, mo
 
 type CompleteCheckoutPrefill = CheckoutPrefill & Required<Pick<CheckoutPrefill, "name" | "mobile" | "city" | "address" | "date">>;
 
-// A booking can't be created without these — when they're missing (first
-// visit with nothing saved yet, or coming back after a payment attempt
-// cleared the saved details), the page opens straight into edit mode
-// instead of bouncing to a separate route.
 function hasRequiredDetails(prefill: CheckoutPrefill | null): prefill is CompleteCheckoutPrefill {
   return !!(prefill?.name && prefill.mobile && prefill.city && prefill.address && prefill.date);
 }
@@ -153,10 +149,6 @@ export function CheckoutClient() {
     setIsEditing(true);
   }
 
-  // Open the details form automatically the moment we know it's needed —
-  // covers both a genuine first-time visit and landing back on this page
-  // with nothing saved (e.g. the browser "back" button after a payment
-  // attempt, since a successful attempt clears the saved details).
   useEffect(() => {
     if (checkedPrefill && !hasRequiredDetails(prefill)) {
       openEdit(prefill);
@@ -234,16 +226,9 @@ export function CheckoutClient() {
           muhuratSlotId: details.muhuratSlotId,
           selectedSamagri: details.selectedSamagri ?? [],
         },
-        // /bookings now requires a logged-in customer — apiClient (unlike
-        // customerApiClient) doesn't auto-attach this token since it's the
-        // shared client for public, unauthenticated browsing endpoints too.
         { headers: { Authorization: `Bearer ${getCustomerAccessToken()}` } },
       );
       const booking = res.data.data;
-      // The backend's own pricing only knows pooja + samagri — the platform
-      // fee and distance charge are front-end-only additions, so the "full"
-      // amount charged has to be our own total, not booking.pricing.finalAmount,
-      // or the customer would be charged less than the summary promised.
       const amountToPay = paymentOption === "advance" ? advanceAmount : estimatedTotal;
       clearCheckoutPrefill();
       await redirectToPayU(booking._id, amountToPay, details.name!, details.mobile!);
