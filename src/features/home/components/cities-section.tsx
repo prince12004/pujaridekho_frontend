@@ -15,7 +15,7 @@ interface PublicCity {
 }
 
 async function fetchCities(): Promise<PublicCity[]> {
-  const res = await fetch(`${SERVER_API_URL}/cities`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/cities`, { next: { revalidate: 45 } });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data ?? [];

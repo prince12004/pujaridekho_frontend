@@ -24,7 +24,7 @@ function iconForSlug(slug: string) {
 }
 
 async function fetchCategories(): Promise<PublicProductCategory[]> {
-  const res = await fetch(`${SERVER_API_URL}/products/categories`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/products/categories`, { next: { revalidate: 45 } });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data ?? [];

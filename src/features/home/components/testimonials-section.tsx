@@ -13,7 +13,7 @@ interface PublicTestimonial {
 }
 
 async function fetchTestimonials(): Promise<PublicTestimonial[]> {
-  const res = await fetch(`${SERVER_API_URL}/testimonials`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/testimonials`, { next: { revalidate: 45 } });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data ?? [];

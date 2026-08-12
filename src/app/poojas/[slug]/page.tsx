@@ -24,7 +24,7 @@ import { SERVER_API_URL } from "@/lib/server-env";
 
 async function fetchPooja(slug: string) {
   const response = await fetch(`${SERVER_API_URL}/poojas/${slug}`, {
-    cache: "no-store",
+    next: { revalidate: 45 },
   });
 
   if (!response.ok) {

@@ -15,7 +15,7 @@ interface CmsPageData {
 }
 
 async function fetchPage(slug: string): Promise<CmsPageData | null> {
-  const response = await fetch(`${SERVER_API_URL}/pages/${slug}`, { cache: "no-store" });
+  const response = await fetch(`${SERVER_API_URL}/pages/${slug}`, { next: { revalidate: 45 } });
   if (!response.ok) return null;
   const json = await response.json();
   return json.data;

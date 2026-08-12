@@ -19,7 +19,7 @@ export const metadata: Metadata = buildMetadata({
 });
 
 async function fetchLatestPost(): Promise<PublicBlog | null> {
-  const response = await fetch(`${SERVER_API_URL}/blogs?limit=1`, { cache: "no-store" });
+  const response = await fetch(`${SERVER_API_URL}/blogs?limit=1`, { next: { revalidate: 45 } });
   if (!response.ok) return null;
   const json = await response.json();
   return json.data?.items?.[0] ?? null;

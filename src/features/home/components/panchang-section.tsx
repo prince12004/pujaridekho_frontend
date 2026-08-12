@@ -11,7 +11,7 @@ import { SERVER_API_URL } from "@/lib/server-env";
 
 async function fetchTodayPanchang(): Promise<PanchangCardData | null> {
   try {
-    const response = await fetch(`${SERVER_API_URL}/panchang`, { cache: "no-store" });
+    const response = await fetch(`${SERVER_API_URL}/panchang`, { next: { revalidate: 45 } });
     if (!response.ok) return null;
     const json = await response.json();
     return json.data;

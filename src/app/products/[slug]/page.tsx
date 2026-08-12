@@ -12,7 +12,7 @@ import { SERVER_API_URL } from "@/lib/server-env";
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1604882737625-4c4573c6e05f?w=900&auto=format&fit=crop";
 
 async function fetchProduct(slug: string) {
-  const response = await fetch(`${SERVER_API_URL}/products/${slug}`, { cache: "no-store" });
+  const response = await fetch(`${SERVER_API_URL}/products/${slug}`, { next: { revalidate: 45 } });
   if (!response.ok) return null;
   const json = await response.json();
   return json.data;

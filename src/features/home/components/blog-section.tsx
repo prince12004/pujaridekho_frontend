@@ -22,7 +22,7 @@ function estimateReadTime(html: string) {
 }
 
 async function fetchBlogPosts(): Promise<PublicBlogPost[]> {
-  const res = await fetch(`${SERVER_API_URL}/blogs?limit=3`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/blogs?limit=3`, { next: { revalidate: 45 } });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data?.items ?? [];

@@ -10,7 +10,7 @@ import type { PublicBlogDetail } from "@/features/blog/api/use-blogs";
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1604881991720-f91add269bed?w=1600&auto=format&fit=crop";
 
 async function fetchBlog(slug: string): Promise<PublicBlogDetail | null> {
-  const response = await fetch(`${SERVER_API_URL}/blogs/${slug}`, { cache: "no-store" });
+  const response = await fetch(`${SERVER_API_URL}/blogs/${slug}`, { next: { revalidate: 45 } });
   if (!response.ok) return null;
   const json = await response.json();
   return json.data;

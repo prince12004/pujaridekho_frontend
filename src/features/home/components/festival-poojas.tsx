@@ -15,7 +15,7 @@ interface PublicFestival {
 }
 
 async function fetchFeaturedFestivals(): Promise<PublicFestival[]> {
-  const res = await fetch(`${SERVER_API_URL}/festivals?featured=true&limit=8`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/festivals?featured=true&limit=8`, { next: { revalidate: 45 } });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data?.items ?? [];

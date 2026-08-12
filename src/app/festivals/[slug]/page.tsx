@@ -19,7 +19,7 @@ import { env } from "@/lib/env";
 import { SERVER_API_URL } from "@/lib/server-env";
 
 async function fetchFestival(slug: string) {
-  const response = await fetch(`${SERVER_API_URL}/festivals/${slug}`, { cache: "no-store" });
+  const response = await fetch(`${SERVER_API_URL}/festivals/${slug}`, { next: { revalidate: 45 } });
   if (!response.ok) return null;
   const json = await response.json();
   return json.data;

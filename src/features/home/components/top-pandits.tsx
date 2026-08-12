@@ -21,7 +21,7 @@ interface PublicPandit {
 }
 
 async function fetchTopPandits(): Promise<PublicPandit[]> {
-  const res = await fetch(`${SERVER_API_URL}/pandits?sort=rating&limit=6`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/pandits?sort=rating&limit=6`, { next: { revalidate: 45 } });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data?.items ?? [];

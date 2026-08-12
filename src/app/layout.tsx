@@ -24,7 +24,7 @@ interface HomeSeoOverride {
 
 async function fetchHomeSeoOverride(): Promise<HomeSeoOverride | null> {
   try {
-    const res = await fetch(`${SERVER_API_URL}/seo/by-path?path=/`, { cache: "no-store" });
+    const res = await fetch(`${SERVER_API_URL}/seo/by-path?path=/`, { next: { revalidate: 45 } });
     if (!res.ok) return null;
     const json = await res.json();
     return json.data;

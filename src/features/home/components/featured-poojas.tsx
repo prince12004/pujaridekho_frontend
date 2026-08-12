@@ -17,7 +17,7 @@ interface PublicPooja {
 }
 
 async function fetchFeaturedPoojas(): Promise<PublicPooja[]> {
-  const res = await fetch(`${SERVER_API_URL}/poojas?limit=9`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/poojas?limit=9`, { next: { revalidate: 45 } });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data?.items ?? [];
