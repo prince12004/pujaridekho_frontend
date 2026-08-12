@@ -20,13 +20,17 @@ export interface PublicPoojaListResult {
     totalPages: number;
 }
 
-export function usePoojas(params: { search?: string; category?: string; page?: number; limit?: number } = {}) {
+export function usePoojas(
+    params: { search?: string; category?: string; page?: number; limit?: number } = {},
+    options: { enabled?: boolean } = {},
+) {
     return useQuery<PublicPoojaListResult, Error>({
         queryKey: ["public", "poojas", params],
         queryFn: async () => {
             const res = await apiClient.get<{ data: PublicPoojaListResult }>("/poojas", { params });
             return res.data.data;
         },
+        enabled: options.enabled,
     });
 }
 

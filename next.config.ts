@@ -24,6 +24,19 @@ const nextConfig: NextConfig = {
         hostname: "localhost",
         port: "4000",
       },
+
+      // Local-disk uploads served from the API's public URL when Cloudinary isn't configured
+      // (e.g. production falls back to serving /uploads from pujaridekho.com itself).
+      {
+        protocol: "https",
+        hostname: "pujaridekho.com",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "https",
+        hostname: "www.pujaridekho.com",
+        pathname: "/uploads/**",
+      },
     ],
   },
 };

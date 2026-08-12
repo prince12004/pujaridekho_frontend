@@ -20,12 +20,16 @@ export interface PublicPanditListResult {
     totalPages: number;
 }
 
-export function usePandits(params: { search?: string; city?: string; page?: number; limit?: number } = {}) {
+export function usePandits(
+    params: { search?: string; city?: string; page?: number; limit?: number } = {},
+    options: { enabled?: boolean } = {},
+) {
     return useQuery<PublicPanditListResult, Error>({
         queryKey: ["public", "pandits", params],
         queryFn: async () => {
             const res = await apiClient.get<{ data: PublicPanditListResult }>("/pandits", { params });
             return res.data.data;
         },
+        enabled: options.enabled,
     });
 }

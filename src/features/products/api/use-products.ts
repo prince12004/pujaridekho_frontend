@@ -22,13 +22,17 @@ export interface PublicProductListResult {
   totalPages: number;
 }
 
-export function useProducts(params: { search?: string; category?: string; page?: number; limit?: number } = {}) {
+export function useProducts(
+  params: { search?: string; category?: string; page?: number; limit?: number } = {},
+  options: { enabled?: boolean } = {},
+) {
   return useQuery<PublicProductListResult, Error>({
     queryKey: ["public", "products", params],
     queryFn: async () => {
       const res = await apiClient.get<{ data: PublicProductListResult }>("/products", { params });
       return res.data.data;
     },
+    enabled: options.enabled,
   });
 }
 

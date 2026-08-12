@@ -22,13 +22,17 @@ export interface PublicBlogListResult {
   totalPages: number;
 }
 
-export function useBlogs(params: { search?: string; category?: string; page?: number; limit?: number } = {}) {
+export function useBlogs(
+  params: { search?: string; category?: string; page?: number; limit?: number } = {},
+  options: { enabled?: boolean } = {},
+) {
   return useQuery<PublicBlogListResult, Error>({
     queryKey: ["public", "blogs", params],
     queryFn: async () => {
       const res = await apiClient.get<{ data: PublicBlogListResult }>("/blogs", { params });
       return res.data.data;
     },
+    enabled: options.enabled,
   });
 }
 
