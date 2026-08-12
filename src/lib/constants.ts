@@ -7,13 +7,7 @@ export const siteConfig = {
   contact: {
     phone: "+91 9211241314",
     whatsapp: "+91 9211241314",
-  serviceAreas: [
-  "Noida",
-  "Greater Noida",
-  "Gaziabad",
-  "Gurgaon",
-    "Delhi NCR",
-],
+  serviceAreas: ["Noida", "Greater Noida", "Gaziabad"],
     email: "support@pujaridekho.com",
     partnerEmail: "partners@pujaridekho.com",
     careersEmail: "careers@pujaridekho.com",
