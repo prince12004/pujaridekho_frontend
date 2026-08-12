@@ -122,7 +122,7 @@ export default function CheckoutPage() {
             </div>
             <div className="space-y-1.5">
               <Label>Mobile</Label>
-              <Input placeholder="98765 43210" {...register("mobile")} />
+              <Input placeholder="Enter your number" {...register("mobile")} />
               {errors.mobile && <p className="text-xs text-destructive">{errors.mobile.message}</p>}
             </div>
           </div>

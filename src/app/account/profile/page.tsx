@@ -273,7 +273,7 @@ function ChangeMobileDialog({ currentMobile, onChanged }: { currentMobile: strin
           <div className="space-y-3">
             <div>
               <Label htmlFor="new-mobile" className="mb-1.5">New Mobile Number</Label>
-              <Input id="new-mobile" inputMode="numeric" maxLength={10} placeholder="98765 43210" value={newMobile} onChange={(e) => setNewMobile(e.target.value.replace(/\D/g, ""))} />
+              <Input id="new-mobile" inputMode="numeric" maxLength={10} placeholder="Enter your number" value={newMobile} onChange={(e) => setNewMobile(e.target.value.replace(/\D/g, ""))} />
             </div>
           </div>
         ) : (

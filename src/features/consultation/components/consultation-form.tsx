@@ -92,7 +92,7 @@ export function ConsultationForm() {
       </div>
       <div className="space-y-1.5">
         <Label htmlFor="mobile">Mobile</Label>
-        <Input id="mobile" placeholder="98765 43210" {...register("mobile")} />
+        <Input id="mobile" placeholder="Enter your number" {...register("mobile")} />
         {errors.mobile && <p className="text-xs text-destructive">{errors.mobile.message}</p>}
       </div>
       <div className="space-y-1.5">

@@ -174,7 +174,7 @@ export default function AddressesPage() {
             </div>
             <div className="col-span-2">
               <Label htmlFor="mobile" className="mb-1.5">Mobile Number</Label>
-              <Input id="mobile" placeholder="98765 43210" value={form.mobile} onChange={(e) => setForm({ ...form, mobile: e.target.value })} />
+              <Input id="mobile" placeholder="Enter your number" value={form.mobile} onChange={(e) => setForm({ ...form, mobile: e.target.value })} />
             </div>
             <div className="col-span-2">
               <Label htmlFor="line1" className="mb-1.5">Address Line 1</Label>

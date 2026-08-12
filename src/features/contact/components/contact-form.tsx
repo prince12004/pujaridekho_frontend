@@ -92,7 +92,7 @@ export function ContactForm() {
                 <input
                   {...register("phone")}
                   inputMode="numeric"
-                  placeholder="98765 43210"
+                  placeholder="Enter your number"
                   className="h-11 w-full rounded-lg border border-input bg-muted/60 px-3.5 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
                 />
                 {errors.phone ? <p className="mt-1 text-xs text-destructive">{errors.phone.message}</p> : null}

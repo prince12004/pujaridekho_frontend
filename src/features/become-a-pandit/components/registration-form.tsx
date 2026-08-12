@@ -92,7 +92,7 @@ export function RegistrationForm() {
                   </div>
                   <div>
                     <Label className="mb-1.5 text-xs font-bold uppercase tracking-wide text-muted-foreground">Mobile Number</Label>
-                    <input {...register("mobile")} inputMode="numeric" placeholder="98765 43210" className="h-11 w-full rounded-lg border border-input bg-muted/60 px-3.5 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50" />
+                    <input {...register("mobile")} inputMode="numeric" placeholder="Enter your number" className="h-11 w-full rounded-lg border border-input bg-muted/60 px-3.5 text-sm outline-none focus-visible:ring-3 focus-visible:ring-ring/50" />
                     {errors.mobile ? <p className="mt-1 text-xs text-destructive">{errors.mobile.message}</p> : null}
                   </div>
                 </div>

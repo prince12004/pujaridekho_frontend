@@ -163,7 +163,7 @@ export function OtpLoginModal({
                     type="tel"
                     inputMode="numeric"
                     maxLength={10}
-                    placeholder="98765 43210"
+                    placeholder="Enter your number"
                     {...register("mobile")}
                     className="h-12 w-full rounded-lg border border-input bg-muted/60 pl-12 pr-4 text-base font-semibold outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
                   />
@@ -210,9 +210,8 @@ export function OtpLoginModal({
                   onKeyDown={(e) => handleOtpKeyDown(i, e)}
                   inputMode="numeric"
                   maxLength={1}
-                  className={`h-13 w-full rounded-lg border text-center text-lg font-bold outline-none focus-visible:ring-3 focus-visible:ring-ring/50 ${
-                    otpError ? "border-destructive bg-destructive/5" : "border-input bg-muted/60"
-                  }`}
+                  className={`h-13 w-full rounded-lg border text-center text-lg font-bold outline-none focus-visible:ring-3 focus-visible:ring-ring/50 ${otpError ? "border-destructive bg-destructive/5" : "border-input bg-muted/60"
+                    }`}
                 />
               ))}
             </div>
