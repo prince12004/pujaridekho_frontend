@@ -112,7 +112,7 @@ export function HeroSection() {
                 </span>
               ))}
             </div>
-            Trusted by 10,000+ families across Delhi NCR
+            Trusted by 1,000+ families across Delhi NCR
           </div>
         </div>
 

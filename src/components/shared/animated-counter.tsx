@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 
 /**
- * Animates the numeric portion of a stat string (e.g. "10,000+", "4.9★", "24×7")
+ * Animates the numeric portion of a stat string (e.g. "1,000+", "4.9★", "24×7")
  * from 0 up to its target while preserving whatever prefix/suffix surrounds it.
  */
 export function AnimatedCounter({ value, duration = 1400 }: { value: string; duration?: number }) {

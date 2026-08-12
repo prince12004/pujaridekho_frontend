@@ -14,9 +14,9 @@ import type {
 } from "./types";
 
 export const trustStats: TrustStat[] = [
-  { value: "500+", label: "Verified Pandits" },
+  { value: "10+", label: "Verified Pandits" },
   { value: "4.9★", label: "Customer Rating" },
-  { value: "10,000+", label: "Completed Poojas" },
+  { value: "1,000+", label: "Completed Poojas" },
   { value: "24×7", label: "Support Available" },
   { value: "100%", label: "Verified Priests" },
 ];

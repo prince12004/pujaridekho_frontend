@@ -29,7 +29,7 @@ export default function BecomeAPanditPage() {
       <PageBanner
         eyebrow="For Pandits"
         title="Bring Your Practice to More Families"
-        description="Join a verified network of 500+ pandits earning steady, fairly-priced bookings across Delhi NCR."
+        description="Join a verified network of 10+ pandits earning steady, fairly-priced bookings across Delhi NCR."
         breadcrumbItems={[{ label: "Become a Pandit" }]}
         image={images.brassBells}
       />
