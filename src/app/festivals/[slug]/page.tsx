@@ -16,9 +16,10 @@ import { PoojaBookingProvider } from "@/features/poojas/components/pooja-booking
 import { buildMetadata } from "@/lib/seo";
 import { images } from "@/lib/images";
 import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 
 async function fetchFestival(slug: string) {
-  const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/festivals/${slug}`, { cache: "no-store" });
+  const response = await fetch(`${SERVER_API_URL}/festivals/${slug}`, { cache: "no-store" });
   if (!response.ok) return null;
   const json = await response.json();
   return json.data;

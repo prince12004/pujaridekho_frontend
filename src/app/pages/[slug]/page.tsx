@@ -5,6 +5,7 @@ import { Container } from "@/components/shared/container";
 import { JsonLd, breadcrumbSchema } from "@/components/shared/json-ld";
 import { buildMetadata } from "@/lib/seo";
 import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 
 interface CmsPageData {
   title: string;
@@ -14,7 +15,7 @@ interface CmsPageData {
 }
 
 async function fetchPage(slug: string): Promise<CmsPageData | null> {
-  const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/pages/${slug}`, { cache: "no-store" });
+  const response = await fetch(`${SERVER_API_URL}/pages/${slug}`, { cache: "no-store" });
   if (!response.ok) return null;
   const json = await response.json();
   return json.data;

@@ -7,7 +7,7 @@ import { Reveal } from "@/components/shared/reveal";
 import { Button } from "@/components/ui/button";
 import { StarRating } from "@/components/shared/star-rating";
 import { MonogramAvatar } from "@/components/shared/monogram-avatar";
-import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 
 interface PublicPandit {
   _id: string;
@@ -21,7 +21,7 @@ interface PublicPandit {
 }
 
 async function fetchTopPandits(): Promise<PublicPandit[]> {
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/pandits?sort=rating&limit=6`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/pandits?sort=rating&limit=6`, { cache: "no-store" });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data?.items ?? [];

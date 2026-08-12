@@ -4,7 +4,7 @@ import { fontVariables } from "@/lib/fonts";
 import { AppProviders } from "@/providers/app-providers";
 import { ConditionalPublicChrome } from "@/components/layout/conditional-public-chrome";
 import { Toaster } from "@/components/ui/sonner";
-import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 import "./globals.css";
 
 const geistMono = Geist_Mono({
@@ -24,7 +24,7 @@ interface HomeSeoOverride {
 
 async function fetchHomeSeoOverride(): Promise<HomeSeoOverride | null> {
   try {
-    const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/seo/by-path?path=/`, { cache: "no-store" });
+    const res = await fetch(`${SERVER_API_URL}/seo/by-path?path=/`, { cache: "no-store" });
     if (!res.ok) return null;
     const json = await res.json();
     return json.data;

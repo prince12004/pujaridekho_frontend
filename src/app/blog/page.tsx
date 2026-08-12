@@ -9,6 +9,7 @@ import type { PublicBlog } from "@/features/blog/api/use-blogs";
 import { buildMetadata } from "@/lib/seo";
 import { images } from "@/lib/images";
 import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 
 export const metadata: Metadata = buildMetadata({
   title: "Blog — Vidhi Guides, Muhurat Dates & Festival Explainers",
@@ -18,7 +19,7 @@ export const metadata: Metadata = buildMetadata({
 });
 
 async function fetchLatestPost(): Promise<PublicBlog | null> {
-  const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/blogs?limit=1`, { cache: "no-store" });
+  const response = await fetch(`${SERVER_API_URL}/blogs?limit=1`, { cache: "no-store" });
   if (!response.ok) return null;
   const json = await response.json();
   return json.data?.items?.[0] ?? null;

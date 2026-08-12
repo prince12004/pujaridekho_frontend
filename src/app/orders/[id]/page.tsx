@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Container } from "@/components/shared/container";
 import { Badge } from "@/components/ui/badge";
-import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 
 interface OrderItem {
   name: string;
@@ -25,7 +25,7 @@ interface OrderData {
 }
 
 async function fetchOrder(id: string): Promise<OrderData | null> {
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/orders/${id}`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/orders/${id}`, { cache: "no-store" });
   if (!res.ok) return null;
   const json = await res.json();
   return json.data;

@@ -20,9 +20,10 @@ import { religiousProducts } from "@/features/home/data";
 import { buildMetadata } from "@/lib/seo";
 import { images } from "@/lib/images";
 import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 
 async function fetchPooja(slug: string) {
-  const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/poojas/${slug}`, {
+  const response = await fetch(`${SERVER_API_URL}/poojas/${slug}`, {
     cache: "no-store",
   });
 

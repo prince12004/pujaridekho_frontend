@@ -4,12 +4,13 @@ import { JsonLd, breadcrumbSchema } from "@/components/shared/json-ld";
 import { BlogDetailContent } from "@/features/blog/components/blog-detail-content";
 import { buildMetadata } from "@/lib/seo";
 import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 import type { PublicBlogDetail } from "@/features/blog/api/use-blogs";
 
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1604881991720-f91add269bed?w=1600&auto=format&fit=crop";
 
 async function fetchBlog(slug: string): Promise<PublicBlogDetail | null> {
-  const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/blogs/${slug}`, { cache: "no-store" });
+  const response = await fetch(`${SERVER_API_URL}/blogs/${slug}`, { cache: "no-store" });
   if (!response.ok) return null;
   const json = await response.json();
   return json.data;

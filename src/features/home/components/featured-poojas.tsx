@@ -4,7 +4,7 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { Button } from "@/components/ui/button";
 import { PoojaCard } from "@/features/home/components/pooja-card";
-import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 
 interface PublicPooja {
   _id: string;
@@ -17,7 +17,7 @@ interface PublicPooja {
 }
 
 async function fetchFeaturedPoojas(): Promise<PublicPooja[]> {
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/poojas?limit=9`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/poojas?limit=9`, { cache: "no-store" });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data?.items ?? [];

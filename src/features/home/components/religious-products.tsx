@@ -4,7 +4,7 @@ import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { Button } from "@/components/ui/button";
 import { MediaCard, MediaCardBody, MediaCardFooter, MediaCardImage } from "@/components/shared/media-card";
-import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1604882737625-4c4573c6e05f?w=900&auto=format&fit=crop";
 
@@ -17,7 +17,7 @@ interface PublicProduct {
 }
 
 async function fetchProducts(): Promise<PublicProduct[]> {
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/products?limit=6`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/products?limit=6`, { cache: "no-store" });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data?.items ?? [];

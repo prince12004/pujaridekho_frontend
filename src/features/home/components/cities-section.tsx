@@ -5,7 +5,7 @@ import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { images } from "@/lib/images";
-import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 
 interface PublicCity {
   _id: string;
@@ -15,7 +15,7 @@ interface PublicCity {
 }
 
 async function fetchCities(): Promise<PublicCity[]> {
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/cities`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/cities`, { cache: "no-store" });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data ?? [];

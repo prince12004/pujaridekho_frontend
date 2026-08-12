@@ -3,7 +3,7 @@ import { BookOpen, CircleDot, Flame as Havan, Gem, Hexagon, Landmark, Package, S
 import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
-import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 
 interface PublicProductCategory {
   _id: string;
@@ -24,7 +24,7 @@ function iconForSlug(slug: string) {
 }
 
 async function fetchCategories(): Promise<PublicProductCategory[]> {
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/products/categories`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/products/categories`, { cache: "no-store" });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data ?? [];

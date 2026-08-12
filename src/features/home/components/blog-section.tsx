@@ -3,7 +3,7 @@ import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { MediaCard, MediaCardBody, MediaCardImage } from "@/components/shared/media-card";
-import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 
 const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1604881991720-f91add269bed?w=1600&auto=format&fit=crop";
 
@@ -22,7 +22,7 @@ function estimateReadTime(html: string) {
 }
 
 async function fetchBlogPosts(): Promise<PublicBlogPost[]> {
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/blogs?limit=3`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/blogs?limit=3`, { cache: "no-store" });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data?.items ?? [];

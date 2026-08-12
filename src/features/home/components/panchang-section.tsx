@@ -7,11 +7,11 @@ import { Reveal } from "@/components/shared/reveal";
 import { Button } from "@/components/ui/button";
 import { PanchangCard, type PanchangCardData } from "@/features/home/components/panchang-card";
 import { images } from "@/lib/images";
-import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 
 async function fetchTodayPanchang(): Promise<PanchangCardData | null> {
   try {
-    const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/panchang`, { cache: "no-store" });
+    const response = await fetch(`${SERVER_API_URL}/panchang`, { cache: "no-store" });
     if (!response.ok) return null;
     const json = await response.json();
     return json.data;

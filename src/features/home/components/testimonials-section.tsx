@@ -2,7 +2,7 @@ import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { HorizontalScroller } from "@/components/shared/horizontal-scroller";
 import { ReviewCard } from "@/components/shared/review-card";
-import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 
 interface PublicTestimonial {
   _id: string;
@@ -13,7 +13,7 @@ interface PublicTestimonial {
 }
 
 async function fetchTestimonials(): Promise<PublicTestimonial[]> {
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/testimonials`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/testimonials`, { cache: "no-store" });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data ?? [];

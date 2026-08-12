@@ -4,7 +4,7 @@ import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { HorizontalScroller } from "@/components/shared/horizontal-scroller";
 import { images } from "@/lib/images";
-import { env } from "@/lib/env";
+import { SERVER_API_URL } from "@/lib/server-env";
 
 interface PublicFestival {
   _id: string;
@@ -15,7 +15,7 @@ interface PublicFestival {
 }
 
 async function fetchFeaturedFestivals(): Promise<PublicFestival[]> {
-  const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/festivals?featured=true&limit=8`, { cache: "no-store" });
+  const res = await fetch(`${SERVER_API_URL}/festivals?featured=true&limit=8`, { cache: "no-store" });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data?.items ?? [];
