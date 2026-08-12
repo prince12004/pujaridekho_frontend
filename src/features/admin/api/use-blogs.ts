@@ -11,7 +11,7 @@ export interface Blog {
   coverImage?: string;
   author?: string;
   tags: string[];
-  status: "draft" | "Published";
+  status: "draft" | "published";
   PublishedAt?: string;
 }
 

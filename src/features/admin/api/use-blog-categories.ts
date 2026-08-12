@@ -6,7 +6,7 @@ export interface BlogCategory {
   name: string;
   slug: string;
   description?: string;
-  status: "draft" | "Published";
+  status: "draft" | "published";
 }
 
 export function useBlogCategories() {

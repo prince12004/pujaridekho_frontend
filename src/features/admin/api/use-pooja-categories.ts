@@ -7,7 +7,7 @@ export interface PoojaCategory {
   slug: string;
   image?: string;
   description?: string;
-  status: "draft" | "Published";
+  status: "draft" | "published";
   sortOrder: number;
 }
 

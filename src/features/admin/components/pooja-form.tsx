@@ -38,7 +38,7 @@ const poojaFormSchema = z.object({
   gallery: z.array(z.object({ url: z.string().min(1, "Required") })),
   startingPrice: z.coerce.number().min(0, "Required"),
   marketPrice: z.coerce.number().optional(),
-  status: z.enum(["draft", "Published", "archived"]),
+  status: z.enum(["draft", "published", "archived"]),
   featured: z.boolean().optional(),
   popular: z.boolean().optional(),
   sortOrder: z.coerce.number().optional(),
@@ -104,10 +104,10 @@ export function PoojaForm({ pooja }: { pooja?: Pooja }) {
       };
       if (pooja) {
         await updateMutation.mutateAsync({ id: pooja._id, input: payload });
-        toast.success("Pooja updated");
+        toast.success("Puja updated");
       } else {
         await createMutation.mutateAsync(payload);
-        toast.success("Pooja created");
+        toast.success("Puja created");
         router.push("/admin/poojas");
       }
     } catch (err) {
@@ -153,7 +153,7 @@ export function PoojaForm({ pooja }: { pooja?: Pooja }) {
             <Label>Status</Label>
             <select {...register("status")} className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none">
               <option value="draft">Draft</option>
-              <option value="Published">Published</option>
+              <option value="published">Published</option>
               <option value="archived">Archived</option>
             </select>
           </div>

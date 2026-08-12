@@ -14,7 +14,7 @@ export interface Product {
   stockQuantity: number;
   inStock: boolean;
   featured: boolean;
-  status: "draft" | "Published" | "archived";
+  status: "draft" | "published" | "archived";
 }
 
 export interface ProductListResult {

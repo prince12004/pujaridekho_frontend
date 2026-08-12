@@ -57,7 +57,7 @@ export default function PoojasListPage() {
     if (!confirm(`Delete pooja "${name}"?`)) return;
     try {
       await deleteMutation.mutateAsync(id);
-      toast.success("Pooja deleted");
+      toast.success("Puja deleted");
     } catch (err) {
       toast.error(getErrorMessage(err));
     }
@@ -71,7 +71,7 @@ export default function PoojasListPage() {
         actions={
           <Button asChild>
             <Link href="/admin/poojas/new">
-              <Plus /> Add Pooja
+              <Plus /> Add Puja
             </Link>
           </Button>
         }
@@ -121,7 +121,7 @@ export default function PoojasListPage() {
                     </TableCell>
                     <TableCell>₹{pooja.startingPrice.toLocaleString("en-IN")}</TableCell>
                     <TableCell>
-                      <Badge variant={pooja.status === "Published" ? "default" : "outline"}>{pooja.status}</Badge>
+                      <Badge variant={pooja.status === "published" ? "default" : "outline"}>{pooja.status}</Badge>
                     </TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="icon-sm" asChild>

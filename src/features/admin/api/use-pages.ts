@@ -8,7 +8,7 @@ export interface CmsPage {
   content: string;
   metaTitle?: string;
   metaDescription?: string;
-  status: "draft" | "Published";
+  status: "draft" | "published";
 }
 
 export function usePages() {

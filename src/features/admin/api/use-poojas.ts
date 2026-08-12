@@ -27,7 +27,7 @@ export interface Pooja {
   marketPrice?: number;
   samagriTemplate?: string;
   packages: PoojaPackage[];
-  status: "draft" | "Published" | "archived";
+  status: "draft" | "published" | "archived";
   featured: boolean;
   popular: boolean;
   sortOrder?: number;
