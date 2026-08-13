@@ -1,5 +1,5 @@
 export const siteConfig = {
-  name: "PujariDekho",
+  name: "Pujari Dekho",
   tagline: "Verified & Trusted",
   taglineHi: "पूजा हो तो,",
   description:

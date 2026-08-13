@@ -62,7 +62,7 @@ export function HeroSection() {
           <h1 className="mt-6 text-balance">
             <span className="lang-hi block text-3xl text-primary sm:text-4xl">पूजा हो तो,</span>
             <span className="block font-heading text-5xl font-bold text-brand-cream sm:text-6xl">
-              PujariDekho
+              Pujari Dekho
             </span>
           </h1>
 
