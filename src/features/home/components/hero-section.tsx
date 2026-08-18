@@ -6,7 +6,7 @@ import { CheckCircle2, Flame, Package, ShieldCheck, Star, User } from "lucide-re
 import { Button } from "@/components/ui/button";
 import { BookingWidget, type BookingOption } from "@/components/shared/booking-widget";
 import { images } from "@/lib/images";
-import { bookingCities } from "@/features/home/data";
+import { usePublicCities } from "@/features/cities/api/use-cities";
 import { usePoojas } from "@/features/poojas/api/use-poojas";
 
 const heroPoints = [
@@ -27,6 +27,8 @@ export function HeroSection() {
   const { data: poojasData } = usePoojas({ limit: 100 });
   const poojaOptions: BookingOption[] =
     poojasData?.items.map((p) => ({ label: p.name, value: p.slug })) ?? [];
+  const { data: citiesData } = usePublicCities();
+  const cityNames = citiesData?.map((c) => c.name) ?? [];
 
   return (
     <section id="book" className="relative overflow-hidden">
@@ -117,7 +119,7 @@ export function HeroSection() {
         </div>
 
         <div>
-          <BookingWidget cities={bookingCities} poojas={poojaOptions} />
+          <BookingWidget cities={cityNames} poojas={poojaOptions} />
         </div>
       </div>
     </section>

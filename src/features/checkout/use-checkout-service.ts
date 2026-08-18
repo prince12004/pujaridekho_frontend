@@ -9,6 +9,7 @@ export interface CheckoutService {
   marketPrice?: number;
   duration?: string;
   location?: string;
+  packages?: { name: string; price: number; cityPrices?: { city: string; price: number }[] }[];
 }
 
 export function useCheckoutService(type: "pooja" | "festival", slug: string | undefined) {

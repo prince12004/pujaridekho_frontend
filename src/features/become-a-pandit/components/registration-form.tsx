@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { bookingCities } from "@/features/home/data";
+import { usePublicCities } from "@/features/cities/api/use-cities";
 import { mobileSchema } from "@/lib/validators";
 
 const registrationSchema = z.object({
@@ -43,6 +43,8 @@ export function RegistrationForm() {
     setValue,
     formState: { errors },
   } = useForm<RegistrationValues>({ resolver: zodResolver(registrationSchema) });
+  const { data: citiesData } = usePublicCities();
+  const cityNames = citiesData?.map((c) => c.name) ?? [];
 
   function onSubmit() {
     setSubmitted(true);
@@ -111,7 +113,7 @@ export function RegistrationForm() {
                         <SelectValue placeholder="Select your city" />
                       </SelectTrigger>
                       <SelectContent>
-                        {bookingCities.map((city) => (
+                        {cityNames.map((city) => (
                           <SelectItem key={city} value={city}>{city}</SelectItem>
                         ))}
                       </SelectContent>

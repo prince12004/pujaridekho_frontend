@@ -18,6 +18,7 @@ import { apiClient } from "@/lib/api-client";
 import { getCustomerAccessToken } from "@/lib/customer-api-client";
 import { getErrorMessage } from "@/lib/get-error-message";
 import { useCheckoutService } from "@/features/checkout/use-checkout-service";
+import { resolvePackagePrice } from "@/lib/pooja-pricing";
 import { readCheckoutPrefillForSlug, saveCheckoutPrefill, clearCheckoutPrefill, type CheckoutPrefill } from "@/features/checkout/checkout-storage";
 import { contactDetailsSchema, type ContactDetailsValues } from "@/features/checkout/contact-details-schema";
 import { ContactDetailsFields, FieldSection } from "@/features/checkout/contact-details-fields";
@@ -90,12 +91,14 @@ function YourDetailsSummary({ prefill }: { prefill: CompleteCheckoutPrefill }) {
               {new Date(prefill.date).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}
             </p>
           </div>
+          {/* Muhurat selection is disabled for now — booking goes by Pooja Date only.
           {prefill.muhuratLabel ? (
             <div>
               <p className="text-xs text-muted-foreground">Muhurat</p>
               <p className="font-medium">{prefill.muhuratLabel}</p>
             </div>
           ) : null}
+          */}
         </div>
       </FieldSection>
     </div>
@@ -176,7 +179,14 @@ export function CheckoutClient() {
 
   const selectedSamagriItems = prefill?.selectedSamagri ?? [];
   const samagriTotal = selectedSamagriItems.reduce((sum, item) => sum + item.price, 0);
-  const poojaPrice = prefill?.selectedPackage?.price ?? Number(service?.startingPrice ?? 0);
+  // Re-resolved here (rather than trusting whatever price was shown on the
+  // pooja detail page) because the city might only just now be known —
+  // this is the number the customer actually sees before paying, so it has
+  // to reflect any city-specific override for the selected package.
+  const servicePackage = service?.packages?.find((p) => p.name === prefill?.selectedPackage?.name);
+  const poojaPrice = servicePackage
+    ? resolvePackagePrice(servicePackage, prefill?.city)
+    : (prefill?.selectedPackage?.price ?? Number(service?.startingPrice ?? 0));
   // Shown struck-through as a waived charge — the customer is never actually charged for it.
   const distanceChargeMrp = DISTANCE_CHARGE;
   const distanceCharge = 0;
@@ -225,6 +235,7 @@ export function CheckoutClient() {
           poojaTime: details.muhuratLabel,
           muhuratSlotId: details.muhuratSlotId,
           selectedSamagri: details.selectedSamagri ?? [],
+          packageName: details.selectedPackage?.name,
         },
         { headers: { Authorization: `Bearer ${getCustomerAccessToken()}` } },
       );

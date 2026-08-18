@@ -124,5 +124,3 @@ export const whyChooseItems: WhyChooseItem[] = [
   { title: "Secure Payments", description: "Encrypted, PCI-compliant checkout on every booking." },
   { title: "24×7 Support", description: "Real people on call or WhatsApp whenever you need help." },
 ];
-
-export const bookingCities = ["Delhi", "Noida", "Gurgaon", "Ghaziabad", "Faridabad", "Greater Noida"];

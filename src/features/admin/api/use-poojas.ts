@@ -12,6 +12,7 @@ export interface PoojaPackage {
   features?: string[];
   description?: string;
   recommended?: boolean;
+  cityPrices?: { city: string; price: number }[];
 }
 
 export interface Pooja {

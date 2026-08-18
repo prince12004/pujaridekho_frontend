@@ -5,7 +5,7 @@ import { SearchBar } from "@/components/shared/search-bar";
 import { FilterBar } from "@/components/shared/filter-bar";
 import { Reveal } from "@/components/shared/reveal";
 import { PoojaCard } from "@/features/home/components/pooja-card";
-import { bookingCities } from "@/features/home/data";
+import { usePublicCities } from "@/features/cities/api/use-cities";
 import { usePoojas } from "@/features/poojas/api/use-poojas";
 import { poojaCategories } from "@/features/poojas/data";
 
@@ -13,6 +13,8 @@ export function PoojasListingClient() {
   const [query, setQuery] = useState("");
   const [filters, setFilters] = useState<Record<string, string>>({});
   const { data, isLoading, error } = usePoojas({ search: query, page: 1, limit: 100 });
+  const { data: citiesData } = usePublicCities();
+  const cityNames = citiesData?.map((c) => c.name) ?? [];
 
   const items = (data?.items ?? []) as Array<{
     _id: string;
@@ -59,7 +61,7 @@ export function PoojasListingClient() {
               key: "city",
               label: "City",
               placeholder: "City",
-              options: bookingCities.map((c) => ({ label: c, value: c })),
+              options: cityNames.map((c) => ({ label: c, value: c })),
             },
           ]}
         />

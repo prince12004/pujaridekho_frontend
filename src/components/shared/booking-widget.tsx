@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { CalendarDays, CheckCircle2, Clock3, Flame, Loader2, MapPin, ShieldCheck, Sparkles } from "lucide-react";
+import { CalendarDays, CheckCircle2, Flame, Loader2, MapPin, ShieldCheck, Sparkles } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,8 +15,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useMuhuratsForDate } from "@/lib/muhurat";
+// Muhurat selection is disabled for now — booking goes by Pooja Date only.
+// import { useMuhuratsForDate } from "@/lib/muhurat";
 import { DatePicker } from "@/components/shared/date-picker";
+import { apiClient } from "@/lib/api-client";
 import { readCheckoutPrefillForSlug, saveCheckoutPrefill } from "@/features/checkout/checkout-storage";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -78,17 +80,33 @@ export function BookingWidget({
   });
 
   const today = new Date().toISOString().split("T")[0];
-  const selectedDate = watch("date");
-  const selectedPoojaSlug = watch("pooja");
-  const { data: muhuratOptions = [], isLoading: isLoadingMuhurats } = useMuhuratsForDate(selectedPoojaSlug, selectedDate);
+  // Muhurat selection is disabled for now — booking goes by Pooja Date only.
+  // const selectedDate = watch("date");
+  // const selectedPoojaSlug = watch("pooja");
+  // const { data: muhuratOptions = [], isLoading: isLoadingMuhurats } = useMuhuratsForDate(selectedPoojaSlug, selectedDate);
 
-  useEffect(() => {
-    setValue("muhurat", "");
-  }, [selectedDate, setValue]);
+  // useEffect(() => {
+  //   setValue("muhurat", "");
+  // }, [selectedDate, setValue]);
 
   function handleFormSubmit(values: BookingValues) {
     setIsRedirecting(true);
-    const muhuratSlot = muhuratOptions.find((m) => m.slotId === values.muhurat);
+    // const muhuratSlot = muhuratOptions.find((m) => m.slotId === values.muhurat);
+
+    // Notifies the team by email — best-effort, never blocks the redirect
+    // to the pooja page below even if sending fails.
+    const poojaLabel = poojas.find((p) => p.value === values.pooja)?.label ?? values.pooja;
+    apiClient
+      .post("/leads/home-booking", {
+        name: values.name,
+        mobile: values.mobile,
+        city: values.city,
+        address: values.address,
+        pooja: poojaLabel,
+        date: values.date,
+      })
+      .catch(() => {});
+
     // Drops any package/samagri left over from a previously-viewed, different
     // pooja before this fresh save — those don't apply to the one just picked.
     readCheckoutPrefillForSlug(values.pooja);
@@ -98,8 +116,8 @@ export function BookingWidget({
       city: values.city,
       address: values.address,
       date: values.date,
-      muhuratSlotId: values.muhurat,
-      muhuratLabel: muhuratSlot?.timeRange,
+      // muhuratSlotId: values.muhurat,
+      // muhuratLabel: muhuratSlot?.timeRange,
       slug: values.pooja,
     });
     router.push(`/poojas/${values.pooja}`);
@@ -207,6 +225,7 @@ export function BookingWidget({
           {errors.date ? <p className="text-xs text-destructive">{errors.date.message}</p> : null}
         </div>
 
+        {/* Muhurat selection is disabled for now — booking goes by Pooja Date only.
         {selectedDate ? (
           <div className="flex flex-col gap-1.5 overflow-hidden">
             <Label className="font-ui gap-1.5 text-xs font-bold uppercase tracking-wide text-muted-foreground">
@@ -242,6 +261,7 @@ export function BookingWidget({
             )}
           </div>
         ) : null}
+        */}
 
         <Button type="submit" size="lg" disabled={isRedirecting} className="main_books font-ui mt-1 w-full font-bold">
           {isRedirecting ? (

@@ -16,8 +16,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { usePoojaCategories } from "@/features/admin/api/use-pooja-categories";
 import { Pooja, useCreatePooja, useUpdatePooja } from "@/features/admin/api/use-poojas";
 import { useSamagriTemplates } from "@/features/admin/api/use-samagri-templates";
+import { useCities } from "@/features/admin/api/use-cities";
 import { ImageUploadInput } from "@/features/admin/components/image-upload-input";
 import { getErrorMessage } from "@/features/admin/lib/get-error-message";
+
+const cityPriceSchema = z.object({
+  city: z.string().min(1, "Required"),
+  price: z.coerce.number().min(0),
+});
 
 const packageSchema = z.object({
   name: z.string().min(1, "Required"),
@@ -26,6 +32,7 @@ const packageSchema = z.object({
   duration: z.string().optional(),
   samagriIncluded: z.boolean().optional(),
   dakshinaIncluded: z.boolean().optional(),
+  cityPrices: z.array(cityPriceSchema).optional(),
 });
 
 const poojaFormSchema = z.object({
@@ -47,6 +54,100 @@ const poojaFormSchema = z.object({
 
 export type PoojaFormValues = z.infer<typeof poojaFormSchema>;
 
+/** One package's fields, including its own per-city price overrides — split
+ * out from PoojaForm because useFieldArray for `cityPrices` needs to run
+ * once per package row, which a plain .map() over the outer array can't do. */
+function PackageRow({
+  control,
+  register,
+  index,
+  cities,
+  onRemove,
+}: {
+  control: ReturnType<typeof useForm<z.input<typeof poojaFormSchema>, unknown, PoojaFormValues>>["control"];
+  register: ReturnType<typeof useForm<z.input<typeof poojaFormSchema>, unknown, PoojaFormValues>>["register"];
+  index: number;
+  cities: { _id: string; name: string }[] | undefined;
+  onRemove: () => void;
+}) {
+  const cityPricesArray = useFieldArray({ control, name: `packages.${index}.cityPrices` });
+
+  return (
+    <div className="rounded-lg border border-border p-3 space-y-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-5">
+        <div className="space-y-1">
+          <Label className="text-xs">Package name</Label>
+          <Input {...register(`packages.${index}.name`)} />
+        </div>
+        <div className="space-y-1">
+          <Label className="text-xs">Price (₹)</Label>
+          <Input type="number" {...register(`packages.${index}.price`)} />
+        </div>
+        <div className="space-y-1">
+          <Label className="text-xs">Sale price (₹)</Label>
+          <Input type="number" {...register(`packages.${index}.salePrice`)} />
+        </div>
+        <div className="space-y-1">
+          <Label className="text-xs">Duration</Label>
+          <Input {...register(`packages.${index}.duration`)} placeholder="e.g. 2 hours" />
+        </div>
+        <div className="flex items-center justify-between gap-2">
+          <label className="flex items-center gap-1.5 text-xs">
+            <input type="checkbox" {...register(`packages.${index}.samagriIncluded`)} /> Samagri incl.
+          </label>
+          <Button type="button" variant="ghost" size="icon-sm" onClick={onRemove}>
+            <Trash2 />
+          </Button>
+        </div>
+      </div>
+
+      <div className="space-y-2 rounded-md bg-muted/30 p-2.5">
+        <div className="flex items-center justify-between">
+          <Label className="text-xs">City Prices (optional — overrides the price above for a specific city)</Label>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => cityPricesArray.append({ city: "", price: 0 })}
+          >
+            <Plus /> Add city price
+          </Button>
+        </div>
+        {cityPricesArray.fields.length === 0 && (
+          <p className="text-xs text-muted-foreground">Same price for every city.</p>
+        )}
+        {cityPricesArray.fields.map((cityField, cityIndex) => (
+          <div key={cityField.id} className="flex items-center gap-2">
+            <select
+              {...register(`packages.${index}.cityPrices.${cityIndex}.city`)}
+              className="h-8 flex-1 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none"
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Select city
+              </option>
+              {cities?.map((c) => (
+                <option key={c._id} value={c.name}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+            <Input
+              type="number"
+              placeholder="Price (₹)"
+              className="w-32"
+              {...register(`packages.${index}.cityPrices.${cityIndex}.price`)}
+            />
+            <Button type="button" variant="ghost" size="icon-sm" onClick={() => cityPricesArray.remove(cityIndex)}>
+              <Trash2 />
+            </Button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function slugify(value: string) {
   return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
@@ -55,6 +156,7 @@ export function PoojaForm({ pooja }: { pooja?: Pooja }) {
   const router = useRouter();
   const { data: categories } = usePoojaCategories();
   const { data: samagriTemplates } = useSamagriTemplates();
+  const { data: cities } = useCities();
   const createMutation = useCreatePooja();
   const updateMutation = useUpdatePooja();
   const linkedTemplate = samagriTemplates?.items.find((t) => (typeof t.pooja === "object" ? t.pooja._id : t.pooja) === pooja?._id);
@@ -235,32 +337,14 @@ export function PoojaForm({ pooja }: { pooja?: Pooja }) {
         <CardContent className="space-y-3">
           {packagesArray.fields.length === 0 && <p className="text-sm text-muted-foreground">No packages added yet.</p>}
           {packagesArray.fields.map((field, index) => (
-            <div key={field.id} className="grid grid-cols-1 gap-3 rounded-lg border border-border p-3 md:grid-cols-5">
-              <div className="space-y-1">
-                <Label className="text-xs">Package name</Label>
-                <Input {...register(`packages.${index}.name`)} />
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Price (₹)</Label>
-                <Input type="number" {...register(`packages.${index}.price`)} />
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Sale price (₹)</Label>
-                <Input type="number" {...register(`packages.${index}.salePrice`)} />
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Duration</Label>
-                <Input {...register(`packages.${index}.duration`)} placeholder="e.g. 2 hours" />
-              </div>
-              <div className="flex items-center justify-between gap-2">
-                <label className="flex items-center gap-1.5 text-xs">
-                  <input type="checkbox" {...register(`packages.${index}.samagriIncluded`)} /> Samagri incl.
-                </label>
-                <Button type="button" variant="ghost" size="icon-sm" onClick={() => packagesArray.remove(index)}>
-                  <Trash2 />
-                </Button>
-              </div>
-            </div>
+            <PackageRow
+              key={field.id}
+              control={control}
+              register={register}
+              index={index}
+              cities={cities}
+              onRemove={() => packagesArray.remove(index)}
+            />
           ))}
         </CardContent>
       </Card>

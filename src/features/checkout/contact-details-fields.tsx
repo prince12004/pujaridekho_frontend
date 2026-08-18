@@ -1,13 +1,13 @@
 "use client";
 
 import type { FieldErrors, UseFormRegister, UseFormSetValue, UseFormWatch } from "react-hook-form";
-import { CalendarDays, Clock3, MapPinned, Phone, User } from "lucide-react";
+import { CalendarDays, MapPinned, Phone, User } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { DatePicker } from "@/components/shared/date-picker";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { bookingCities } from "@/features/home/data";
+import { usePublicCities } from "@/features/cities/api/use-cities";
 import type { MuhuratSlot } from "@/lib/muhurat";
 import type { ContactDetailsValues } from "@/features/checkout/contact-details-schema";
 import { cn } from "@/lib/utils";
@@ -58,7 +58,8 @@ export function ContactDetailsFields({
   isLoadingMuhurats: boolean;
 }) {
   const today = new Date().toISOString().split("T")[0];
-  const selectedDate = watch("date");
+  const { data: citiesData } = usePublicCities();
+  const cityNames = citiesData?.map((c) => c.name) ?? [];
 
   return (
     <div className="flex flex-col gap-4">
@@ -88,7 +89,7 @@ export function ContactDetailsFields({
                 <SelectValue placeholder="Choose your city" />
               </SelectTrigger>
               <SelectContent>
-                {bookingCities.map((city) => (
+                {cityNames.map((city) => (
                   <SelectItem key={city} value={city}>
                     {city}
                   </SelectItem>
@@ -120,6 +121,7 @@ export function ContactDetailsFields({
             {errors.date ? <p className="text-xs text-destructive">{errors.date.message}</p> : null}
           </div>
 
+          {/* Muhurat selection is disabled for now — booking goes by Pooja Date only.
           {serviceType === "pooja" && selectedDate ? (
             <div className="flex flex-col gap-1.5">
               <Label className={cn(fieldLabelClass, "flex items-center gap-1.5")}>
@@ -147,6 +149,7 @@ export function ContactDetailsFields({
               )}
             </div>
           ) : null}
+          */}
         </div>
       </FieldSection>
     </div>

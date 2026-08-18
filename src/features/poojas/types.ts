@@ -5,6 +5,7 @@ export interface PoojaPackage {
   price: number;
   duration: string;
   features: string[];
+  cityPrices?: { city: string; price: number }[];
 }
 
 export interface PoojaDetail {

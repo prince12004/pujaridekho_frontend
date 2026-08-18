@@ -30,6 +30,7 @@ import {
   Mail,
   Clock,
   ClipboardList,
+  Inbox,
 } from "lucide-react";
 
 export interface AdminNavItem {
@@ -79,6 +80,7 @@ export const ADMIN_NAV: AdminNavSection[] = [
     items: [
       { label: "Customers", href: "/admin/customers", icon: Users, permission: "customers:view" },
       { label: "Consultations", href: "/admin/consultations", icon: MessageCircleQuestion, permission: "consultations:manage" },
+      { label: "Homepage Enquiries", href: "/admin/leads", icon: Inbox, permission: "consultations:manage" },
     ],
   },
   {
