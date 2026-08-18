@@ -21,6 +21,7 @@ import { useFestivals } from "@/features/admin/api/use-festivals";
 import { usePandits } from "@/features/admin/api/use-pandits";
 import { BOOKING_SERVICE_TYPES, BOOKING_SOURCES, PAYMENT_METHODS } from "@/features/admin/lib/booking-status";
 import { getErrorMessage } from "@/features/admin/lib/get-error-message";
+import { ADVANCE_AMOUNT } from "@/components/shared/payment-option-selector";
 
 const offlineBookingSchema = z.object({
   customerName: z.string().min(1, "Required"),
@@ -41,7 +42,6 @@ const offlineBookingSchema = z.object({
   packagePrice: z.coerce.number().min(0).optional(),
   marketPrice: z.coerce.number().min(0).optional(),
   discount: z.coerce.number().min(0).optional(),
-  finalAmount: z.coerce.number().min(0, "Required"),
   advanceAmount: z.coerce.number().min(0).optional(),
   initialPaymentAmount: z.coerce.number().min(0).optional(),
   paymentMethod: z.enum(PAYMENT_METHODS),
@@ -77,6 +77,8 @@ export default function CreateOfflineBookingPage() {
   const serviceType = watch("serviceType");
   const selectedPoojaId = watch("pooja");
   const selectedFestivalId = watch("festival");
+  const watchedPackagePrice = watch("packagePrice");
+  const watchedDiscount = watch("discount");
   const selectedPooja = useMemo(
     () => poojasResult?.items.find((p) => p._id === selectedPoojaId),
     [poojasResult, selectedPoojaId],
@@ -86,6 +88,8 @@ export default function CreateOfflineBookingPage() {
     [festivalsResult, selectedFestivalId],
   );
   const selectedService = serviceType === "festival" ? selectedFestival : selectedPooja;
+  const effectivePackagePrice = Number(watchedPackagePrice ?? selectedService?.startingPrice ?? 0);
+  const previewFinalAmount = Math.max(effectivePackagePrice - Number(watchedDiscount ?? 0) + ADVANCE_AMOUNT, 0);
 
   const onSubmit = async (values: OfflineBookingValues) => {
     try {
@@ -114,9 +118,7 @@ export default function CreateOfflineBookingPage() {
           packagePrice: values.packagePrice ?? 0,
           marketPrice: values.marketPrice ?? undefined,
           discount: values.discount ?? 0,
-          finalAmount: values.finalAmount,
           advanceAmount: values.advanceAmount ?? 0,
-          remainingAmount: Math.max(values.finalAmount - (values.advanceAmount ?? 0), 0),
         },
         payments,
         bookingSource: values.bookingSource,
@@ -264,8 +266,10 @@ export default function CreateOfflineBookingPage() {
             </div>
             <div className="space-y-1.5">
               <Label>Final amount (₹)</Label>
-              <Input type="number" {...register("finalAmount")} />
-              {errors.finalAmount && <p className="text-xs text-destructive">{errors.finalAmount.message}</p>}
+              <Input type="number" value={previewFinalAmount} disabled readOnly />
+              <p className="text-xs text-muted-foreground">
+                Package price − discount + ₹{ADVANCE_AMOUNT} platform fee, calculated automatically.
+              </p>
             </div>
             <div className="space-y-1.5">
               <Label>Advance / agreed amount (₹)</Label>

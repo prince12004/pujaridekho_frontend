@@ -27,6 +27,7 @@ import { usePandits } from "@/features/admin/api/use-pandits";
 import { useMuhurat } from "@/features/admin/api/use-muhurats";
 import { BOOKING_STATUS_LABELS, BOOKING_STATUSES, PAYMENT_METHODS } from "@/features/admin/lib/booking-status";
 import { getErrorMessage } from "@/features/admin/lib/get-error-message";
+import { ADVANCE_AMOUNT } from "@/components/shared/payment-option-selector";
 
 const CONFIRMABLE_STATUSES = ["pending_payment", "payment_received"];
 
@@ -42,7 +43,6 @@ interface EditFormValues {
   packagePrice: number;
   marketPrice: number;
   discount: number;
-  finalAmount: number;
   advanceAmount: number;
 }
 
@@ -94,7 +94,6 @@ export default function BookingDetailPage() {
       packagePrice: Number(booking.pricing?.packagePrice ?? 0),
       marketPrice: Number(booking.pricing?.marketPrice ?? 0),
       discount: Number(booking.pricing?.discount ?? 0),
-      finalAmount: Number(booking.pricing?.finalAmount ?? 0),
       advanceAmount: Number(booking.pricing?.advanceAmount ?? 0),
     });
     setEditOpen(true);
@@ -117,9 +116,7 @@ export default function BookingDetailPage() {
             packagePrice: values.packagePrice,
             marketPrice: values.marketPrice || undefined,
             discount: values.discount,
-            finalAmount: values.finalAmount,
             advanceAmount: values.advanceAmount,
-            remainingAmount: Math.max(values.finalAmount - values.advanceAmount, 0),
           },
         },
       });
@@ -187,6 +184,10 @@ export default function BookingDetailPage() {
   const finalAmount = Number(booking.pricing?.finalAmount ?? 0);
   const marketPrice = Number(booking.pricing?.marketPrice ?? 0);
   const totalPaid = booking.payments.filter((p) => p.status !== "failed").reduce((sum, p) => sum + p.amount, 0);
+  const editPreviewFinalAmount = Math.max(
+    Number(watchEdit("packagePrice") ?? 0) - Number(watchEdit("discount") ?? 0) + ADVANCE_AMOUNT,
+    0,
+  );
 
   return (
     <div>
@@ -584,9 +585,12 @@ export default function BookingDetailPage() {
               </div>
               <div className="space-y-1.5">
                 <Label>Final amount (₹)</Label>
-                <Input type="number" {...registerEdit("finalAmount", { valueAsNumber: true })} />
+                <Input type="number" value={editPreviewFinalAmount} disabled readOnly />
               </div>
             </div>
+            <p className="text-xs text-muted-foreground">
+              Final amount = package price − discount + ₹{ADVANCE_AMOUNT} platform fee, calculated automatically.
+            </p>
             <div className="space-y-1.5">
               <Label>Advance / agreed amount (₹)</Label>
               <Input type="number" className="max-w-[200px]" {...registerEdit("advanceAmount", { valueAsNumber: true })} />
