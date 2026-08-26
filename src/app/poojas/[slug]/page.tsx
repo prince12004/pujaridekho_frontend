@@ -138,6 +138,15 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
             </div>
 
             <div className="mt-8 flex flex-col gap-8">
+              {(pooja.packages ?? []).length > 0 ? (
+                <Reveal>
+                  <div id="packages" className="scroll-mt-24">
+                    <h2 className="font-heading mb-6 text-2xl">Packages &amp; Pricing</h2>
+                    <PoojaPackages packages={pooja.packages ?? []} />
+                  </div>
+                </Reveal>
+              ) : null}
+
               <Reveal>
                 <SamagriSelector
                   basePrice={Number(pooja.startingPrice)}
@@ -165,11 +174,6 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
                   </div>
                 </Reveal>
               ) : null}
-
-              <Reveal>
-                <h2 className="font-heading mb-6 text-2xl">Packages &amp; Pricing</h2>
-                <PoojaPackages packages={pooja.packages ?? []} />
-              </Reveal>
             </div>
 
             <div id="book" className="mt-10 scroll-mt-24 lg:hidden">
@@ -178,6 +182,7 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
                 name={pooja.name}
                 serviceType="pooja"
                 basePrice={Number(pooja.startingPrice)}
+                packages={pooja.packages ?? []}
               />
             </div>
 
@@ -270,6 +275,7 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
                 name={pooja.name}
                 serviceType="pooja"
                 basePrice={Number(pooja.startingPrice)}
+                packages={pooja.packages ?? []}
               />
             </div>
           </div>

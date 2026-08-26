@@ -50,6 +50,7 @@ export function FestivalsListingClient() {
                   image: festival.featuredImage ?? "",
                 }}
                 hrefBase="/festivals"
+                comingSoon
               />
             </Reveal>
           ))}

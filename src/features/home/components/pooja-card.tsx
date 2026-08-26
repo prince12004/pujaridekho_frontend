@@ -14,9 +14,11 @@ function resolveImage(src: string) {
 export function PoojaCard({
   pooja,
   hrefBase = "/poojas",
+  comingSoon = false,
 }: {
   pooja: Pooja | { slug: string; name: string; duration?: string; location?: string; price: number; marketPrice?: number; image: string; tag?: string };
   hrefBase?: string;
+  comingSoon?: boolean;
 }) {
   return (
     <MediaCard>
@@ -26,7 +28,11 @@ export function PoojaCard({
         height="h-60"
         overlay
         badge={
-          pooja.tag ? (
+          comingSoon ? (
+            <Badge className="bg-secondary/90 font-ui text-[11px] font-bold uppercase tracking-wide text-white">
+              Coming Soon
+            </Badge>
+          ) : pooja.tag ? (
             <Badge className="bg-brand-purple-deep/70 font-ui text-[11px] font-bold text-brand-gold-soft">
               {pooja.tag}
             </Badge>
@@ -61,9 +67,15 @@ export function PoojaCard({
             </div>
             <div className="text-[11px] font-semibold text-muted-foreground">Fixed price · Samagri optional</div>
           </div>
-          <Button size="sm" className="main_books font-ui font-bold" asChild>
-            <Link href={`${hrefBase}/${pooja.slug}`}>Book Now</Link>
-          </Button>
+          {comingSoon ? (
+            <Button size="sm" className="font-ui font-bold" variant="outline" disabled>
+              Coming Soon
+            </Button>
+          ) : (
+            <Button size="sm" className="main_books font-ui font-bold" asChild>
+              <Link href={`${hrefBase}/${pooja.slug}`}>Book Now</Link>
+            </Button>
+          )}
         </MediaCardFooter>
       </MediaCardBody>
     </MediaCard>

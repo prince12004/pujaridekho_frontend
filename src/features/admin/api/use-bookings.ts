@@ -51,6 +51,13 @@ export interface BookingDetail extends BookingListItem {
   referral?: { referredBy?: string; referralCode?: string; notes?: string };
   createdByAdmin?: string | null;
   muhuratSlot?: { muhurat: string; slotId: string } | null;
+  pooja?: {
+    _id: string;
+    name: string;
+    slug: string;
+    samagriTemplate?: { includedItems: { itemName: string; estimatedPrice: number }[] } | null;
+  };
+  festival?: { _id: string; name: string; slug: string; samagri?: { name: string; price: number }[] };
 }
 
 export function useBookings(params: { search?: string; status?: string; bookingChannel?: string; page?: number } = {}) {

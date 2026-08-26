@@ -179,20 +179,13 @@ export function CheckoutClient() {
 
   const selectedSamagriItems = prefill?.selectedSamagri ?? [];
   const samagriTotal = selectedSamagriItems.reduce((sum, item) => sum + item.price, 0);
-  // Re-resolved here (rather than trusting whatever price was shown on the
-  // pooja detail page) because the city might only just now be known —
-  // this is the number the customer actually sees before paying, so it has
-  // to reflect any city-specific override for the selected package.
   const servicePackage = service?.packages?.find((p) => p.name === prefill?.selectedPackage?.name);
   const poojaPrice = servicePackage
     ? resolvePackagePrice(servicePackage, prefill?.city)
     : (prefill?.selectedPackage?.price ?? Number(service?.startingPrice ?? 0));
-  // Shown struck-through as a waived charge — the customer is never actually charged for it.
   const distanceChargeMrp = DISTANCE_CHARGE;
   const distanceCharge = 0;
-  // The platform fee is what's paid upfront to confirm the booking — the same
-  // ₹99 as the "Booking Amount" payment option, just itemized in the summary
-  // too so the full-amount total is transparent about what it's made of.
+
   const platformFee = ADVANCE_AMOUNT;
   const estimatedTotal = poojaPrice + samagriTotal + distanceCharge + platformFee;
   const advanceAmount = ADVANCE_AMOUNT;
@@ -386,7 +379,7 @@ export function CheckoutClient() {
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Platform Fee</span>
+                <span className="text-muted-foreground">Booking amount</span>
                 <span className="font-semibold text-foreground">₹{platformFee.toLocaleString("en-IN")}</span>
               </div>
             </div>

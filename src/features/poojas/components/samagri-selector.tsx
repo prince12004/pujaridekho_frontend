@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { CheckCircle2, Circle, ShoppingBasket } from "lucide-react";
+import { Check, ShoppingBasket } from "lucide-react";
 import { usePoojaBookingSelection } from "@/features/poojas/components/pooja-booking-context";
 import { cn } from "@/lib/utils";
 
@@ -62,30 +62,52 @@ export function SamagriSelector({
   }
 
   return (
-    <div className="font-heading overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-      <button type="button" onClick={toggleExpanded} className="flex w-full items-center justify-between gap-3 p-4 text-left">
+    <div
+      className={cn(
+        "font-heading overflow-hidden rounded-2xl border-2 shadow-sm transition-colors",
+        expanded ? "border-primary" : "border-primary/25 bg-primary/[0.035]",
+      )}
+    >
+      <button
+        type="button"
+        onClick={toggleExpanded}
+        className={cn(
+          "flex w-full items-center justify-between gap-3 p-4 text-left transition-colors",
+          expanded && "bg-gradient-to-r from-primary to-accent",
+        )}
+      >
         <span className="flex items-center gap-3">
           <span
             className={cn(
               "flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors",
-              expanded ? "bg-primary/15 text-primary" : "bg-muted text-muted-foreground",
+              expanded ? "bg-white/20 text-white" : "bg-primary/12 text-primary",
             )}
           >
             <ShoppingBasket size={19} />
           </span>
           <span>
-            <span className="block text-sm font-bold text-foreground">Include Samagri</span>
-            <span className="block text-xs text-muted-foreground">
+            <span className="flex items-center gap-2">
+              <span className={cn("text-sm font-bold", expanded ? "text-white" : "text-foreground")}>Include Samagri</span>
+              <span
+                className={cn(
+                  "rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide",
+                  expanded ? "bg-white text-primary" : "border border-primary/30 bg-primary/10 text-primary",
+                )}
+              >
+                {expanded ? "Included" : "Not included"}
+              </span>
+            </span>
+            <span className={cn("block text-xs", expanded ? "text-white/85" : "text-muted-foreground")}>
               {expanded
                 ? `${checkedItems.length} of ${includedItems.length} items selected — ₹${samagriTotal.toLocaleString("en-IN")}`
-                : "Not included by default — tap to add complete samagri"}
+                : "Tap to add complete samagri kit to your order"}
             </span>
           </span>
         </span>
         <span
           role="switch"
           aria-checked={expanded}
-          className={cn("relative h-6 w-11 shrink-0 rounded-full transition-colors", expanded ? "bg-primary" : "bg-muted-foreground/30")}
+          className={cn("relative h-6 w-11 shrink-0 rounded-full transition-colors", expanded ? "bg-white/30" : "bg-primary/25")}
         >
           <span
             className={cn(
@@ -119,7 +141,7 @@ export function SamagriSelector({
             )}
           </div>
           <ul className="samagiri_selct grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {includedItems.map((item) => {
+            {includedItems.map((item, index) => {
               const checked = checkedNames.has(item.itemName);
               return (
                 <li key={item.itemName}>
@@ -131,15 +153,19 @@ export function SamagriSelector({
                       checked ? "text-foreground" : "text-muted-foreground/60",
                     )}
                   >
-                    <span className="flex items-center gap-2">
-                      {checked ? (
-                        <CheckCircle2 size={15} className="shrink-0 text-primary" />
-                      ) : (
-                        <Circle size={15} className="shrink-0 text-muted-foreground/40" />
-                      )}
-                      <span className={cn(!checked && "line-through decoration-muted-foreground/40")}>
+                    <span className="flex min-w-0 items-center gap-2">
+                      <span className="w-5 shrink-0 text-right text-xs font-medium text-muted-foreground/50">{index + 1}.</span>
+                      <span className={cn("truncate", !checked && "line-through decoration-muted-foreground/40")}>
                         {item.itemName}
                         {item.quantity ? ` — ${item.quantity}${item.unit ?? ""}` : ""}
+                      </span>
+                      <span
+                        className={cn(
+                          "flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[4px] border-2 transition-colors",
+                          checked ? "border-primary bg-primary" : "border-muted-foreground/40 bg-transparent",
+                        )}
+                      >
+                        {checked && <Check size={12} strokeWidth={3} className="text-white" />}
                       </span>
                     </span>
                     <span className="flex shrink-0 items-baseline gap-1.5">

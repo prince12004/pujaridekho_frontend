@@ -61,6 +61,7 @@ export default function BookingDetailPage() {
   const [paymentMethod, setPaymentMethod] = useState<string>(PAYMENT_METHODS[0]);
   const [noteText, setNoteText] = useState("");
   const [editOpen, setEditOpen] = useState(false);
+  const [editSamagri, setEditSamagri] = useState<{ name: string; price: number }[]>([]);
 
   const {
     register: registerEdit,
@@ -81,6 +82,17 @@ export default function BookingDetailPage() {
 
   const serviceName = booking.pooja?.name ?? booking.festival?.name ?? "—";
 
+  const samagriCatalogue: { name: string; price: number }[] =
+    booking.pooja?.samagriTemplate?.includedItems.map((item) => ({ name: item.itemName, price: item.estimatedPrice })) ??
+    booking.festival?.samagri ??
+    [];
+
+  const toggleSamagriItem = (item: { name: string; price: number }) => {
+    setEditSamagri((prev) =>
+      prev.some((s) => s.name === item.name) ? prev.filter((s) => s.name !== item.name) : [...prev, item],
+    );
+  };
+
   const openEdit = () => {
     resetEdit({
       poojaDate: booking.poojaDate?.slice(0, 10) ?? "",
@@ -96,6 +108,7 @@ export default function BookingDetailPage() {
       discount: Number(booking.pricing?.discount ?? 0),
       advanceAmount: Number(booking.pricing?.advanceAmount ?? 0),
     });
+    setEditSamagri(booking.selectedSamagri ?? []);
     setEditOpen(true);
   };
 
@@ -112,6 +125,7 @@ export default function BookingDetailPage() {
           pincode: values.pincode,
           gotra: values.gotra,
           specialInstructions: values.specialInstructions,
+          selectedSamagri: editSamagri,
           pricing: {
             packagePrice: values.packagePrice,
             marketPrice: values.marketPrice || undefined,
@@ -184,8 +198,9 @@ export default function BookingDetailPage() {
   const finalAmount = Number(booking.pricing?.finalAmount ?? 0);
   const marketPrice = Number(booking.pricing?.marketPrice ?? 0);
   const totalPaid = booking.payments.filter((p) => p.status !== "failed").reduce((sum, p) => sum + p.amount, 0);
+  const editSamagriTotal = editSamagri.reduce((sum, item) => sum + item.price, 0);
   const editPreviewFinalAmount = Math.max(
-    Number(watchEdit("packagePrice") ?? 0) - Number(watchEdit("discount") ?? 0) + ADVANCE_AMOUNT,
+    Number(watchEdit("packagePrice") ?? 0) + editSamagriTotal - Number(watchEdit("discount") ?? 0) + ADVANCE_AMOUNT,
     0,
   );
 
@@ -527,7 +542,7 @@ export default function BookingDetailPage() {
       </div>
 
       <Dialog open={editOpen} onOpenChange={setEditOpen}>
-        <DialogContent className="max-w-3xl" style={{ maxWidth: '550px' }}>
+        <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
             <DialogTitle>Edit Booking</DialogTitle>
           </DialogHeader>
@@ -570,6 +585,54 @@ export default function BookingDetailPage() {
               <Label>Special instructions</Label>
               <Textarea rows={2} {...registerEdit("specialInstructions")} />
             </div>
+            {samagriCatalogue.length > 0 && (
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <Label>
+                    Samagri {editSamagriTotal > 0 && <span className="text-muted-foreground">(₹{editSamagriTotal.toLocaleString("en-IN")})</span>}
+                  </Label>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      className="text-xs font-semibold text-primary hover:underline"
+                      onClick={() => setEditSamagri(samagriCatalogue)}
+                    >
+                      Select all
+                    </button>
+                    <button
+                      type="button"
+                      className="text-xs font-semibold text-muted-foreground hover:underline"
+                      onClick={() => setEditSamagri([])}
+                    >
+                      Clear all
+                    </button>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 gap-x-4 gap-y-0.5 rounded-lg border border-border p-2 sm:grid-cols-2">
+                  {samagriCatalogue.map((item) => {
+                    const checked = editSamagri.some((s) => s.name === item.name);
+                    return (
+                      <label
+                        key={item.name}
+                        className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-muted/60"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => toggleSamagriItem(item)}
+                          className="size-4 shrink-0 accent-primary"
+                        />
+                        <span className="flex-1 truncate">{item.name}</span>
+                        <span className="shrink-0 text-xs text-muted-foreground">₹{item.price.toLocaleString("en-IN")}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  If the customer didn&apos;t pick samagri at booking time and wants it added now, check the items here.
+                </p>
+              </div>
+            )}
             <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
               <div className="space-y-1.5">
                 <Label>Package price (₹)</Label>
@@ -589,7 +652,7 @@ export default function BookingDetailPage() {
               </div>
             </div>
             <p className="text-xs text-muted-foreground">
-              Final amount = package price − discount + ₹{ADVANCE_AMOUNT} platform fee, calculated automatically.
+              Final amount = package price + samagri − discount + ₹{ADVANCE_AMOUNT} platform fee, calculated automatically.
             </p>
             <div className="space-y-1.5">
               <Label>Advance / agreed amount (₹)</Label>
