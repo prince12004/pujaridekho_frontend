@@ -23,7 +23,7 @@ import { AccountPageHeader } from "@/features/account/components/account-page-he
 import { AccountLoadingSkeleton, AccountErrorState } from "@/features/account/components/state-blocks";
 import { useMyBooking, useRequestCancellation, useRequestReschedule } from "@/features/account/api/use-bookings";
 import { BOOKING_STATUS_LABELS, BOOKING_TIMELINE_ORDER, badgeToneForStatus } from "@/features/account/lib/status-labels";
-import { formatCurrency, formatDate, formatDateTime } from "@/features/account/lib/format";
+import { formatCurrency, formatDate, formatDateOnly, formatDateTime } from "@/features/account/lib/format";
 import { getErrorMessage } from "@/features/account/lib/get-error-message";
 import { apiClient } from "@/lib/api-client";
 import { useAuthModal } from "@/providers/auth-modal-provider";
@@ -164,7 +164,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
         <Card>
           <CardContent className="space-y-2 p-5">
             <p className="mb-1 font-heading text-sm font-bold text-secondary">Booking Details</p>
-            <DetailRow label="Date" value={formatDate(booking.poojaDate)} />
+            <DetailRow label="Date" value={formatDateOnly(booking.poojaDate)} />
             <DetailRow label="Time" value={booking.poojaTime ?? "—"} />
             <DetailRow label="City" value={booking.city ?? "—"} />
             <DetailRow label="Address" value={booking.address ?? "—"} />
@@ -222,7 +222,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
           <CardContent className="p-5">
             <p className="font-heading text-sm font-bold text-secondary">Reschedule Request — {booking.rescheduleRequest.status}</p>
             <p className="mt-1 text-sm text-muted-foreground">
-              Requested for {formatDate(booking.rescheduleRequest.requestedDate)}
+              Requested for {formatDateOnly(booking.rescheduleRequest.requestedDate)}
               {booking.rescheduleRequest.requestedTime ? ` · ${booking.rescheduleRequest.requestedTime}` : ""}
             </p>
           </CardContent>

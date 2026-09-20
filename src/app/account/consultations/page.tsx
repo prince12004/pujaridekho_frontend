@@ -12,7 +12,7 @@ import { AccountEmptyState } from "@/features/account/components/empty-state";
 import { AccountLoadingSkeleton, AccountErrorState } from "@/features/account/components/state-blocks";
 import { useMyConsultations } from "@/features/account/api/use-consultations";
 import { CONSULTATION_STATUS_LABELS, badgeToneForStatus } from "@/features/account/lib/status-labels";
-import { formatCurrency, formatDate } from "@/features/account/lib/format";
+import { formatCurrency, formatDate, formatDateOnly } from "@/features/account/lib/format";
 
 const TABS = [
   { value: "upcoming", label: "Upcoming" },
@@ -66,7 +66,7 @@ export default function MyConsultationsPage() {
                   </div>
                   <p className="text-sm font-medium text-secondary">{consultation.topic ?? "Astrology Consultation"}</p>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    {formatDate(consultation.preferredDate)}
+                    {formatDateOnly(consultation.preferredDate)}
                     {consultation.preferredTime ? ` · ${consultation.preferredTime}` : ""}
                   </p>
                   <p className="mt-1 text-sm font-medium text-secondary">{formatCurrency(consultation.fee)}</p>

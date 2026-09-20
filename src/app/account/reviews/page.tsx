@@ -23,7 +23,7 @@ import { useMyBookings } from "@/features/account/api/use-bookings";
 import { useMyOrders } from "@/features/account/api/use-orders";
 import { useMyConsultations } from "@/features/account/api/use-consultations";
 import { getErrorMessage } from "@/features/account/lib/get-error-message";
-import { formatDate } from "@/features/account/lib/format";
+import { formatDate, formatDateOnly } from "@/features/account/lib/format";
 
 interface EligibleItem {
   key: string;
@@ -60,7 +60,7 @@ export default function ReviewsPage() {
         eligible.push({
           key,
           title: `Rate: ${booking.pooja?.name ?? booking.festival?.name}`,
-          subtitle: `Completed on ${formatDate(booking.poojaDate)}`,
+          subtitle: `Completed on ${formatDateOnly(booking.poojaDate)}`,
           input: { entityType: "pooja", entityId: poojaId, bookingId: booking._id, rating: 5, comment: "" },
         });
       }
@@ -71,7 +71,7 @@ export default function ReviewsPage() {
         eligible.push({
           key,
           title: `Rate Pandit: ${booking.pandit.fullName}`,
-          subtitle: `Service on ${formatDate(booking.poojaDate)}`,
+          subtitle: `Service on ${formatDateOnly(booking.poojaDate)}`,
           input: { entityType: "pandit", entityId: booking.pandit._id, bookingId: booking._id, rating: 5, comment: "" },
         });
       }

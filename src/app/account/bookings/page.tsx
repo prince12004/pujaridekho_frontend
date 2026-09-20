@@ -12,7 +12,7 @@ import { AccountEmptyState } from "@/features/account/components/empty-state";
 import { AccountLoadingSkeleton, AccountErrorState } from "@/features/account/components/state-blocks";
 import { useMyBookings } from "@/features/account/api/use-bookings";
 import { BOOKING_STATUS_LABELS, badgeToneForStatus } from "@/features/account/lib/status-labels";
-import { formatCurrency, formatDate } from "@/features/account/lib/format";
+import { formatCurrency, formatDate, formatDateOnly } from "@/features/account/lib/format";
 
 const TABS = [
   { value: "upcoming", label: "Upcoming" },
@@ -82,7 +82,7 @@ export default function MyBookingsPage() {
                     <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
                       <span className="inline-flex items-center gap-1">
                         <CalendarCheck className="size-3.5" />
-                        {formatDate(booking.poojaDate)}
+                        {formatDateOnly(booking.poojaDate)}
                         {booking.poojaTime ? ` · ${booking.poojaTime}` : ""}
                       </span>
                       {booking.city && (

@@ -27,7 +27,7 @@ import {
   useRequestConsultationReschedule,
 } from "@/features/account/api/use-consultations";
 import { CONSULTATION_STATUS_LABELS, badgeToneForStatus } from "@/features/account/lib/status-labels";
-import { formatCurrency, formatDate } from "@/features/account/lib/format";
+import { formatCurrency, formatDate, formatDateOnly } from "@/features/account/lib/format";
 import { getErrorMessage } from "@/features/account/lib/get-error-message";
 
 const ELIGIBLE_STATUSES = ["new", "contacted", "scheduled"];
@@ -92,7 +92,7 @@ export default function ConsultationDetailPage({ params }: { params: Promise<{ i
         <Card>
           <CardContent className="space-y-2 p-5">
             <p className="mb-1 font-heading text-sm font-bold text-secondary">Consultation Details</p>
-            <Row label="Preferred Date" value={formatDate(c.preferredDate)} />
+            <Row label="Preferred Date" value={formatDateOnly(c.preferredDate)} />
             <Row label="Preferred Time" value={c.preferredTime ?? "—"} />
             <Row label="Duration" value={c.duration ?? "—"} />
             <Row label="Fee" value={formatCurrency(c.fee)} />

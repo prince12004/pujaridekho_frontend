@@ -24,7 +24,7 @@ import { useAuthModal } from "@/providers/auth-modal-provider";
 import { useMyDashboard } from "@/features/account/api/use-dashboard";
 import { AccountErrorState } from "@/features/account/components/state-blocks";
 import { BOOKING_STATUS_LABELS, badgeToneForStatus } from "@/features/account/lib/status-labels";
-import { formatCurrency, formatDate } from "@/features/account/lib/format";
+import { formatCurrency, formatDate, formatDateOnly } from "@/features/account/lib/format";
 
 const QUICK_ACTIONS = [
   { label: "Book a Pooja", href: "/poojas", icon: CalendarCheck, tone: "from-primary to-primary/70" },
@@ -120,7 +120,7 @@ export default function AccountDashboardPage() {
                     <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-muted-foreground">
                       <span className="flex items-center gap-1.5">
                         <Clock3 className="size-3.5 text-primary" />
-                        {formatDate(data.nextBooking.poojaDate)}
+                        {formatDateOnly(data.nextBooking.poojaDate)}
                         {data.nextBooking.poojaTime ? ` · ${data.nextBooking.poojaTime}` : ""}
                       </span>
                       {data.nextBooking.city && (
