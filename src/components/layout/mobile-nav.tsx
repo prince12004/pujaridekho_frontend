@@ -13,7 +13,7 @@ const links = [
   { label: "Home", href: "/" },
   { label: "Puja's", href: "/poojas" },
   { label: "Pandit Ji", href: "/pandits" },
-  { label: "Festival Pooja", href: "/festivals" },
+  // { label: "Festival Pooja", href: "/festivals" }, // hidden for now
   { label: "Consultation", href: "/consultation" },
   { label: "Shop", href: "/shop" },
   { label: "Blog", href: "/blog" },

@@ -20,7 +20,7 @@ import { apiClient } from "@/lib/api-client";
 const quickLinks = [
   { label: "Puja's", href: "/poojas" },
   { label: "Pandit Ji", href: "/pandits" },
-  { label: "Festival Pooja", href: "/festivals" },
+  // { label: "Festival Pooja", href: "/festivals" }, // hidden for now
   { label: "Shop", href: "/products" },
   { label: "Blog", href: "/blog" },
 ];

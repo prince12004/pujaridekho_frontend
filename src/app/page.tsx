@@ -2,7 +2,7 @@ import { HomepageBannerStrip } from "@/features/home/components/homepage-banner-
 import { HeroSection } from "@/features/home/components/hero-section";
 import { TrustNumbers } from "@/features/home/components/trust-numbers";
 import { FeaturedPoojas } from "@/features/home/components/featured-poojas";
-import { FestivalPoojasSection } from "@/features/home/components/festival-poojas";
+// import { FestivalPoojasSection } from "@/features/home/components/festival-poojas";
 import { ShopCategories } from "@/features/home/components/shop-categories";
 import { CitiesSection } from "@/features/home/components/cities-section";
 import { TopPandits } from "@/features/home/components/top-pandits";
@@ -22,7 +22,7 @@ export default function Home() {
       <HeroSection />
       <TrustNumbers />
       <FeaturedPoojas />
-      <FestivalPoojasSection />
+      {/* <FestivalPoojasSection /> */}
       <ShopCategories />
       <ReligiousProducts />
       <CitiesSection />

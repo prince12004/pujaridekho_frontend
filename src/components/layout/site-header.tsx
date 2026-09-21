@@ -33,7 +33,7 @@ const shopColumns = [
 
 const navLinks = [
   { label: "Pandit Ji", href: "/pandits" },
-  { label: "Festival Pooja", href: "/festivals" },
+  // { label: "Festival Pooja", href: "/festivals" }, // hidden for now
   { label: "Consultation", href: "/consultation" },
   { label: "Blog", href: "/blog" },
   { label: "About", href: "/about" },
@@ -71,17 +71,17 @@ export function SiteHeader() {
               <NavigationMenuContent>
                 <MegaMenuContent
                   columns={poojaColumns}
-                  promo={{
-                    title: "Festival Puja's",
-                    description: "Book ahead for upcoming festivals",
-                    href: "/festivals",
-                    image: "candlesCircleFloor",
-                  }}
+                  // promo={{
+                  //   title: "Festival Puja's",
+                  //   description: "Book ahead for upcoming festivals",
+                  //   href: "/festivals",
+                  //   image: "candlesCircleFloor",
+                  // }}
                 />
               </NavigationMenuContent>
             </NavigationMenuItem>
 
-            {navLinks.slice(0, 2).map((link) => (
+            {navLinks.slice(0, 1).map((link) => (
               <NavigationMenuItem key={link.href}>
                 <Link
                   href={link.href}
@@ -109,7 +109,7 @@ export function SiteHeader() {
               </NavigationMenuContent>
             </NavigationMenuItem>
 
-            {navLinks.slice(2).map((link) => (
+            {navLinks.slice(1).map((link) => (
               <NavigationMenuItem key={link.href}>
                 <Link
                   href={link.href}

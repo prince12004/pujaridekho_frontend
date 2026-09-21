@@ -13,10 +13,10 @@ export function MegaMenuContent({
   promo,
 }: {
   columns: MegaMenuColumn[];
-  promo: { title: string; description: string; href: string; image: keyof typeof images };
+  promo?: { title: string; description: string; href: string; image: keyof typeof images };
 }) {
   return (
-    <div className="grid w-[640px] grid-cols-[1fr_1fr_220px] gap-6 p-6">
+    <div className={`grid gap-6 p-6 ${promo ? "w-[640px] grid-cols-[1fr_1fr_220px]" : "w-[420px] grid-cols-2"}`}>
       {columns.map((col) => (
         <div key={col.heading} className="flex flex-col gap-1">
           <span className="font-ui mb-1 text-xs font-bold uppercase tracking-wider text-primary">
@@ -34,6 +34,7 @@ export function MegaMenuContent({
         </div>
       ))}
 
+      {promo && (
       <Link
         href={promo.href}
         className="group relative flex flex-col justify-end overflow-hidden rounded-2xl p-4 text-white"
@@ -52,6 +53,7 @@ export function MegaMenuContent({
           Explore <ArrowRight size={12} />
         </span>
       </Link>
+      )}
     </div>
   );
 }
