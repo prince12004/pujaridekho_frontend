@@ -81,6 +81,14 @@ export function useUpdatePandit() {
   });
 }
 
+export function useSetPanditPassword() {
+  return useMutation({
+    mutationFn: async ({ id, password }: { id: string; password: string }) => {
+      await adminApiClient.post(`/pandits/${id}/password`, { password });
+    },
+  });
+}
+
 export function useDeletePandit() {
   const queryClient = useQueryClient();
   return useMutation({
