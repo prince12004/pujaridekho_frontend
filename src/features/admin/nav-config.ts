@@ -31,6 +31,8 @@ import {
   Clock,
   ClipboardList,
   Inbox,
+  Contact,
+  UserCog,
 } from "lucide-react";
 
 export interface AdminNavItem {
@@ -81,6 +83,13 @@ export const ADMIN_NAV: AdminNavSection[] = [
       { label: "Customers", href: "/admin/customers", icon: Users, permission: "customers:view" },
       { label: "Consultations", href: "/admin/consultations", icon: MessageCircleQuestion, permission: "consultations:manage" },
       { label: "Homepage Enquiries", href: "/admin/leads", icon: Inbox, permission: "consultations:manage" },
+    ],
+  },
+  {
+    title: "CRM",
+    items: [
+      { label: "Inquiries / Leads", href: "/admin/crm/inquiries", icon: Contact, permission: "crm:view" },
+      { label: "Salespeople", href: "/admin/crm/salespeople", icon: UserCog, permission: "crm:manage" },
     ],
   },
   {
