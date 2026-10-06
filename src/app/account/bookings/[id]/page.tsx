@@ -3,7 +3,7 @@
 import { use, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
-import { Check, Phone, ShieldCheck } from "lucide-react";
+import { Check, KeyRound, Phone, ShieldCheck } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,7 @@ import { useAuthModal } from "@/providers/auth-modal-provider";
 
 const ELIGIBLE_FOR_REQUEST = ["pending_payment", "payment_received", "booking_confirmed", "pandit_assignment_pending", "pandit_assigned"];
 const PANDIT_CONTACT_VISIBLE_AT = ["pandit_accepted", "pandit_on_the_way", "pooja_started", "pooja_completed", "closed"];
+const CANCELLED_STATUSES = ["cancelled", "refund_requested", "refunded"];
 
 export default function BookingDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -59,6 +60,9 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
   const canCancel = eligibleForRequest && !booking_.cancelRequest;
   const isCompleted = ["pooja_completed", "closed"].includes(booking_.status);
   const panditContactVisible = PANDIT_CONTACT_VISIBLE_AT.includes(booking_.status);
+  const reachedOtp = booking_.panditExecution?.reachedOtpPlain;
+  const showReachedOtp =
+    Boolean(reachedOtp) && !booking_.panditExecution?.reachedOtpVerified && !CANCELLED_STATUSES.includes(booking_.status);
 
   async function handlePayBalance() {
     setIsPaying(true);
@@ -202,6 +206,23 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
           </CardContent>
         </Card>
       </div>
+
+      {showReachedOtp && (
+        <Card className="border-primary/30 bg-primary/5">
+          <CardContent className="flex items-center gap-4 p-5">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <KeyRound className="size-5" />
+            </span>
+            <div>
+              <p className="font-heading text-sm font-bold text-secondary">Pandit Arrival Code</p>
+              <p className="text-sm text-muted-foreground">
+                Share this code with your Pandit when they arrive, so they can confirm they've reached:{" "}
+                <span className="font-heading text-base font-bold tracking-widest text-primary">{reachedOtp}</span>
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardContent className="space-y-3 p-5">

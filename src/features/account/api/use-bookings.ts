@@ -27,6 +27,11 @@ export interface MyBooking {
   cancelRequest?: { reason: string; notes?: string; status: string } | null;
   bookingSource: string;
   createdAt: string;
+  panditExecution?: {
+    reachedOtpPlain?: string | null;
+    reachedOtpVerified?: boolean;
+    reachedAt?: string | null;
+  };
 }
 
 export interface MyBookingListResult {
