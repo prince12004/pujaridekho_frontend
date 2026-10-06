@@ -216,7 +216,7 @@ export default function BookingDetailPage({ params }: { params: Promise<{ id: st
             <div>
               <p className="font-heading text-sm font-bold text-secondary">Pandit Arrival Code</p>
               <p className="text-sm text-muted-foreground">
-                Share this code with your Pandit when they arrive, so they can confirm they've reached:{" "}
+                Share this code with your Pandit when they arrive, so they can confirm they&apos;ve reached:{" "}
                 <span className="font-heading text-base font-bold tracking-widest text-primary">{reachedOtp}</span>
               </p>
             </div>
