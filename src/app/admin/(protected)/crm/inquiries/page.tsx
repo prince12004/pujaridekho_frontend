@@ -2,15 +2,18 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Eye, Loader2, Search } from "lucide-react";
+import { toast } from "sonner";
+import { Eye, Loader2, Search, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { AdminPageHeader } from "@/features/admin/components/page-header";
-import { useCrmInquiries } from "@/features/admin/api/use-crm-inquiries";
+import { useCrmInquiries, useDeleteCrmInquiry } from "@/features/admin/api/use-crm-inquiries";
 import { useCrmSalespeople } from "@/features/admin/api/use-crm-salespeople";
+import { getErrorMessage } from "@/features/admin/lib/get-error-message";
 
 const STATUS_LABELS: Record<string, string> = {
   inquiry: "Inquiry",
@@ -23,8 +26,21 @@ export default function CrmInquiriesPage() {
   const [status, setStatus] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
   const [page, setPage] = useState(1);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; clientName: string } | null>(null);
 
   const { data: salespeople } = useCrmSalespeople();
+  const deleteMutation = useDeleteCrmInquiry();
+
+  const onDelete = async () => {
+    if (!deleteTarget) return;
+    try {
+      await deleteMutation.mutateAsync(deleteTarget.id);
+      toast.success("Inquiry deleted");
+      setDeleteTarget(null);
+    } catch (err) {
+      toast.error(getErrorMessage(err));
+    }
+  };
   const { data, isLoading } = useCrmInquiries({
     search: search || undefined,
     status: status || undefined,
@@ -143,6 +159,14 @@ export default function CrmInquiriesPage() {
                             <Eye /> View
                           </Link>
                         </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive hover:text-destructive"
+                          onClick={() => setDeleteTarget({ id: inquiry.id, clientName: inquiry.clientName })}
+                        >
+                          <Trash2 /> Delete
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -168,6 +192,26 @@ export default function CrmInquiriesPage() {
           )}
         </CardContent>
       </Card>
+
+      <Dialog open={Boolean(deleteTarget)} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete this inquiry?</DialogTitle>
+            <DialogDescription>
+              This permanently deletes {deleteTarget?.clientName}&apos;s inquiry, its linked Booking record (if confirmed), and any
+              pandit slot reservation. This cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeleteTarget(null)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={onDelete} disabled={deleteMutation.isPending}>
+              {deleteMutation.isPending ? "Deleting..." : "Delete"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -23,6 +23,8 @@ export interface CrmInquiry {
   pujaEndDate: string | null;
   pujaEvents: CrmPujaEvent[];
   status: CrmInquiryStatus;
+  packagePrice: number | null;
+  samagriPrice: number | null;
   totalAmount: number;
   tokenAmount: number;
   tokenStatus: "pending" | "received";
@@ -98,6 +100,18 @@ export function useUpdateCrmInquiry() {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["crm", "inquiries"] });
       queryClient.invalidateQueries({ queryKey: ["crm", "inquiries", "detail", variables.id] });
+    },
+  });
+}
+
+export function useDeleteCrmInquiry() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      await crmApiClient.delete(`/crm-inquiries/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["crm", "inquiries"] });
     },
   });
 }
