@@ -60,8 +60,22 @@ export interface CrmInquiriesParams {
   search?: string;
   status?: string;
   assignedTo?: string;
+  panditId?: string;
   page?: number;
   limit?: number;
+}
+
+// Mirrors the backend's crmMoney (crm-inquiries.service.ts) — token is
+// additive, never subtracted from puja+samagri. Old records with no
+// packagePrice fall back to totalAmount minus samagri, same as the backend.
+export function computeCrmInquiryDue(inquiry: CrmInquiry) {
+  const samagriPrice = inquiry.samagriIncluded ? (inquiry.samagriPrice ?? 0) : 0;
+  const packagePrice = inquiry.packagePrice ?? Math.max(inquiry.totalAmount - samagriPrice, 0);
+  const grandTotal = packagePrice + samagriPrice + inquiry.tokenAmount;
+  const collected =
+    (inquiry.tokenStatus === "received" ? inquiry.tokenAmount : 0) +
+    (inquiry.totalAmountStatus === "received" ? packagePrice + samagriPrice : 0);
+  return { grandTotal, due: grandTotal - collected };
 }
 
 export function useCrmInquiries(params: CrmInquiriesParams = {}) {
