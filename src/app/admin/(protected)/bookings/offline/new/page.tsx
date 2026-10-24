@@ -146,18 +146,18 @@ export default function CreateOfflineBookingPage() {
           <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div className="space-y-1.5">
               <Label>Name</Label>
-              <Input {...register("customerName")} />
+              <Input {...register("customerName")} placeholder="e.g. Ramesh Sharma" />
               {errors.customerName && <p className="text-xs text-destructive">{errors.customerName.message}</p>}
             </div>
             <div className="space-y-1.5">
               <Label>Mobile</Label>
-              <Input {...register("customerMobile")} />
+              <Input type="tel" inputMode="numeric" {...register("customerMobile")} placeholder="10-digit mobile, e.g. 9876543210" />
               {errors.customerMobile && <p className="text-xs text-destructive">{errors.customerMobile.message}</p>}
               <p className="text-xs text-muted-foreground">Existing customers are matched automatically by mobile number.</p>
             </div>
             <div className="space-y-1.5">
               <Label>Email (optional)</Label>
-              <Input {...register("customerEmail")} />
+              <Input type="email" {...register("customerEmail")} placeholder="e.g. ramesh@example.com" />
             </div>
           </CardContent>
         </Card>
@@ -213,36 +213,36 @@ export default function CreateOfflineBookingPage() {
           <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div className="space-y-1.5">
               <Label>Pooja date</Label>
-              <DatePicker value={watch("poojaDate") ?? ""} onChange={(v) => setValue("poojaDate", v, { shouldValidate: true })} />
+              <DatePicker value={watch("poojaDate") ?? ""} onChange={(v) => setValue("poojaDate", v, { shouldValidate: true })} placeholder="Select pooja date" />
               {errors.poojaDate && <p className="text-xs text-destructive">{errors.poojaDate.message}</p>}
             </div>
             <div className="space-y-1.5">
               <Label>Pooja time</Label>
-              <TimePicker value={watch("poojaTime") ?? ""} onChange={(v) => setValue("poojaTime", v)} />
+              <TimePicker value={watch("poojaTime") ?? ""} onChange={(v) => setValue("poojaTime", v)} placeholder="Select pooja time" />
             </div>
             <div className="space-y-1.5">
               <Label>Gotra</Label>
-              <Input {...register("gotra")} />
+              <Input {...register("gotra")} placeholder="e.g. Kashyap" />
             </div>
             <div className="space-y-1.5 md:col-span-2">
               <Label>Address</Label>
-              <Input {...register("address")} />
+              <Input {...register("address")} placeholder="House no., street, area" />
             </div>
             <div className="space-y-1.5">
               <Label>City</Label>
-              <Input {...register("city")} />
+              <Input {...register("city")} placeholder="e.g. Varanasi" />
             </div>
             <div className="space-y-1.5">
               <Label>Landmark</Label>
-              <Input {...register("landmark")} />
+              <Input {...register("landmark")} placeholder="e.g. Near Shiv Mandir" />
             </div>
             <div className="space-y-1.5">
               <Label>Pincode</Label>
-              <Input {...register("pincode")} />
+              <Input inputMode="numeric" {...register("pincode")} placeholder="6-digit pincode, e.g. 221001" />
             </div>
             <div className="space-y-1.5 md:col-span-3">
               <Label>Special instructions</Label>
-              <Textarea rows={2} {...register("specialInstructions")} />
+              <Textarea rows={2} {...register("specialInstructions")} placeholder="Any special requests, e.g. samagri to arrange, language preference, parking info" />
             </div>
           </CardContent>
         </Card>
@@ -254,15 +254,15 @@ export default function CreateOfflineBookingPage() {
           <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div className="space-y-1.5">
               <Label>Package price (₹)</Label>
-              <Input type="number" {...register("packagePrice")} placeholder={selectedService ? String(selectedService.startingPrice) : ""} />
+              <Input type="number" {...register("packagePrice")} placeholder={selectedService ? `Default: ${selectedService.startingPrice}` : "Enter package price, e.g. 2100"} />
             </div>
             <div className="space-y-1.5">
               <Label>Market price (₹, optional)</Label>
-              <Input type="number" {...register("marketPrice")} placeholder="MRP shown as a strikethrough" />
+              <Input type="number" {...register("marketPrice")} placeholder="MRP shown as a strikethrough, e.g. 3100" />
             </div>
             <div className="space-y-1.5">
               <Label>Discount (₹)</Label>
-              <Input type="number" {...register("discount")} />
+              <Input type="number" {...register("discount")} placeholder="0" />
             </div>
             <div className="space-y-1.5">
               <Label>Final amount (₹)</Label>
@@ -273,11 +273,11 @@ export default function CreateOfflineBookingPage() {
             </div>
             <div className="space-y-1.5">
               <Label>Advance / agreed amount (₹)</Label>
-              <Input type="number" {...register("advanceAmount")} />
+              <Input type="number" {...register("advanceAmount")} placeholder="Agreed advance, e.g. 500" />
             </div>
             <div className="space-y-1.5">
               <Label>Amount received now (₹)</Label>
-              <Input type="number" {...register("initialPaymentAmount")} />
+              <Input type="number" {...register("initialPaymentAmount")} placeholder="Amount collected today, e.g. 500" />
             </div>
             <div className="space-y-1.5">
               <Label>Payment method</Label>
@@ -309,7 +309,7 @@ export default function CreateOfflineBookingPage() {
             </div>
             <div className="space-y-1.5">
               <Label>Referred by (optional)</Label>
-              <Input {...register("referredBy")} />
+              <Input {...register("referredBy")} placeholder="Name of person who referred" />
             </div>
             <div className="space-y-1.5">
               <Label>Assign pandit (optional)</Label>
