@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/table";
 import { AdminPagination } from "@/features/admin/components/admin-pagination";
 import { AdminPageHeader } from "@/features/admin/components/page-header";
-import { useBookings } from "@/features/admin/api/use-bookings";
+import { useBookingCities, useBookings } from "@/features/admin/api/use-bookings";
 import {
   BOOKING_STATUS_LABELS,
   BOOKING_STATUSES,
@@ -27,13 +27,16 @@ export default function BookingsListPage() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
   const [channel, setChannel] = useState("");
+  const [city, setCity] = useState("");
   const [page, setPage] = useState(1);
   const { data, isLoading } = useBookings({
     search: search || undefined,
     status: status || undefined,
     bookingChannel: channel || undefined,
+    city: city || undefined,
     page,
   });
+  const { data: cities } = useBookingCities();
 
   return (
     <div>
@@ -53,7 +56,7 @@ export default function BookingsListPage() {
         <div className="relative">
           <Search className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search booking ID / customer..."
+            placeholder="Search booking ID / name / mobile..."
             className="w-64 pl-8"
             value={search}
             onChange={(e) => {
@@ -88,6 +91,21 @@ export default function BookingsListPage() {
           <option value="">Online + Offline</option>
           <option value="online">Online only</option>
           <option value="offline">Offline only</option>
+        </select>
+        <select
+          value={city}
+          onChange={(e) => {
+            setCity(e.target.value);
+            setPage(1);
+          }}
+          className="h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none"
+        >
+          <option value="">All cities</option>
+          {cities?.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
         </select>
       </div>
 

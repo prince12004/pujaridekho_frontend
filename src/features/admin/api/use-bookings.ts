@@ -60,11 +60,23 @@ export interface BookingDetail extends BookingListItem {
   festival?: { _id: string; name: string; slug: string; samagri?: { name: string; price: number }[] };
 }
 
-export function useBookings(params: { search?: string; status?: string; bookingChannel?: string; page?: number } = {}) {
+export function useBookings(
+  params: { search?: string; status?: string; bookingChannel?: string; city?: string; page?: number } = {},
+) {
   return useQuery({
     queryKey: ["admin", "bookings", params],
     queryFn: async () => {
       const res = await adminApiClient.get<{ data: BookingListResult }>("/bookings", { params });
+      return res.data.data;
+    },
+  });
+}
+
+export function useBookingCities() {
+  return useQuery({
+    queryKey: ["admin", "bookings", "cities"],
+    queryFn: async () => {
+      const res = await adminApiClient.get<{ data: string[] }>("/bookings/cities");
       return res.data.data;
     },
   });
