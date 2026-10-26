@@ -61,7 +61,7 @@ export interface BookingDetail extends BookingListItem {
 }
 
 export function useBookings(
-  params: { search?: string; status?: string; bookingChannel?: string; city?: string; page?: number } = {},
+  params: { search?: string; status?: string; bookingChannel?: string; city?: string; pooja?: string; page?: number } = {},
 ) {
   return useQuery({
     queryKey: ["admin", "bookings", params],

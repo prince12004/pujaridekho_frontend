@@ -15,9 +15,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { AdminPagination } from "@/features/admin/components/admin-pagination";
+import { ALL_RECORDS_LIMIT, AdminPagination } from "@/features/admin/components/admin-pagination";
 import { AdminPageHeader } from "@/features/admin/components/page-header";
 import { useBookingCities, useBookings } from "@/features/admin/api/use-bookings";
+import { usePoojas } from "@/features/admin/api/use-poojas";
 import {
   BOOKING_STATUS_LABELS,
   BOOKING_STATUSES,
@@ -28,15 +29,18 @@ export default function BookingsListPage() {
   const [status, setStatus] = useState("");
   const [channel, setChannel] = useState("");
   const [city, setCity] = useState("");
+  const [pooja, setPooja] = useState("");
   const [page, setPage] = useState(1);
   const { data, isLoading } = useBookings({
     search: search || undefined,
     status: status || undefined,
     bookingChannel: channel || undefined,
     city: city || undefined,
+    pooja: pooja || undefined,
     page,
   });
   const { data: cities } = useBookingCities();
+  const { data: poojas } = usePoojas({ limit: ALL_RECORDS_LIMIT });
 
   return (
     <div>
@@ -104,6 +108,21 @@ export default function BookingsListPage() {
           {cities?.map((c) => (
             <option key={c} value={c}>
               {c}
+            </option>
+          ))}
+        </select>
+        <select
+          value={pooja}
+          onChange={(e) => {
+            setPooja(e.target.value);
+            setPage(1);
+          }}
+          className="h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none"
+        >
+          <option value="">All poojas</option>
+          {poojas?.items.map((p) => (
+            <option key={p._id} value={p._id}>
+              {p.name}
             </option>
           ))}
         </select>
