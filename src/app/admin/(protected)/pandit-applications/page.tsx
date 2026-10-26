@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { AdminPagination, paginateClient } from "@/features/admin/components/admin-pagination";
 import { AdminPageHeader } from "@/features/admin/components/page-header";
 import {
   useConvertPanditApplication,
@@ -19,7 +20,9 @@ const STATUS_OPTIONS = ["pending", "under_review", "more_info_requested", "appro
 
 export default function PanditApplicationsPage() {
   const [statusFilter, setStatusFilter] = useState<string>("");
+  const [page, setPage] = useState(1);
   const { data: applications, isLoading } = usePanditApplications(statusFilter || undefined);
+  const { pageItems, total, totalPages } = paginateClient(applications, page);
   const updateMutation = useUpdatePanditApplication();
   const convertMutation = useConvertPanditApplication();
 
@@ -49,7 +52,10 @@ export default function PanditApplicationsPage() {
       <div className="mb-4 flex gap-2">
         <select
           value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
+          onChange={(e) => {
+            setStatusFilter(e.target.value);
+            setPage(1);
+          }}
           className="h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none"
         >
           <option value="">All statuses</option>
@@ -68,57 +74,60 @@ export default function PanditApplicationsPage() {
               <Loader2 className="size-5 animate-spin text-muted-foreground" />
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Mobile</TableHead>
-                  <TableHead>City</TableHead>
-                  <TableHead>Specialization</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {applications?.length === 0 && (
+            <>
+              <Table>
+                <TableHeader>
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center text-muted-foreground">
-                      No applications found.
-                    </TableCell>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Mobile</TableHead>
+                    <TableHead>City</TableHead>
+                    <TableHead>Specialization</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                )}
-                {applications?.map((app) => (
-                  <TableRow key={app._id}>
-                    <TableCell className="font-medium">{app.fullName}</TableCell>
-                    <TableCell className="text-muted-foreground">{app.mobile}</TableCell>
-                    <TableCell className="text-muted-foreground">{app.city ?? "—"}</TableCell>
-                    <TableCell className="text-muted-foreground">{app.specialization ?? "—"}</TableCell>
-                    <TableCell>
-                      <select
-                        value={app.status}
-                        onChange={(e) => onStatusChange(app._id, e.target.value)}
-                        className="h-7 rounded-md border border-input bg-transparent px-2 text-xs outline-none"
-                      >
-                        {STATUS_OPTIONS.map((status) => (
-                          <option key={status} value={status}>
-                            {status.replace(/_/g, " ")}
-                          </option>
-                        ))}
-                      </select>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {app.convertedPandit ? (
-                        <Badge variant="outline">Converted</Badge>
-                      ) : (
-                        <Button variant="ghost" size="sm" onClick={() => onConvert(app._id, app.fullName)}>
-                          <UserCheck /> Convert
-                        </Button>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {applications?.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={6} className="text-center text-muted-foreground">
+                        No applications found.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {pageItems.map((app) => (
+                    <TableRow key={app._id}>
+                      <TableCell className="font-medium">{app.fullName}</TableCell>
+                      <TableCell className="text-muted-foreground">{app.mobile}</TableCell>
+                      <TableCell className="text-muted-foreground">{app.city ?? "—"}</TableCell>
+                      <TableCell className="text-muted-foreground">{app.specialization ?? "—"}</TableCell>
+                      <TableCell>
+                        <select
+                          value={app.status}
+                          onChange={(e) => onStatusChange(app._id, e.target.value)}
+                          className="h-7 rounded-md border border-input bg-transparent px-2 text-xs outline-none"
+                        >
+                          {STATUS_OPTIONS.map((status) => (
+                            <option key={status} value={status}>
+                              {status.replace(/_/g, " ")}
+                            </option>
+                          ))}
+                        </select>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {app.convertedPandit ? (
+                          <Badge variant="outline">Converted</Badge>
+                        ) : (
+                          <Button variant="ghost" size="sm" onClick={() => onConvert(app._id, app.fullName)}>
+                            <UserCheck /> Convert
+                          </Button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <AdminPagination page={page} totalPages={totalPages} total={total} onPageChange={setPage} />
+            </>
           )}
         </CardContent>
       </Card>

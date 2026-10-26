@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { DatePicker } from "@/components/shared/date-picker";
 import { TimePicker } from "@/components/shared/time-picker";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ALL_RECORDS_LIMIT } from "@/features/admin/components/admin-pagination";
 import { AdminPageHeader } from "@/features/admin/components/page-header";
 import { useCreateOfflineBooking } from "@/features/admin/api/use-bookings";
 import { usePoojas } from "@/features/admin/api/use-poojas";
@@ -54,9 +55,9 @@ type OfflineBookingValues = z.infer<typeof offlineBookingSchema>;
 export default function CreateOfflineBookingPage() {
   const router = useRouter();
   const [poojaSearch, setPoojaSearch] = useState("");
-  const { data: poojasResult } = usePoojas({ search: poojaSearch || undefined, status: "published" });
-  const { data: festivalsResult } = useFestivals({ status: "published" });
-  const { data: panditsResult } = usePandits({ verificationStatus: "verified" });
+  const { data: poojasResult } = usePoojas({ search: poojaSearch || undefined, status: "published", limit: ALL_RECORDS_LIMIT });
+  const { data: festivalsResult } = useFestivals({ status: "published", limit: ALL_RECORDS_LIMIT });
+  const { data: panditsResult } = usePandits({ verificationStatus: "verified", limit: ALL_RECORDS_LIMIT });
   const createOfflineBooking = useCreateOfflineBooking();
 
   const {

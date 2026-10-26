@@ -19,7 +19,7 @@ export interface CustomerListResult {
   totalPages: number;
 }
 
-export function useCustomers(params: { search?: string } = {}) {
+export function useCustomers(params: { search?: string; page?: number; limit?: number } = {}) {
   return useQuery({
     queryKey: ["admin", "customers", params],
     queryFn: async () => {

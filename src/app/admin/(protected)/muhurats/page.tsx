@@ -11,6 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ALL_RECORDS_LIMIT } from "@/features/admin/components/admin-pagination";
 import { AdminPageHeader } from "@/features/admin/components/page-header";
 import { usePoojas } from "@/features/admin/api/use-poojas";
 import {
@@ -47,7 +48,7 @@ export default function AdminMuhuratsPage() {
   const [filterDate, setFilterDate] = useState<string>("");
   const [search, setSearch] = useState("");
 
-  const { data: poojas } = usePoojas({ limit: 500, status: "published" });
+  const { data: poojas } = usePoojas({ limit: ALL_RECORDS_LIMIT, status: "published" });
   const { data: muhurats, isLoading } = useMuhurats({
     poojaId: filterPoojaId || undefined,
     date: filterDate || undefined,

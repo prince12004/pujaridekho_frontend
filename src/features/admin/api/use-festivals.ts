@@ -25,7 +25,7 @@ export interface FestivalListResult {
   totalPages: number;
 }
 
-export function useFestivals(params: { search?: string; status?: string } = {}) {
+export function useFestivals(params: { search?: string; status?: string; page?: number; limit?: number } = {}) {
   return useQuery({
     queryKey: ["admin", "festivals", params],
     queryFn: async () => {

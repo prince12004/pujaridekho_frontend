@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { ALL_RECORDS_LIMIT } from "@/features/admin/components/admin-pagination";
 import Link from "next/link";
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -155,7 +156,7 @@ function slugify(value: string) {
 export function PoojaForm({ pooja }: { pooja?: Pooja }) {
   const router = useRouter();
   const { data: categories } = usePoojaCategories();
-  const { data: samagriTemplates } = useSamagriTemplates();
+  const { data: samagriTemplates } = useSamagriTemplates({ limit: ALL_RECORDS_LIMIT });
   const { data: cities } = useCities();
   const createMutation = useCreatePooja();
   const updateMutation = useUpdatePooja();

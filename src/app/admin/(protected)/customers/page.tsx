@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { AdminPagination } from "@/features/admin/components/admin-pagination";
 import { AdminPageHeader } from "@/features/admin/components/page-header";
 import { useCreateCustomer, useCustomers } from "@/features/admin/api/use-customers";
 import { getErrorMessage } from "@/features/admin/lib/get-error-message";
@@ -27,8 +28,9 @@ type CustomerValues = z.infer<typeof customerSchema>;
 
 export default function CustomersPage() {
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { data, isLoading } = useCustomers({ search: search || undefined });
+  const { data, isLoading } = useCustomers({ search: search || undefined, page });
   const createMutation = useCreateCustomer();
 
   const {
@@ -64,7 +66,10 @@ export default function CustomersPage() {
       <div className="mb-4 max-w-sm">
         <div className="relative">
           <Search className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-          <Input placeholder="Search by name / mobile / email..." className="pl-8" value={search} onChange={(e) => setSearch(e.target.value)} />
+          <Input placeholder="Search by name / mobile / email..." className="pl-8" value={search} onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }} />
         </div>
       </div>
 
@@ -75,39 +80,42 @@ export default function CustomersPage() {
               <Loader2 className="size-5 animate-spin text-muted-foreground" />
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Mobile</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Joined</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data?.items.length === 0 && (
+            <>
+              <Table>
+                <TableHeader>
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center text-muted-foreground">
-                      No customers found.
-                    </TableCell>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Mobile</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Joined</TableHead>
                   </TableRow>
-                )}
-                {data?.items.map((customer) => (
-                  <TableRow key={customer._id}>
-                    <TableCell className="font-medium">{customer.name}</TableCell>
-                    <TableCell className="text-muted-foreground">{customer.mobile}</TableCell>
-                    <TableCell className="text-muted-foreground">{customer.email ?? "—"}</TableCell>
-                    <TableCell>
-                      <Badge variant={customer.status === "active" ? "default" : "destructive"}>{customer.status}</Badge>
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {new Date(customer.createdAt).toLocaleDateString("en-IN")}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {data?.items.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={5} className="text-center text-muted-foreground">
+                        No customers found.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {data?.items.map((customer) => (
+                    <TableRow key={customer._id}>
+                      <TableCell className="font-medium">{customer.name}</TableCell>
+                      <TableCell className="text-muted-foreground">{customer.mobile}</TableCell>
+                      <TableCell className="text-muted-foreground">{customer.email ?? "—"}</TableCell>
+                      <TableCell>
+                        <Badge variant={customer.status === "active" ? "default" : "destructive"}>{customer.status}</Badge>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {new Date(customer.createdAt).toLocaleDateString("en-IN")}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <AdminPagination page={page} totalPages={data?.totalPages ?? 1} total={data?.total ?? 0} onPageChange={setPage} />
+            </>
           )}
         </CardContent>
       </Card>

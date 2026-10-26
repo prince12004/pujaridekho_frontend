@@ -1,13 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import { Loader2, Inbox } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { AdminPagination, paginateClient } from "@/features/admin/components/admin-pagination";
 import { AdminPageHeader } from "@/features/admin/components/page-header";
 import { useHomeLeads } from "@/features/admin/api/use-leads";
 
 export default function HomeLeadsPage() {
+  const [page, setPage] = useState(1);
   const { data: leads, isLoading } = useHomeLeads();
+  const { pageItems, total, totalPages } = paginateClient(leads, page);
 
   return (
     <div>
@@ -23,36 +27,39 @@ export default function HomeLeadsPage() {
               <Loader2 className="size-5 animate-spin text-muted-foreground" />
             </div>
           ) : leads && leads.length > 0 ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Mobile</TableHead>
-                  <TableHead>City</TableHead>
-                  <TableHead>Address</TableHead>
-                  <TableHead>Puja</TableHead>
-                  <TableHead>Preferred Date</TableHead>
-                  <TableHead>Submitted On</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {leads.map((lead) => (
-                  <TableRow key={lead._id}>
-                    <TableCell className="font-medium">{lead.name}</TableCell>
-                    <TableCell>{lead.mobile}</TableCell>
-                    <TableCell>{lead.city}</TableCell>
-                    <TableCell className="max-w-xs truncate">{lead.address}</TableCell>
-                    <TableCell>{lead.pooja}</TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {new Date(lead.date).toLocaleDateString("en-IN")}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {new Date(lead.createdAt).toLocaleString("en-IN")}
-                    </TableCell>
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Mobile</TableHead>
+                    <TableHead>City</TableHead>
+                    <TableHead>Address</TableHead>
+                    <TableHead>Puja</TableHead>
+                    <TableHead>Preferred Date</TableHead>
+                    <TableHead>Submitted On</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {pageItems.map((lead) => (
+                    <TableRow key={lead._id}>
+                      <TableCell className="font-medium">{lead.name}</TableCell>
+                      <TableCell>{lead.mobile}</TableCell>
+                      <TableCell>{lead.city}</TableCell>
+                      <TableCell className="max-w-xs truncate">{lead.address}</TableCell>
+                      <TableCell>{lead.pooja}</TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {new Date(lead.date).toLocaleDateString("en-IN")}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {new Date(lead.createdAt).toLocaleString("en-IN")}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <AdminPagination page={page} totalPages={totalPages} total={total} onPageChange={setPage} />
+            </>
           ) : (
             <div className="flex flex-col items-center gap-3 py-16 text-center">
               <Inbox className="size-8 text-muted-foreground" />

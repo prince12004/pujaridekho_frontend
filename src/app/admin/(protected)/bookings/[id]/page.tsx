@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { DatePicker } from "@/components/shared/date-picker";
 import { TimePicker } from "@/components/shared/time-picker";
+import { ALL_RECORDS_LIMIT } from "@/features/admin/components/admin-pagination";
 import { AdminPageHeader } from "@/features/admin/components/page-header";
 import {
   useAddBookingNote,
@@ -49,7 +50,7 @@ interface EditFormValues {
 export default function BookingDetailPage() {
   const params = useParams<{ id: string }>();
   const { data: booking, isLoading } = useBooking(params.id);
-  const { data: pandits } = usePandits({ verificationStatus: "verified" });
+  const { data: pandits } = usePandits({ verificationStatus: "verified", limit: ALL_RECORDS_LIMIT });
   const { data: muhurat } = useMuhurat(booking?.muhuratSlot?.muhurat);
   const updateStatus = useUpdateBookingStatus();
   const updateDetails = useUpdateBookingDetails();
@@ -336,8 +337,8 @@ export default function BookingDetailPage() {
             <CardContent className="space-y-2 text-sm">
               {booking.pandit ? (
                 <>
-                  <p className="font-medium">{booking.pandit.fullName}</p>
-                  <p className="text-muted-foreground">{booking.pandit.mobile}</p>
+                    <p className="font-medium">{booking.pandit.fullName}</p>
+                    <p className="text-muted-foreground">{booking.pandit.mobile}</p>
                 </>
               ) : (
                 <p className="text-muted-foreground">No Pandit assigned yet.</p>

@@ -35,7 +35,7 @@ export const PANDIT_VERIFICATION_STATUSES = [
   "inactive",
 ] as const;
 
-export function usePandits(params: { search?: string; verificationStatus?: string } = {}) {
+export function usePandits(params: { search?: string; verificationStatus?: string; page?: number; limit?: number } = {}) {
   return useQuery({
     queryKey: ["admin", "pandits", params],
     queryFn: async () => {

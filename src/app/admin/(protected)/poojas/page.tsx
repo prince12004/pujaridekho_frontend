@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { AdminPagination } from "@/features/admin/components/admin-pagination";
 import { AdminPageHeader } from "@/features/admin/components/page-header";
 import { useDeletePooja, usePoojas, useUpdatePooja } from "@/features/admin/api/use-poojas";
 import { getErrorMessage } from "@/features/admin/lib/get-error-message";
@@ -50,7 +51,8 @@ function OrderCell({ id, value }: { id: string; value: number }) {
 
 export default function PoojasListPage() {
   const [search, setSearch] = useState("");
-  const { data, isLoading } = usePoojas({ search: search || undefined });
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = usePoojas({ search: search || undefined, page });
   const deleteMutation = useDeletePooja();
 
   const onDelete = async (id: string, name: string) => {
@@ -80,7 +82,10 @@ export default function PoojasListPage() {
       <div className="mb-4 max-w-sm">
         <div className="relative">
           <Search className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-          <Input placeholder="Search poojas..." className="pl-8" value={search} onChange={(e) => setSearch(e.target.value)} />
+          <Input placeholder="Search poojas..." className="pl-8" value={search} onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }} />
         </div>
       </div>
 
@@ -91,52 +96,55 @@ export default function PoojasListPage() {
               <Loader2 className="size-5 animate-spin text-muted-foreground" />
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Order</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Starting Price</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data?.items.length === 0 && (
+            <>
+              <Table>
+                <TableHeader>
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center text-muted-foreground">
-                      No poojas found.
-                    </TableCell>
+                    <TableHead>Order</TableHead>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Category</TableHead>
+                    <TableHead>Starting Price</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                )}
-                {data?.items.map((pooja) => (
-                  <TableRow key={pooja._id}>
-                    <TableCell>
-                      <OrderCell id={pooja._id} value={pooja.sortOrder ?? 0} />
-                    </TableCell>
-                    <TableCell className="font-medium">{pooja.name}</TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {typeof pooja.category === "object" ? pooja.category?.name : "—"}
-                    </TableCell>
-                    <TableCell>₹{pooja.startingPrice.toLocaleString("en-IN")}</TableCell>
-                    <TableCell>
-                      <Badge variant={pooja.status === "published" ? "default" : "outline"}>{pooja.status}</Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="ghost" size="icon-sm" asChild>
-                        <Link href={`/admin/poojas/${pooja._id}`}>
-                          <Pencil />
-                        </Link>
-                      </Button>
-                      <Button variant="ghost" size="icon-sm" onClick={() => onDelete(pooja._id, pooja.name)}>
-                        <Trash2 />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {data?.items.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={6} className="text-center text-muted-foreground">
+                        No poojas found.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {data?.items.map((pooja) => (
+                    <TableRow key={pooja._id}>
+                      <TableCell>
+                        <OrderCell id={pooja._id} value={pooja.sortOrder ?? 0} />
+                      </TableCell>
+                      <TableCell className="font-medium">{pooja.name}</TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {typeof pooja.category === "object" ? pooja.category?.name : "—"}
+                      </TableCell>
+                      <TableCell>₹{pooja.startingPrice.toLocaleString("en-IN")}</TableCell>
+                      <TableCell>
+                        <Badge variant={pooja.status === "published" ? "default" : "outline"}>{pooja.status}</Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button variant="ghost" size="icon-sm" asChild>
+                          <Link href={`/admin/poojas/${pooja._id}`}>
+                            <Pencil />
+                          </Link>
+                        </Button>
+                        <Button variant="ghost" size="icon-sm" onClick={() => onDelete(pooja._id, pooja.name)}>
+                          <Trash2 />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <AdminPagination page={page} totalPages={data?.totalPages ?? 1} total={data?.total ?? 0} onPageChange={setPage} />
+            </>
           )}
         </CardContent>
       </Card>

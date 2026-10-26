@@ -28,7 +28,7 @@ export interface OrderListResult {
   totalPages: number;
 }
 
-export function useOrders(params: { search?: string; status?: string } = {}) {
+export function useOrders(params: { search?: string; status?: string; page?: number; limit?: number } = {}) {
   return useQuery({
     queryKey: ["admin", "orders", params],
     queryFn: async () => {

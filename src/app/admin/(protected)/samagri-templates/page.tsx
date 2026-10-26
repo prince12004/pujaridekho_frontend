@@ -8,13 +8,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { AdminPagination } from "@/features/admin/components/admin-pagination";
 import { AdminPageHeader } from "@/features/admin/components/page-header";
 import { useDeleteSamagriTemplate, useSamagriTemplates } from "@/features/admin/api/use-samagri-templates";
 import { getErrorMessage } from "@/features/admin/lib/get-error-message";
 
 export default function SamagriTemplatesPage() {
   const [search, setSearch] = useState("");
-  const { data, isLoading } = useSamagriTemplates({ search: search || undefined });
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = useSamagriTemplates({ search: search || undefined, page });
   const deleteMutation = useDeleteSamagriTemplate();
 
   const onDelete = async (id: string, name: string) => {
@@ -44,7 +46,10 @@ export default function SamagriTemplatesPage() {
       <div className="mb-4 max-w-sm">
         <div className="relative">
           <Search className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-          <Input placeholder="Search templates..." className="pl-8" value={search} onChange={(e) => setSearch(e.target.value)} />
+          <Input placeholder="Search templates..." className="pl-8" value={search} onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }} />
         </div>
       </div>
 
@@ -55,53 +60,56 @@ export default function SamagriTemplatesPage() {
               <Loader2 className="size-5 animate-spin text-muted-foreground" />
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Template Name</TableHead>
-                  <TableHead>Linked Pooja</TableHead>
-                  <TableHead>Included Items</TableHead>
-                  <TableHead>Estimated Cost</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data?.items.length === 0 && (
+            <>
+              <Table>
+                <TableHeader>
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center text-muted-foreground">
-                      No samagri templates yet.
-                    </TableCell>
+                    <TableHead>Template Name</TableHead>
+                    <TableHead>Linked Pooja</TableHead>
+                    <TableHead>Included Items</TableHead>
+                    <TableHead>Estimated Cost</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
-                )}
-                {data?.items.map((template) => (
-                  <TableRow key={template._id}>
-                    <TableCell className="font-medium">{template.samagriTemplateName}</TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {typeof template.pooja === "object" ? template.pooja.name : "—"}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">{template.includedItems.length} item(s)</TableCell>
-                    <TableCell>
-                      ₹{template.estimatedSamagriCost.toLocaleString("en-IN")}
-                      {template.estimatedSamagriMrp ? (
-                        <span className="ml-1.5 text-xs text-muted-foreground line-through">
-                          ₹{template.estimatedSamagriMrp.toLocaleString("en-IN")}
-                        </span>
-                      ) : null}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="ghost" size="icon-sm" asChild>
-                        <Link href={`/admin/samagri-templates/${template._id}`}>
-                          <Pencil />
-                        </Link>
-                      </Button>
-                      <Button variant="ghost" size="icon-sm" onClick={() => onDelete(template._id, template.samagriTemplateName)}>
-                        <Trash2 />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {data?.items.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={5} className="text-center text-muted-foreground">
+                        No samagri templates yet.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {data?.items.map((template) => (
+                    <TableRow key={template._id}>
+                      <TableCell className="font-medium">{template.samagriTemplateName}</TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {typeof template.pooja === "object" ? template.pooja.name : "—"}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">{template.includedItems.length} item(s)</TableCell>
+                      <TableCell>
+                        ₹{template.estimatedSamagriCost.toLocaleString("en-IN")}
+                        {template.estimatedSamagriMrp ? (
+                          <span className="ml-1.5 text-xs text-muted-foreground line-through">
+                            ₹{template.estimatedSamagriMrp.toLocaleString("en-IN")}
+                          </span>
+                        ) : null}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button variant="ghost" size="icon-sm" asChild>
+                          <Link href={`/admin/samagri-templates/${template._id}`}>
+                            <Pencil />
+                          </Link>
+                        </Button>
+                        <Button variant="ghost" size="icon-sm" onClick={() => onDelete(template._id, template.samagriTemplateName)}>
+                          <Trash2 />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <AdminPagination page={page} totalPages={data?.totalPages ?? 1} total={data?.total ?? 0} onPageChange={setPage} />
+            </>
           )}
         </CardContent>
       </Card>

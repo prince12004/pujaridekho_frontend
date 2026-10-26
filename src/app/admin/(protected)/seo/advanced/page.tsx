@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ALL_RECORDS_LIMIT } from "@/features/admin/components/admin-pagination";
 import { AdminPageHeader } from "@/features/admin/components/page-header";
 import {
   CityPoojaSeo,
@@ -35,7 +36,7 @@ const createSchema = z.object({
 export default function AdvancedSeoPage() {
   const { data: entries, isLoading } = useCityPoojaSeoList();
   const { data: cities } = useCities();
-  const { data: poojasResult } = usePoojas({ status: "published" });
+  const { data: poojasResult } = usePoojas({ status: "published", limit: ALL_RECORDS_LIMIT });
   const createMutation = useCreateCityPoojaSeo();
   const updateMutation = useUpdateCityPoojaSeo();
   const deleteMutation = useDeleteCityPoojaSeo();

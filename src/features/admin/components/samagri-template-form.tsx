@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ALL_RECORDS_LIMIT } from "@/features/admin/components/admin-pagination";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -42,7 +43,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 export function SamagriTemplateForm({ template }: { template?: SamagriTemplate }) {
   const router = useRouter();
-  const { data: poojasResult } = usePoojas({ limit: 100 });
+  const { data: poojasResult } = usePoojas({ limit: ALL_RECORDS_LIMIT });
   const createMutation = useCreateSamagriTemplate();
   const updateMutation = useUpdateSamagriTemplate();
   const [useCustomTotal, setUseCustomTotal] = useState(false);

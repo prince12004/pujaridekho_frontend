@@ -46,7 +46,7 @@ export interface SamagriTemplateListResult {
   totalPages: number;
 }
 
-export function useSamagriTemplates(params: { search?: string } = {}) {
+export function useSamagriTemplates(params: { search?: string; page?: number; limit?: number } = {}) {
   return useQuery({
     queryKey: ["admin", "samagri-templates", params],
     queryFn: async () => {

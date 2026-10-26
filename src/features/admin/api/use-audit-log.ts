@@ -19,7 +19,7 @@ export interface AuditLogResult {
   totalPages: number;
 }
 
-export function useAuditLogs(params: { entityType?: string; action?: string } = {}) {
+export function useAuditLogs(params: { entityType?: string; action?: string; page?: number; limit?: number } = {}) {
   return useQuery({
     queryKey: ["admin", "audit-logs", params],
     queryFn: async () => {

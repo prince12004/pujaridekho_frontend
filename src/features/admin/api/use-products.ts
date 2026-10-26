@@ -25,7 +25,7 @@ export interface ProductListResult {
   totalPages: number;
 }
 
-export function useProducts(params: { search?: string; status?: string } = {}) {
+export function useProducts(params: { search?: string; status?: string; page?: number; limit?: number } = {}) {
   return useQuery({
     queryKey: ["admin", "products", params],
     queryFn: async () => {

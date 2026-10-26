@@ -23,7 +23,7 @@ export interface BlogListResult {
   totalPages: number;
 }
 
-export function useBlogs(params: { search?: string; status?: string } = {}) {
+export function useBlogs(params: { search?: string; status?: string; page?: number; limit?: number } = {}) {
   return useQuery({
     queryKey: ["admin", "blogs", params],
     queryFn: async () => {

@@ -15,6 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { AdminPagination } from "@/features/admin/components/admin-pagination";
 import { AdminPageHeader } from "@/features/admin/components/page-header";
 import { useBookings } from "@/features/admin/api/use-bookings";
 import {
@@ -33,8 +34,6 @@ export default function BookingsListPage() {
     bookingChannel: channel || undefined,
     page,
   });
-
-  const totalPages = data ? Math.max(1, data.totalPages) : 1;
 
   return (
     <div>
@@ -100,114 +99,90 @@ export default function BookingsListPage() {
             </div>
           ) : (
             <>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Booking ID</TableHead>
-                    <TableHead>Customer</TableHead>
-                    <TableHead>City</TableHead>
-                    <TableHead>Service</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Channel</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Payment</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {data?.items.length === 0 && (
+                <Table>
+                  <TableHeader>
                     <TableRow>
-                      <TableCell
-                        colSpan={9}
-                        className="text-center text-muted-foreground"
-                      >
-                        No bookings found.
-                      </TableCell>
+                      <TableHead>Booking ID</TableHead>
+                      <TableHead>Customer</TableHead>
+                      <TableHead>City</TableHead>
+                      <TableHead>Service</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Channel</TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead>Payment</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
-                  )}
-                  {data?.items.map((booking) => (
-                    <TableRow key={booking._id} className="cursor-pointer">
-                      <TableCell>
-                        <Link
-                          href={`/admin/bookings/${booking._id}`}
-                          className="font-medium text-primary"
+                  </TableHeader>
+                  <TableBody>
+                    {data?.items.length === 0 && (
+                      <TableRow>
+                        <TableCell
+                          colSpan={9}
+                          className="text-center text-muted-foreground"
                         >
-                          {booking.bookingId}
-                        </Link>
-                      </TableCell>
-                      <TableCell>{booking.customerSnapshot?.name}</TableCell>
-                      <TableCell className="text-muted-foreground">
-                        {booking.city ?? "—"}
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">
-                        {booking.pooja?.name ??
-                          booking.festival?.name ??
-                          booking.serviceType}
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">
-                        {new Date(booking.poojaDate).toLocaleDateString(
-                          "en-IN",
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="capitalize">
-                          {booking.bookingChannel}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="secondary">
-                          {BOOKING_STATUS_LABELS[booking.status] ??
-                            booking.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={
-                            booking.paymentStatus === "paid"
-                              ? "default"
-                              : "outline"
-                          }
-                          className="capitalize"
-                        >
-                          {booking.paymentStatus.replace(/_/g, " ")}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="sm" asChild>
-                          <Link href={`/admin/bookings/${booking._id}`}>
-                            <Eye /> View
+                          No bookings found.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                    {data?.items.map((booking) => (
+                      <TableRow key={booking._id} className="cursor-pointer">
+                        <TableCell>
+                          <Link
+                            href={`/admin/bookings/${booking._id}`}
+                            className="font-medium text-primary"
+                          >
+                            {booking.bookingId}
                           </Link>
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              {data && data.total > 0 && (
-                <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
-                  <span>
-                    Page {data.page} of {totalPages} ({data.total} total)
-                  </span>
-                  <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      disabled={page <= 1}
-                      onClick={() => setPage((p) => Math.max(1, p - 1))}
-                    >
-                      Previous
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      disabled={page >= totalPages}
-                      onClick={() => setPage((p) => p + 1)}
-                    >
-                      Next
-                    </Button>
-                  </div>
-                </div>
-              )}
+                        </TableCell>
+                        <TableCell>{booking.customerSnapshot?.name}</TableCell>
+                        <TableCell className="text-muted-foreground">
+                          {booking.city ?? "—"}
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">
+                          {booking.pooja?.name ??
+                            booking.festival?.name ??
+                            booking.serviceType}
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">
+                          {new Date(booking.poojaDate).toLocaleDateString(
+                            "en-IN",
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className="capitalize">
+                            {booking.bookingChannel}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="secondary">
+                            {BOOKING_STATUS_LABELS[booking.status] ??
+                              booking.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={
+                              booking.paymentStatus === "paid"
+                                ? "default"
+                                : "outline"
+                            }
+                            className="capitalize"
+                          >
+                            {booking.paymentStatus.replace(/_/g, " ")}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Button variant="ghost" size="sm" asChild>
+                            <Link href={`/admin/bookings/${booking._id}`}>
+                              <Eye /> View
+                            </Link>
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              <AdminPagination page={page} totalPages={data?.totalPages ?? 1} total={data?.total ?? 0} onPageChange={setPage} />
             </>
           )}
         </CardContent>
