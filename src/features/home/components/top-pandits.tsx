@@ -95,7 +95,13 @@ export async function TopPandits() {
                   </div>
                   <div>
                     <div className="flex items-center gap-1 text-sm font-bold">
-                      {pandit.rating.toFixed(1)} <StarRating rating={pandit.rating} size={13} />
+                      {pandit.rating > 0 ? (
+                        <>
+                          {pandit.rating.toFixed(1)} <StarRating rating={pandit.rating} size={13} />
+                        </>
+                      ) : (
+                        <span className="text-muted-foreground">New profile</span>
+                      )}
                     </div>
                     <div className="text-[10px] font-bold uppercase tracking-wide text-muted-foreground">
                       Rating
@@ -110,7 +116,9 @@ export async function TopPandits() {
                 )}
 
                 <div className="mt-auto flex items-center justify-between">
-                  <span className="text-sm font-bold text-secondary">{pandit.completedPoojas}+ Puja&apos;s</span>
+                  <span className="text-sm font-bold text-secondary">
+                    {pandit.completedPoojas > 0 ? `${pandit.completedPoojas}+ Puja&apos;s` : "New priest"}
+                  </span>
                   <Button size="sm" variant="outline" className="main_books font-ui font-bold" asChild>
                     <Link href="/poojas">Book Now</Link>
                   </Button>

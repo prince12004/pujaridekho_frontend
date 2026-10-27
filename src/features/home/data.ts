@@ -30,7 +30,7 @@ export const featuredPoojas: Pooja[] = [
   { slug: "ganesh-puja", name: "Ganesh Puja", duration: "1–2 hrs", location: "Home Visit", price: 1500, marketPrice: 2000, image: "ganeshIdol", tag: "Most Booked" },
   { slug: "marriage-puja", name: "Vivah (Marriage) Puja", duration: "Full Day", location: "Venue of Choice", price: 15000, marketPrice: 19000, image: "handHoldingCandle" },
   { slug: "vehicle-puja", name: "Vehicle Puja", duration: "30–45 min", location: "Home / Showroom", price: 800, marketPrice: 1100, image: "tealightCandle" },
-  { slug: "office-puja", name: "Office / Shop Opening Puja", duration: "1–2 hrs", location: "Business Premises", price: 2200, marketPrice: 2900, image: "scentedCandle" },
+  { slug: "office-puja", name: "Office Diwali Puja", duration: "1–2 hrs", location: "Business Premises", price: 2200, marketPrice: 2900, image: "scentedCandle" },
 ];
 
 export const festivalPoojas: Festival[] = [

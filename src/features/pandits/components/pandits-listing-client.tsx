@@ -55,7 +55,9 @@ export function PanditsListingClient() {
                                     <div className="mt-3 space-y-1 text-xs text-muted-foreground">
                                         {pandit.cities.length > 0 && <div>Serves: {pandit.cities.join(", ")}</div>}
                                         {pandit.languages.length > 0 && <div>Languages: {pandit.languages.join(", ")}</div>}
-                                        <div>Rating: {pandit.rating.toFixed(1)} ★</div>
+                                        <div>
+                                            {pandit.rating > 0 ? `Rating: ${pandit.rating.toFixed(1)} ★` : "New profile — no reviews yet"}
+                                        </div>
                                     </div>
                                 </MediaCardBody>
                                 <MediaCardFooter>
