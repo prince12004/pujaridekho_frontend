@@ -29,6 +29,7 @@ import { useMuhurat } from "@/features/admin/api/use-muhurats";
 import { BOOKING_STATUS_LABELS, BOOKING_STATUSES, PAYMENT_METHODS } from "@/features/admin/lib/booking-status";
 import { getErrorMessage } from "@/features/admin/lib/get-error-message";
 import { ADVANCE_AMOUNT } from "@/components/shared/payment-option-selector";
+import { getPaymentState, paymentStateBadgeClass, paymentStateLabel } from "@/features/admin/lib/payment-state";
 
 const CONFIRMABLE_STATUSES = ["pending_payment", "payment_received"];
 
@@ -439,14 +440,38 @@ export default function BookingDetailPage() {
                 </div>
                 <div>
                   <p className="text-xs text-muted-foreground">Payment status</p>
-                  <Badge variant={booking.paymentStatus === "paid" ? "default" : "outline"} className="capitalize">
-                    {booking.paymentStatus.replace(/_/g, " ")}
+                  <Badge variant="outline" className={paymentStateBadgeClass(getPaymentState(booking))}>
+                    {paymentStateLabel(getPaymentState(booking))}
                   </Badge>
                 </div>
               </div>
 
               <div className="space-y-2">
                 {booking.payments.length === 0 && <p className="text-sm text-muted-foreground">No payments recorded yet.</p>}
+                {(booking.paymentAttempts ?? []).length > 0 && (
+                  <div className="space-y-1 rounded-lg border border-dashed border-border px-3 py-2">
+                    <p className="text-xs font-medium text-muted-foreground">Online payment attempts (PayU)</p>
+                    {[...(booking.paymentAttempts ?? [])].reverse().map((attempt) => (
+                      <div key={attempt.txnid} className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <span>
+                          ₹{attempt.amount.toLocaleString("en-IN")} ·{" "}
+                          <span
+                            className={
+                              attempt.status === "success"
+                                ? "text-emerald-600"
+                                : attempt.status === "failed"
+                                  ? "text-red-600"
+                                  : "text-amber-600"
+                            }
+                          >
+                            {attempt.status === "initiated" ? "Pending (no response from gateway)" : attempt.status}
+                          </span>
+                        </span>
+                        <span className="text-muted-foreground">{new Date(attempt.initiatedAt).toLocaleString("en-IN")}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 {booking.payments.map((payment, i) => (
                   <div key={i} className="flex items-center justify-between rounded-lg border border-border px-3 py-2 text-sm">
                     <span>

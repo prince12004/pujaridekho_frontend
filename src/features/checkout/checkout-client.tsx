@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -24,7 +24,33 @@ import { contactDetailsSchema, type ContactDetailsValues } from "@/features/chec
 import { ContactDetailsFields, FieldSection } from "@/features/checkout/contact-details-fields";
 import { CheckoutSteps } from "@/features/checkout/checkout-steps";
 
-async function redirectToPayU(entityId: string, amount: number, name: string, mobile: string) {
+// Fire as soon as "Book Now" is pressed — before OTP login and before the
+// booking exists — so the admin team still sees customers who drop off at
+// the login step. Never blocks the booking flow if it fails.
+async function captureCheckoutDetails(payload: Record<string, unknown>): Promise<string | undefined> {
+  try {
+    const res = await apiClient.post("/leads/checkout", payload);
+    return res.data?.data?._id as string | undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function detailsSignature(details: CheckoutPrefill, extra: unknown[]) {
+  return JSON.stringify([
+    details.name,
+    details.mobile,
+    details.city,
+    details.address,
+    details.date,
+    details.muhuratSlotId,
+    details.selectedPackage?.name,
+    (details.selectedSamagri ?? []).map((i) => i.name),
+    ...extra,
+  ]);
+}
+
+async function redirectToPayU(entityId: string, amount: number, name: string, mobile: string, beforeRedirect?: () => void) {
   const res = await apiClient.post("/payments/payu/initiate", {
     entityType: "booking",
     entityId,
@@ -34,6 +60,7 @@ async function redirectToPayU(entityId: string, amount: number, name: string, mo
     phone: mobile,
   });
   const { action, fields } = res.data.data;
+  beforeRedirect?.();
   const form = document.createElement("form");
   form.method = "POST";
   form.action = action;
@@ -119,6 +146,11 @@ export function CheckoutClient() {
   const [isBooking, setIsBooking] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [showSamagriDetails, setShowSamagriDetails] = useState(false);
+  const checkoutLeadIdRef = useRef<string | undefined>(undefined);
+  // A booking already created in this session for these exact details —
+  // reused if the payment hand-off fails and the customer retries, instead
+  // of creating a duplicate booking.
+  const createdBookingRef = useRef<{ id: string; signature: string } | null>(null);
 
   useEffect(() => {
     setPrefill(readCheckoutPrefillForSlug(slug));
@@ -190,10 +222,28 @@ export function CheckoutClient() {
   const estimatedTotal = poojaPrice + samagriTotal + distanceCharge + platformFee;
   const advanceAmount = ADVANCE_AMOUNT;
 
+  async function captureDetails(details: CheckoutPrefill) {
+    if (!slug || !service || !hasRequiredDetails(details)) return;
+    const leadId = await captureCheckoutDetails({
+      name: details.name,
+      mobile: details.mobile,
+      city: details.city,
+      address: details.address,
+      date: details.date,
+      pooja: service.name,
+      poojaSlug: slug,
+      serviceType: type,
+      packageName: details.selectedPackage?.name,
+      estimatedAmount: estimatedTotal,
+    });
+    if (leadId) checkoutLeadIdRef.current = leadId;
+  }
+
   async function handleBookNow() {
     if (showEditForm) {
       await handleEditSubmit(async (values) => {
         const updated = saveEdit(values);
+        await captureDetails(updated);
         if (!isLoggedIn) {
           openLogin(() => proceedToPayment(updated), updated.mobile);
           return;
@@ -206,6 +256,7 @@ export function CheckoutClient() {
       openEdit(prefill);
       return;
     }
+    await captureDetails(prefill);
     if (!isLoggedIn) {
       openLogin(() => proceedToPayment(prefill), prefill.mobile);
       return;
@@ -215,29 +266,46 @@ export function CheckoutClient() {
 
   async function proceedToPayment(details: CheckoutPrefill) {
     setIsBooking(true);
+    const amountToPay = paymentOption === "advance" ? advanceAmount : estimatedTotal;
+    const signature = detailsSignature(details, [type, slug]);
+    let bookingId = createdBookingRef.current?.signature === signature ? createdBookingRef.current.id : undefined;
+
     try {
-      const res = await apiClient.post(
-        "/bookings",
-        {
-          customer: { name: details.name, mobile: details.mobile },
-          serviceType: type,
-          poojaSlug: slug,
-          city: details.city,
-          address: details.address,
-          poojaDate: details.date,
-          poojaTime: details.muhuratLabel,
-          muhuratSlotId: details.muhuratSlotId,
-          selectedSamagri: details.selectedSamagri ?? [],
-          packageName: details.selectedPackage?.name,
-        },
-        { headers: { Authorization: `Bearer ${getCustomerAccessToken()}` } },
-      );
-      const booking = res.data.data;
-      const amountToPay = paymentOption === "advance" ? advanceAmount : estimatedTotal;
-      clearCheckoutPrefill();
-      await redirectToPayU(booking._id, amountToPay, details.name!, details.mobile!);
+      if (!bookingId) {
+        const res = await apiClient.post(
+          "/bookings",
+          {
+            customer: { name: details.name, mobile: details.mobile },
+            serviceType: type,
+            poojaSlug: slug,
+            city: details.city,
+            address: details.address,
+            poojaDate: details.date,
+            poojaTime: details.muhuratLabel,
+            muhuratSlotId: details.muhuratSlotId,
+            selectedSamagri: details.selectedSamagri ?? [],
+            packageName: details.selectedPackage?.name,
+            checkoutLeadId: checkoutLeadIdRef.current,
+          },
+          { headers: { Authorization: `Bearer ${getCustomerAccessToken()}` } },
+        );
+        bookingId = res.data.data._id as string;
+        createdBookingRef.current = { id: bookingId, signature };
+      }
     } catch (err) {
       toast.error(getErrorMessage(err, "Couldn't create your booking. Please try again."));
+      setIsBooking(false);
+      return;
+    }
+
+    try {
+      await redirectToPayU(bookingId, amountToPay, details.name!, details.mobile!, clearCheckoutPrefill);
+    } catch (err) {
+      // The booking is saved (it shows in the admin panel as Unpaid and in
+      // the customer's account) — only the payment hand-off failed.
+      toast.error(
+        getErrorMessage(err, "Your booking is saved, but we couldn't open the payment page. Please try again."),
+      );
       setIsBooking(false);
     }
   }

@@ -23,6 +23,25 @@ import {
   BOOKING_STATUS_LABELS,
   BOOKING_STATUSES,
 } from "@/features/admin/lib/booking-status";
+import {
+  PAYMENT_STATE_OPTIONS,
+  getPaymentState,
+  paymentStateBadgeClass,
+  paymentStateLabel,
+} from "@/features/admin/lib/payment-state";
+import { IncompleteCheckouts } from "@/features/admin/components/incomplete-checkouts";
+import { useHomeLeads } from "@/features/admin/api/use-leads";
+import { cn } from "@/lib/utils";
+
+function formatDateTime(value: string) {
+  return new Date(value).toLocaleString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
 
 export default function BookingsListPage() {
   const [search, setSearch] = useState("");
@@ -30,6 +49,8 @@ export default function BookingsListPage() {
   const [channel, setChannel] = useState("");
   const [city, setCity] = useState("");
   const [pooja, setPooja] = useState("");
+  const [paymentState, setPaymentState] = useState("");
+  const [view, setView] = useState<"bookings" | "incomplete">("bookings");
   const [page, setPage] = useState(1);
   const { data, isLoading } = useBookings({
     search: search || undefined,
@@ -37,8 +58,10 @@ export default function BookingsListPage() {
     bookingChannel: channel || undefined,
     city: city || undefined,
     pooja: pooja || undefined,
+    paymentState: paymentState || undefined,
     page,
   });
+  const { data: openCheckouts } = useHomeLeads({ source: "checkout", status: "open" });
   const { data: cities } = useBookingCities();
   const { data: poojas } = usePoojas({ limit: ALL_RECORDS_LIMIT });
 
@@ -46,7 +69,7 @@ export default function BookingsListPage() {
     <div>
       <AdminPageHeader
         title="Bookings"
-        description="Every online and offline booking flows through this same list."
+        description="Every online and offline booking — paid or not — newest first."
         actions={
           <Button asChild>
             <Link href="/admin/bookings/offline/new">
@@ -56,6 +79,29 @@ export default function BookingsListPage() {
         }
       />
 
+      <div className="mb-4 flex flex-wrap gap-1 rounded-lg border border-border bg-muted/40 p-1 w-fit">
+        <Button
+          type="button"
+          size="sm"
+          variant={view === "bookings" ? "default" : "ghost"}
+          onClick={() => setView("bookings")}
+        >
+          All Bookings{data ? ` (${data.total})` : ""}
+        </Button>
+        <Button
+          type="button"
+          size="sm"
+          variant={view === "incomplete" ? "default" : "ghost"}
+          onClick={() => setView("incomplete")}
+        >
+          Incomplete Checkouts{openCheckouts ? ` (${openCheckouts.length})` : ""}
+        </Button>
+      </div>
+
+      {view === "incomplete" ? (
+        <IncompleteCheckouts />
+      ) : (
+      <>
       <div className="mb-4 flex flex-wrap gap-2">
         <div className="relative">
           <Search className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
@@ -126,6 +172,21 @@ export default function BookingsListPage() {
             </option>
           ))}
         </select>
+        <select
+          value={paymentState}
+          onChange={(e) => {
+            setPaymentState(e.target.value);
+            setPage(1);
+          }}
+          className="h-8 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none"
+        >
+          <option value="">All payments</option>
+          {PAYMENT_STATE_OPTIONS.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
+        </select>
       </div>
 
       <Card>
@@ -140,12 +201,14 @@ export default function BookingsListPage() {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Booking ID</TableHead>
+                      <TableHead>Booked On</TableHead>
                       <TableHead>Customer</TableHead>
                       <TableHead>City</TableHead>
                       <TableHead>Service</TableHead>
-                      <TableHead>Date</TableHead>
+                      <TableHead>Pooja Date</TableHead>
                       <TableHead>Channel</TableHead>
                       <TableHead>Status</TableHead>
+                      <TableHead>Amount</TableHead>
                       <TableHead>Payment</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
@@ -154,7 +217,7 @@ export default function BookingsListPage() {
                     {data?.items.length === 0 && (
                       <TableRow>
                         <TableCell
-                          colSpan={9}
+                          colSpan={11}
                           className="text-center text-muted-foreground"
                         >
                           No bookings found.
@@ -171,7 +234,13 @@ export default function BookingsListPage() {
                             {booking.bookingId}
                           </Link>
                         </TableCell>
-                        <TableCell>{booking.customerSnapshot?.name}</TableCell>
+                        <TableCell className="whitespace-nowrap text-muted-foreground">
+                          {formatDateTime(booking.createdAt)}
+                        </TableCell>
+                        <TableCell>
+                          <div className="font-medium">{booking.customerSnapshot?.name}</div>
+                          <div className="text-xs text-muted-foreground">{booking.customerSnapshot?.mobile}</div>
+                        </TableCell>
                         <TableCell className="text-muted-foreground">
                           {booking.city ?? "—"}
                         </TableCell>
@@ -196,17 +265,18 @@ export default function BookingsListPage() {
                               booking.status}
                           </Badge>
                         </TableCell>
+                        <TableCell className="whitespace-nowrap">
+                          ₹{Number(booking.pricing?.finalAmount ?? 0).toLocaleString("en-IN")}
+                        </TableCell>
                         <TableCell>
-                          <Badge
-                            variant={
-                              booking.paymentStatus === "paid"
-                                ? "default"
-                                : "outline"
-                            }
-                            className="capitalize"
-                          >
-                            {booking.paymentStatus.replace(/_/g, " ")}
-                          </Badge>
+                          {(() => {
+                            const state = getPaymentState(booking);
+                            return (
+                              <Badge variant="outline" className={cn(paymentStateBadgeClass(state))}>
+                                {paymentStateLabel(state)}
+                              </Badge>
+                            );
+                          })()}
                         </TableCell>
                         <TableCell className="text-right">
                           <Button variant="ghost" size="sm" asChild>
@@ -224,6 +294,8 @@ export default function BookingsListPage() {
           )}
         </CardContent>
       </Card>
+      </>
+      )}
     </div>
   );
 }

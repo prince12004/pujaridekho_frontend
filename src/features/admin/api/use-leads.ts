@@ -10,13 +10,22 @@ export interface HomeLead {
   pooja: string;
   date: string;
   createdAt: string;
+  updatedAt?: string;
+  source?: "homepage" | "checkout";
+  status?: "open" | "converted";
+  poojaSlug?: string;
+  serviceType?: string;
+  packageName?: string;
+  estimatedAmount?: number;
+  bookingRef?: string;
+  booking?: string | null;
 }
 
-export function useHomeLeads() {
+export function useHomeLeads(params: { source?: "homepage" | "checkout"; status?: "open" | "converted" } = {}) {
   return useQuery({
-    queryKey: ["admin", "leads"],
+    queryKey: ["admin", "leads", params],
     queryFn: async () => {
-      const res = await adminApiClient.get<{ data: HomeLead[] }>("/leads");
+      const res = await adminApiClient.get<{ data: HomeLead[] }>("/leads", { params });
       return res.data.data;
     },
   });

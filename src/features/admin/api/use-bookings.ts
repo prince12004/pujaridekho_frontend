@@ -10,6 +10,16 @@ export interface BookingPayment {
   recordedAt: string;
 }
 
+export interface BookingPaymentAttempt {
+  txnid: string;
+  gateway: string;
+  amount: number;
+  status: "initiated" | "success" | "failed";
+  gatewayRef?: string;
+  initiatedAt: string;
+  completedAt?: string;
+}
+
 export interface BookingListItem {
   _id: string;
   bookingId: string;
@@ -22,6 +32,9 @@ export interface BookingListItem {
   poojaTime?: string;
   status: string;
   paymentStatus: string;
+  lastPaymentAttemptStatus?: "initiated" | "success" | "failed" | null;
+  paymentAttempts?: BookingPaymentAttempt[];
+  pricing?: Record<string, number | string | undefined>;
   bookingChannel: "online" | "offline";
   bookingSource: string;
   createdAt: string;
@@ -61,7 +74,15 @@ export interface BookingDetail extends BookingListItem {
 }
 
 export function useBookings(
-  params: { search?: string; status?: string; bookingChannel?: string; city?: string; pooja?: string; page?: number } = {},
+  params: {
+    search?: string;
+    status?: string;
+    bookingChannel?: string;
+    city?: string;
+    pooja?: string;
+    paymentState?: string;
+    page?: number;
+  } = {},
 ) {
   return useQuery({
     queryKey: ["admin", "bookings", params],

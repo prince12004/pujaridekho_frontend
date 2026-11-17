@@ -10,7 +10,7 @@ import { useHomeLeads } from "@/features/admin/api/use-leads";
 
 export default function HomeLeadsPage() {
   const [page, setPage] = useState(1);
-  const { data: leads, isLoading } = useHomeLeads();
+  const { data: leads, isLoading } = useHomeLeads({ source: "homepage" });
   const { pageItems, total, totalPages } = paginateClient(leads, page);
 
   return (
