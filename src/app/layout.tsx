@@ -41,6 +41,10 @@ export async function generateMetadata(): Promise<Metadata> {
       template: "%s | PujariDekho",
     },
     description: override?.description ?? DEFAULT_DESCRIPTION,
+    // Google Search Console ownership (also verified via public/googlec020e19dd17ec6bc.html).
+    verification: {
+      google: "2jB01OmFE_DFxdXfx9IlfgqxlVmtbGGjhjAnazGUe9o",
+    },
   };
 }
 
