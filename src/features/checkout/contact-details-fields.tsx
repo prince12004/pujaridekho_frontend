@@ -67,14 +67,14 @@ export function ContactDetailsFields({
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="flex flex-col gap-1.5">
             <Label className={fieldLabelClass}>Your Name</Label>
-            <Input placeholder="Full name" className={inputClass} {...register("name")} />
+            <Input placeholder="Full name" className={inputClass} aria-invalid={!!errors.name} {...register("name")} />
             {errors.name ? <p className="text-xs text-destructive">{errors.name.message}</p> : null}
           </div>
           <div className="flex flex-col gap-1.5">
             <Label className={cn(fieldLabelClass, "flex items-center gap-1.5")}>
               <Phone size={12} /> Mobile Number
             </Label>
-            <Input placeholder="10-digit number" className={inputClass} {...register("mobile")} />
+            <Input placeholder="10-digit number" className={inputClass} aria-invalid={!!errors.mobile} {...register("mobile")} />
             {errors.mobile ? <p className="text-xs text-destructive">{errors.mobile.message}</p> : null}
           </div>
         </div>
@@ -85,7 +85,7 @@ export function ContactDetailsFields({
           <div className="flex flex-col gap-1.5">
             <Label className={fieldLabelClass}>City</Label>
             <Select value={watch("city")} onValueChange={(v) => setValue("city", v, { shouldValidate: true })}>
-              <SelectTrigger className={cn("w-full", inputClass)}>
+              <SelectTrigger className={cn("w-full", inputClass)} aria-invalid={!!errors.city}>
                 <SelectValue placeholder="Choose your city" />
               </SelectTrigger>
               <SelectContent>
@@ -101,7 +101,7 @@ export function ContactDetailsFields({
 
           <div className="flex flex-col gap-1.5">
             <Label className={fieldLabelClass}>Full Address</Label>
-            <Textarea placeholder="House / flat no., street, area..." rows={3} className={inputClass} {...register("address")} />
+            <Textarea placeholder="House / flat no., street, area..." rows={3} className={inputClass} aria-invalid={!!errors.address} {...register("address")} />
             {errors.address ? <p className="text-xs text-destructive">{errors.address.message}</p> : null}
           </div>
         </div>
@@ -116,7 +116,7 @@ export function ContactDetailsFields({
               onChange={(v) => setValue("date", v, { shouldValidate: true })}
               min={today}
               placeholder="Choose a date"
-              className={inputClass}
+              className={cn(inputClass, errors.date && "border-destructive ring-destructive/20")}
             />
             {errors.date ? <p className="text-xs text-destructive">{errors.date.message}</p> : null}
           </div>

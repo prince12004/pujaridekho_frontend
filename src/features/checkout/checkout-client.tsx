@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldErrors } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { CalendarDays, ChevronDown, ChevronUp, Loader2, MapPinned, Pencil, Sparkles, User, X } from "lucide-react";
@@ -74,6 +74,15 @@ async function redirectToPayU(entityId: string, amount: number, name: string, mo
   document.body.appendChild(form);
   form.submit();
 }
+
+const FIELD_LABELS: Record<keyof ContactDetailsValues, string> = {
+  name: "Name",
+  mobile: "Mobile Number",
+  city: "City",
+  address: "Full Address",
+  date: "Pooja Date",
+  muhurat: "Muhurat",
+};
 
 type CompleteCheckoutPrefill = CheckoutPrefill & Required<Pick<CheckoutPrefill, "name" | "mobile" | "city" | "address" | "date">>;
 
@@ -239,6 +248,19 @@ export function CheckoutClient() {
     if (leadId) checkoutLeadIdRef.current = leadId;
   }
 
+  // Clicking "Book Now" with an incomplete form tells the customer exactly
+  // what's missing (fields also turn red with their own message) instead of
+  // the button silently doing nothing.
+  function handleInvalidDetails(fieldErrors: FieldErrors<ContactDetailsValues>) {
+    const missing = (Object.keys(FIELD_LABELS) as (keyof ContactDetailsValues)[])
+      .filter((key) => fieldErrors[key])
+      .map((key) => FIELD_LABELS[key]);
+    toast.error("Please fill in your details to continue", {
+      description: missing.length ? `Missing or invalid: ${missing.join(", ")}` : undefined,
+    });
+    document.getElementById("checkout-your-details")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   async function handleBookNow() {
     if (showEditForm) {
       await handleEditSubmit(async (values) => {
@@ -249,7 +271,7 @@ export function CheckoutClient() {
           return;
         }
         await proceedToPayment(updated);
-      })();
+      }, handleInvalidDetails)();
       return;
     }
     if (!hasRequiredDetails(prefill)) {
@@ -343,7 +365,6 @@ export function CheckoutClient() {
 
   const detailsComplete = hasRequiredDetails(prefill);
   const showEditForm = isEditing || !detailsComplete;
-  const isEditFormValid = contactDetailsSchema.safeParse(watchEdit()).success;
 
   return (
     <Container className="py-8">
@@ -363,7 +384,7 @@ export function CheckoutClient() {
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_400px]">
-        <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+        <div id="checkout-your-details" className="scroll-mt-24 overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
           <div className="flex items-center justify-between border-b border-border bg-muted/30 px-6 py-4">
             <h2 className="font-heading flex items-center gap-2 text-lg">
               <User size={18} className="text-primary" /> Your Details
@@ -469,7 +490,7 @@ export function CheckoutClient() {
             <Button
               type="button"
               size="lg"
-              disabled={isBooking || (showEditForm && !isEditFormValid)}
+              disabled={isBooking}
               onClick={handleBookNow}
               className="mt-5 w-full font-ui font-bold"
             >
