@@ -196,7 +196,7 @@ export function SiteFooter({
 
         {/* Link columns: collapsible on mobile, open on desktop. Links stay in
             the HTML either way so search engines always see them. */}
-        <Container className="relative grid gap-x-8 gap-y-0 py-6 sm:grid-cols-2 lg:grid-cols-5 lg:gap-y-10 lg:py-12">
+        <Container className="relative grid gap-x-8 gap-y-0 py-6 sm:grid-cols-2 lg:auto-cols-fr lg:grid-flow-col lg:grid-cols-none lg:gap-x-6 lg:py-12">
           {linkGroups.map((group) => {
             const isOpen = openGroup === group.key;
             return (
@@ -226,16 +226,16 @@ export function SiteFooter({
             );
           })}
 
-          <div className="py-6 sm:col-span-2 lg:col-span-1 lg:py-0">
+          <div className="min-w-0 py-6 sm:col-span-2 lg:col-span-1 lg:py-0">
             <h3 className={headingClass}>Contact</h3>
             <ul className="mt-4 flex flex-col gap-3.5">
-              <li className="flex items-start gap-3">
+              <li className="flex min-w-0 items-start gap-3">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-gold-soft">
                   <MapPin size={16} />
                 </span>
                 <address className="pt-1.5 text-sm not-italic text-brand-cream/78">{address}</address>
               </li>
-              <li className="flex items-center gap-3">
+              <li className="flex min-w-0 items-center gap-3">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-gold-soft">
                   <Phone size={16} />
                 </span>
@@ -243,19 +243,19 @@ export function SiteFooter({
                   {phone}
                 </a>
               </li>
-              <li className="flex items-center gap-3">
+              <li className="flex min-w-0 items-center gap-3">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-gold-soft">
                   <WhatsappIcon size={16} />
                 </span>
-                <a href={`https://wa.me/${whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                <a href={`https://wa.me/${whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className={cn(linkClass, "min-w-0")}>
                   WhatsApp {whatsapp}
                 </a>
               </li>
-              <li className="flex items-center gap-3">
+              <li className="flex min-w-0 items-center gap-3">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-gold-soft">
                   <Mail size={16} />
                 </span>
-                <a href={`mailto:${email}`} className={linkClass}>
+                <a href={`mailto:${email}`} className={cn(linkClass, "min-w-0 break-all")}>
                   {email}
                 </a>
               </li>
