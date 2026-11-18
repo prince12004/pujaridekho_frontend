@@ -79,7 +79,7 @@ export default function FooterLinksPage() {
                   <div className="grid gap-2 text-sm text-muted-foreground">
                     <p>
                       Lists &quot;Pandit in &lt;city&gt;&quot; for every city in SEO Management → Cities (or, if none, Cities &amp; Service Areas). Each link opens the
-                      city&apos;s published SEO page, or a basic noindex city page until one is published.
+                      city&apos;s published SEO page, or a basic noindex city page until one is published. Links added below are shown first (e.g. Pandit in Delhi NCR).
                     </p>
                     <div className="flex items-center gap-2">
                       Last link label
@@ -97,7 +97,7 @@ export default function FooterLinksPage() {
                         : "latest published blog posts."}
                   </div>
                 ) : null}
-                {["links", "tags"].includes(group.kind ?? "links") ? group.links.map((link, li) => (
+                {["links", "tags", "cities"].includes(group.kind ?? "links") ? group.links.map((link, li) => (
                   <div key={li} className="flex items-center gap-1.5">
                     <input type="checkbox" checked={link.isActive} title="Shown" onChange={(e) => updateGroup(gi, { links: group.links.map((l, j) => (j === li ? { ...l, isActive: e.target.checked } : l)) })} />
                     <Input value={link.label} placeholder="Label" onChange={(e) => updateGroup(gi, { links: group.links.map((l, j) => (j === li ? { ...l, label: e.target.value } : l)) })} />
@@ -107,7 +107,7 @@ export default function FooterLinksPage() {
                     <Button variant="ghost" size="icon-sm" onClick={() => updateGroup(gi, { links: group.links.filter((_, j) => j !== li) })} aria-label="Remove"><Trash2 /></Button>
                   </div>
                 )) : null}
-                {["links", "tags"].includes(group.kind ?? "links") ? (
+                {["links", "tags", "cities"].includes(group.kind ?? "links") ? (
                   <Button variant="outline" size="sm" className="w-fit" onClick={() => updateGroup(gi, { links: [...group.links, { label: "", url: "", isActive: true }] })}>
                     <Plus /> Add link
                   </Button>
