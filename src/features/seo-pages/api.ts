@@ -60,7 +60,7 @@ export interface SeoDirectory {
 
 export interface FooterGroup {
   key: string;
-  kind?: "links" | "poojas" | "blogs" | "text";
+  kind?: "links" | "tags" | "poojas" | "blogs" | "text";
   title: string;
   body?: string;
   links: { label: string; url: string }[];
@@ -148,6 +148,8 @@ export interface SeoSettings {
   directory: { title: string; description: string; officeGroupTitle: string; servicesGroupTitle: string; emptyText: string };
   footer: {
     blurb: string;
+    bookButtonLabel: string;
+    bookButtonUrl: string;
     newsletterTitle: string;
     newsletterText: string;
     trustBadges: string[];
@@ -209,6 +211,8 @@ export const FALLBACK_SEO_SETTINGS: SeoSettings = {
   footer: {
     blurb:
       "PujariDekho connects families and businesses across Noida, Greater Noida, Greater Noida West, Ghaziabad, Delhi and Gurugram with verified, experienced pandits for every ritual — with the price shown before you book.",
+    bookButtonLabel: "Book Pandit Ji",
+    bookButtonUrl: "/poojas",
     newsletterTitle: "Subscribe to Our Newsletter",
     newsletterText: "Vidhi guides, festival muhurat dates and special offers — straight to your inbox.",
     trustBadges: ["Verified & Experienced Pandits", "Secure & Encrypted Payments", "Trusted by Thousands of Families", "24/7 Customer Support"],

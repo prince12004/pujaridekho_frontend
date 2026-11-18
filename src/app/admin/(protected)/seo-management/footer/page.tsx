@@ -82,7 +82,7 @@ export default function FooterLinksPage() {
                     {group.kind === "poojas" ? "published pujas (featured & popular first, then display order)." : "latest published blog posts."}
                   </div>
                 ) : null}
-                {(group.kind ?? "links") === "links" ? group.links.map((link, li) => (
+                {["links", "tags"].includes(group.kind ?? "links") ? group.links.map((link, li) => (
                   <div key={li} className="flex items-center gap-1.5">
                     <input type="checkbox" checked={link.isActive} title="Shown" onChange={(e) => updateGroup(gi, { links: group.links.map((l, j) => (j === li ? { ...l, isActive: e.target.checked } : l)) })} />
                     <Input value={link.label} placeholder="Label" onChange={(e) => updateGroup(gi, { links: group.links.map((l, j) => (j === li ? { ...l, label: e.target.value } : l)) })} />
@@ -92,7 +92,7 @@ export default function FooterLinksPage() {
                     <Button variant="ghost" size="icon-sm" onClick={() => updateGroup(gi, { links: group.links.filter((_, j) => j !== li) })} aria-label="Remove"><Trash2 /></Button>
                   </div>
                 )) : null}
-                {(group.kind ?? "links") === "links" ? (
+                {["links", "tags"].includes(group.kind ?? "links") ? (
                   <Button variant="outline" size="sm" className="w-fit" onClick={() => updateGroup(gi, { links: [...group.links, { label: "", url: "", isActive: true }] })}>
                     <Plus /> Add link
                   </Button>

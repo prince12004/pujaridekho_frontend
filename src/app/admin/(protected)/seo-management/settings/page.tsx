@@ -243,6 +243,16 @@ export default function SeoContentSettingsPage() {
                 <Label>Text under the logo</Label>
                 <Textarea rows={3} value={form.footer.blurb} onChange={(e) => setFooter({ blurb: e.target.value })} />
               </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="space-y-1">
+                  <Label>Book button label</Label>
+                  <Input value={form.footer.bookButtonLabel} onChange={(e) => setFooter({ bookButtonLabel: e.target.value })} />
+                </div>
+                <div className="space-y-1">
+                  <Label>Book button link</Label>
+                  <Input value={form.footer.bookButtonUrl} onChange={(e) => setFooter({ bookButtonUrl: e.target.value })} placeholder="/poojas" />
+                </div>
+              </div>
               <div className="space-y-1">
                 <Label>Newsletter title</Label>
                 <Input value={form.footer.newsletterTitle} onChange={(e) => setFooter({ newsletterTitle: e.target.value })} />

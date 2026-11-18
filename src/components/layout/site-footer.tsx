@@ -51,7 +51,8 @@ export function SiteFooter({
   const [subscribed, setSubscribed] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const textBlocks = groups.filter((g) => g.kind === "text" && g.body);
-  const linkGroups = groups.filter((g) => g.kind !== "text");
+  const tagGroups = groups.filter((g) => g.kind === "tags" && g.links.length);
+  const linkGroups = groups.filter((g) => g.kind !== "text" && g.kind !== "tags");
   const {
     register,
     handleSubmit,
@@ -129,14 +130,21 @@ export function SiteFooter({
           }}
         />
 
-        {/* Brand row */}
-        <Container className="relative flex flex-col gap-6 border-b border-white/10 pb-10 lg:flex-row lg:items-end lg:justify-between">
+        {/* Brand row: logo, text, buttons and socials on the left; admin-editable
+            "tags" blocks (e.g. Popular Searches) as pill links on the right. */}
+        <Container className="relative grid gap-8 border-b border-white/10 pb-10 lg:grid-cols-[1fr_1.1fr] lg:gap-12">
           <div>
             <Logo light />
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-brand-cream/75">{copy.blurb}</p>
-          </div>
-          {socialLinks.length > 0 ? (
-            <div className="flex gap-2.5">
+            <div className="mt-5 flex flex-wrap items-center gap-2">
+              {copy.bookButtonLabel && copy.bookButtonUrl ? (
+                <Link
+                  href={copy.bookButtonUrl}
+                  className="font-ui inline-flex h-10 items-center rounded-full bg-brand-gold px-4 text-sm font-bold text-brand-cocoa-deep transition-colors hover:bg-brand-gold-soft"
+                >
+                  {copy.bookButtonLabel}
+                </Link>
+              ) : null}
               {socialLinks.map(({ Icon, href, label }) => (
                 <a
                   key={label}
@@ -148,6 +156,27 @@ export function SiteFooter({
                 >
                   <Icon size={17} />
                 </a>
+              ))}
+            </div>
+          </div>
+          {tagGroups.length > 0 ? (
+            <div className="flex flex-col gap-6">
+              {tagGroups.map((group) => (
+                <nav key={group.key} aria-label={group.title}>
+                  <h2 className={headingClass}>{group.title}</h2>
+                  <ul className="mt-4 flex flex-wrap gap-2">
+                    {group.links.map((link) => (
+                      <li key={link.url + link.label}>
+                        <Link
+                          href={link.url}
+                          className="inline-block rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-brand-cream/80 transition-colors hover:border-brand-gold hover:bg-brand-gold hover:text-brand-cocoa-deep"
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
               ))}
             </div>
           ) : null}
