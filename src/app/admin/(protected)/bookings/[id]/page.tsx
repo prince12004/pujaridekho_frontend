@@ -29,6 +29,7 @@ import { useMuhurat } from "@/features/admin/api/use-muhurats";
 import { BOOKING_STATUS_LABELS, BOOKING_STATUSES, PAYMENT_METHODS } from "@/features/admin/lib/booking-status";
 import { getErrorMessage } from "@/features/admin/lib/get-error-message";
 import { ADVANCE_AMOUNT } from "@/components/shared/payment-option-selector";
+import { BookingRequestsCard } from "@/features/admin/components/booking-requests-card";
 import { getPaymentState, paymentStateBadgeClass, paymentStateLabel } from "@/features/admin/lib/payment-state";
 
 const CONFIRMABLE_STATUSES = ["pending_payment", "payment_received"];
@@ -546,6 +547,7 @@ export default function BookingDetailPage() {
         </div>
 
         <div className="space-y-4">
+          <BookingRequestsCard booking={booking} />
           <Card>
             <CardHeader>
               <CardTitle>Booking Status</CardTitle>

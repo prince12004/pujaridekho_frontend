@@ -39,6 +39,7 @@ import {
   Shuffle,
   Store,
   FileCode2,
+  BellRing,
 } from "lucide-react";
 
 export interface AdminNavItem {
@@ -152,6 +153,7 @@ export const ADMIN_NAV: AdminNavSection[] = [
     items: [
       { label: "Reports", href: "/admin/reports", icon: BarChart3, permission: "reports:view" },
       { label: "Notifications", href: "/admin/notifications", icon: Bell },
+      { label: "Push Notifications", href: "/admin/push", icon: BellRing, permission: "notifications:send" },
     ],
   },
   {

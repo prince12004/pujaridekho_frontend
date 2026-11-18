@@ -13,6 +13,17 @@ export interface SiteSettings {
   socialLinks: { facebook?: string; instagram?: string; youtube?: string; twitter?: string };
   maintenanceMode: boolean;
   maintenanceMessage: string;
+  app: {
+    android: AppPlatformSettings;
+    ios: AppPlatformSettings;
+    updateMessage: string;
+  };
+}
+
+export interface AppPlatformSettings {
+  minVersion: string;
+  latestVersion: string;
+  storeUrl: string;
 }
 
 export function useSettings() {

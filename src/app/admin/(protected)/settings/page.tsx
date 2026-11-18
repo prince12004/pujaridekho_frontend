@@ -14,11 +14,20 @@ import { getErrorMessage } from "@/features/admin/lib/get-error-message";
 
 type FormValues = Omit<SiteSettings, "_id">;
 
+const SEMVER = /^\d+\.\d+\.\d+$/;
+
+function compareVersions(a: string, b: string) {
+  const pa = a.split(".").map(Number);
+  const pb = b.split(".").map(Number);
+  for (let i = 0; i < 3; i++) if ((pa[i] ?? 0) !== (pb[i] ?? 0)) return (pa[i] ?? 0) - (pb[i] ?? 0);
+  return 0;
+}
+
 export default function SettingsPage() {
   const { data: settings, isLoading } = useSettings();
   const updateMutation = useUpdateSettings();
 
-  const { register, handleSubmit, reset, formState: { isSubmitting } } = useForm<FormValues>({
+  const { register, handleSubmit, reset, getValues, formState: { isSubmitting, errors } } = useForm<FormValues>({
     defaultValues: {
       siteName: "",
       tagline: "",
@@ -30,6 +39,11 @@ export default function SettingsPage() {
       socialLinks: { facebook: "", instagram: "", youtube: "", twitter: "" },
       maintenanceMode: false,
       maintenanceMessage: "",
+      app: {
+        android: { minVersion: "1.0.0", latestVersion: "1.0.0", storeUrl: "" },
+        ios: { minVersion: "1.0.0", latestVersion: "1.0.0", storeUrl: "" },
+        updateMessage: "",
+      },
     },
   });
 
@@ -138,6 +152,68 @@ export default function SettingsPage() {
             <div className="space-y-1.5">
               <Label>Maintenance Message</Label>
               <Input {...register("maintenanceMessage")} placeholder="We'll be back shortly." />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Mobile App</CardTitle>
+            <p className="text-xs text-muted-foreground">
+              Read by the Pujari Dekho app on launch. Installed version below the minimum → a blocking &quot;Update required&quot; screen;
+              below the latest → a dismissible &quot;Update available&quot;. Maintenance mode above also applies to the app.
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-5">
+            {(["android", "ios"] as const).map((platform) => {
+              const fieldErrors = errors.app?.[platform];
+              return (
+                <div key={platform} className="space-y-3 rounded-lg border border-border p-3">
+                  <p className="text-sm font-semibold">{platform === "android" ? "Android" : "iOS"}</p>
+                  <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                    <div className="space-y-1.5">
+                      <Label>Minimum version</Label>
+                      <Input
+                        placeholder="1.0.0"
+                        {...register(`app.${platform}.minVersion`, {
+                          required: "Required",
+                          pattern: { value: SEMVER, message: "Use the format 1.2.3" },
+                        })}
+                      />
+                      {fieldErrors?.minVersion ? <p className="text-xs text-destructive">{fieldErrors.minVersion.message}</p> : null}
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label>Latest version</Label>
+                      <Input
+                        placeholder="1.0.0"
+                        {...register(`app.${platform}.latestVersion`, {
+                          required: "Required",
+                          pattern: { value: SEMVER, message: "Use the format 1.2.3" },
+                          validate: (v) =>
+                            !SEMVER.test(getValues(`app.${platform}.minVersion`)) ||
+                            compareVersions(v, getValues(`app.${platform}.minVersion`)) >= 0 ||
+                            "Must be the same as or higher than the minimum",
+                        })}
+                      />
+                      {fieldErrors?.latestVersion ? <p className="text-xs text-destructive">{fieldErrors.latestVersion.message}</p> : null}
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label>{platform === "android" ? "Play Store link" : "App Store link"}</Label>
+                      <Input
+                        placeholder={platform === "android" ? "https://play.google.com/store/apps/details?id=…" : "https://apps.apple.com/app/id…"}
+                        {...register(`app.${platform}.storeUrl`, {
+                          validate: (v) => !v || /^https?:\/\//.test(v) || "Enter a full link starting with https://",
+                        })}
+                      />
+                      {fieldErrors?.storeUrl ? <p className="text-xs text-destructive">{fieldErrors.storeUrl.message}</p> : null}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+            <div className="space-y-1.5">
+              <Label>Update message (optional)</Label>
+              <Input {...register("app.updateMessage")} placeholder="A new version of Pujari Dekho is available." />
             </div>
           </CardContent>
         </Card>

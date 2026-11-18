@@ -64,6 +64,8 @@ export interface BookingDetail extends BookingListItem {
   referral?: { referredBy?: string; referralCode?: string; notes?: string };
   createdByAdmin?: string | null;
   muhuratSlot?: { muhurat: string; slotId: string } | null;
+  cancelRequest?: CustomerRequest & { reason: string; notes?: string };
+  rescheduleRequest?: CustomerRequest & { requestedDate: string; requestedTime?: string; reason?: string };
   pooja?: {
     _id: string;
     name: string;
@@ -133,6 +135,28 @@ export function useUpdateBookingStatus() {
   return useMutation({
     mutationFn: async ({ id, status, note }: { id: string; status: string; note?: string }) => {
       const res = await adminApiClient.patch(`/bookings/${id}/status`, { status, note });
+      return res.data.data as BookingDetail;
+    },
+    onSuccess: (_d, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "bookings"] });
+      queryClient.invalidateQueries({ queryKey: ["admin", "booking", variables.id] });
+    },
+  });
+}
+
+export interface CustomerRequest {
+  status: "requested" | "approved" | "rejected";
+  requestedAt?: string;
+  resolvedAt?: string;
+  resolutionNote?: string;
+}
+
+/** Approve / reject a customer's cancellation or reschedule request (notifies the customer). */
+export function useResolveBookingRequest() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, kind, decision, note }: { id: string; kind: "cancel" | "reschedule"; decision: "approve" | "reject"; note?: string }) => {
+      const res = await adminApiClient.patch(`/bookings/${id}/${kind}-request`, { decision, note });
       return res.data.data as BookingDetail;
     },
     onSuccess: (_d, variables) => {

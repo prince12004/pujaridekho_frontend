@@ -39,6 +39,7 @@ export interface Pooja {
   vidhiSteps?: { title?: string; description?: string }[];
   faq?: { question?: string; answer?: string }[];
   seo?: { title?: string; description?: string };
+  audios?: { _id?: string; title: string; language?: string; url: string; durationSec?: number | null; sortOrder?: number; isActive?: boolean }[];
   createdAt: string;
 }
 

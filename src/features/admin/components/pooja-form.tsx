@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ALL_RECORDS_LIMIT } from "@/features/admin/components/admin-pagination";
 import Link from "next/link";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -20,6 +20,7 @@ import { useSamagriTemplates } from "@/features/admin/api/use-samagri-templates"
 import { useCities } from "@/features/admin/api/use-cities";
 import { ImageUploadInput } from "@/features/admin/components/image-upload-input";
 import { getErrorMessage } from "@/features/admin/lib/get-error-message";
+import { AudioClipsEditor, type AudioClipValue } from "@/features/admin/components/audio-clips-editor";
 
 const cityPriceSchema = z.object({
   city: z.string().min(1, "Required"),
@@ -163,6 +164,18 @@ function slugify(value: string) {
 
 export function PoojaForm({ pooja }: { pooja?: Pooja }) {
   const router = useRouter();
+  const [audios, setAudios] = useState<AudioClipValue[]>(() =>
+    [...(pooja?.audios ?? [])]
+      .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+      .map((a) => ({
+        _id: a._id,
+        title: a.title,
+        language: a.language ?? "hi",
+        url: a.url,
+        durationSec: a.durationSec ?? null,
+        isActive: a.isActive !== false,
+      })),
+  );
   const { data: categories } = usePoojaCategories();
   const { data: samagriTemplates } = useSamagriTemplates({ limit: ALL_RECORDS_LIMIT });
   const { data: cities } = useCities();
@@ -219,6 +232,11 @@ export function PoojaForm({ pooja }: { pooja?: Pooja }) {
 
   const onSubmit = async (values: PoojaFormValues) => {
     try {
+      const incomplete = audios.find((a) => !a.title.trim() || !a.url);
+      if (incomplete) {
+        toast.error("Each audio clip needs a title and an uploaded file (or remove the empty clip).");
+        return;
+      }
       const { seoTitle, seoDescription, ...rest } = values;
       const payload = {
         ...rest,
@@ -229,6 +247,8 @@ export function PoojaForm({ pooja }: { pooja?: Pooja }) {
         vidhiSteps: values.vidhiSteps.filter((s) => s.title.trim() || s.description.trim()),
         faq: values.faq.filter((f) => f.question.trim() && f.answer.trim()),
         seo: { ...(pooja?.seo ?? {}), title: seoTitle?.trim() || undefined, description: seoDescription?.trim() || undefined },
+        // List order is the display order in the app.
+        audios: audios.map((a, i) => ({ ...a, title: a.title.trim(), sortOrder: i })),
       };
       if (pooja) {
         await updateMutation.mutateAsync({ id: pooja._id, input: payload });
@@ -434,6 +454,18 @@ export function PoojaForm({ pooja }: { pooja?: Pooja }) {
               </div>
             ))}
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Audio</CardTitle>
+          <p className="text-xs text-muted-foreground">
+            Short clips customers can play on the puja page in the app (e.g. a Hindi and an English version). Only active clips are shown, in this order.
+          </p>
+        </CardHeader>
+        <CardContent>
+          <AudioClipsEditor value={audios} onChange={setAudios} />
         </CardContent>
       </Card>
 
