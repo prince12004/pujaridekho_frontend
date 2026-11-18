@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { MapPin, Phone } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { LanguageSwitch } from "@/components/layout/language-switch";
@@ -44,12 +45,12 @@ export function AnnouncementBar() {
           </span>
         </div>
         <div className="flex items-center gap-4">
-          <a
+          <Link
             href="/become-a-pandit"
             className="hidden opacity-90 transition-opacity hover:opacity-100 hover:text-brand-gold-soft md:inline"
           >
             Become a Pandit
-          </a>
+          </Link>
           <LanguageSwitch />
         </div>
       </Container>

@@ -33,6 +33,12 @@ import {
   Inbox,
   Contact,
   UserCog,
+  Building2,
+  Network,
+  PanelBottom,
+  Shuffle,
+  Store,
+  FileCode2,
 } from "lucide-react";
 
 export interface AdminNavItem {
@@ -125,6 +131,19 @@ export const ADMIN_NAV: AdminNavSection[] = [
     items: [
       { label: "SEO Manager", href: "/admin/seo", icon: Search, permission: "seo:manage" },
       { label: "Advanced SEO (City × Pooja)", href: "/admin/seo/advanced", icon: Globe2, permission: "seo:manage" },
+    ],
+  },
+  {
+    title: "SEO Management",
+    items: [
+      { label: "Overview", href: "/admin/seo-management", icon: LayoutDashboard, permission: "seo:manage" },
+      { label: "Cities, Sectors & Societies", href: "/admin/seo-management/locations", icon: Building2, permission: "seo:manage" },
+      { label: "SEO Pages", href: "/admin/seo-management/pages", icon: FileText, permission: "seo:manage" },
+      { label: "Office Puja Pages", href: "/admin/seo-management/pages?pageType=office_location", icon: Store, permission: "seo:manage" },
+      { label: "Footer SEO Links", href: "/admin/seo-management/footer", icon: PanelBottom, permission: "seo:manage" },
+      { label: "SEO Directory", href: "/admin/seo-management/directory", icon: Network, permission: "seo:manage" },
+      { label: "Sitemap", href: "/admin/seo-management/sitemap", icon: FileCode2, permission: "seo:manage" },
+      { label: "Redirects", href: "/admin/seo-management/redirects", icon: Shuffle, permission: "seo:manage" },
     ],
   },
   {

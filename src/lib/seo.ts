@@ -6,19 +6,30 @@ export function buildMetadata({
   description,
   path,
   image,
+  canonical,
+  noindex,
 }: {
   title: string;
   description: string;
   path: string;
   image?: string;
+  // Absolute URL or site path; defaults to the page's own URL.
+  canonical?: string;
+  noindex?: boolean;
 }): Metadata {
   const url = `${env.NEXT_PUBLIC_SITE_URL}${path}`;
+  const canonicalUrl = canonical
+    ? canonical.startsWith("http")
+      ? canonical
+      : `${env.NEXT_PUBLIC_SITE_URL}${canonical}`
+    : url;
   const ogImage = image ?? `${env.NEXT_PUBLIC_SITE_URL}/og-default.jpg`;
 
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: { canonical: canonicalUrl },
+    ...(noindex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       title,
       description,

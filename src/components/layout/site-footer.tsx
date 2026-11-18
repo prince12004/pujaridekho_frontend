@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Headphones, Loader2, Lock, Mail, MapPin, Phone, Send, ShieldCheck, Users } from "lucide-react";
+import { ChevronDown, Headphones, Loader2, Lock, Mail, MapPin, Phone, Send, ShieldCheck, Users } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/shared/reveal";
 import { FacebookIcon, InstagramIcon, YoutubeIcon } from "@/components/layout/social-icons";
@@ -16,27 +16,8 @@ import { Input } from "@/components/ui/input";
 import { siteConfig } from "@/lib/constants";
 import { useSiteSettings } from "@/lib/use-site-settings";
 import { apiClient } from "@/lib/api-client";
-
-const quickLinks = [
-  { label: "Puja's", href: "/poojas" },
-  { label: "Pandit Ji", href: "/pandits" },
-  // { label: "Festival Pooja", href: "/festivals" }, // hidden for now
-  { label: "Shop", href: "/products" },
-  { label: "Blog", href: "/blog" },
-];
-
-const companyLinks = [
-  { label: "About Us", href: "/about" },
-  { label: "Contact Us", href: "/contact" },
-  { label: "FAQs", href: "/faq" },
-  { label: "Become a Pandit", href: "/become-a-pandit" },
-  { label: "Refund Policy", href: "/refund-policy" },
-];
-
-const legalLinks = [
-  { label: "Privacy Policy", href: "/privacy-policy" },
-  { label: "Terms & Conditions", href: "/terms-and-conditions" },
-];
+import { cn } from "@/lib/utils";
+import type { FooterGroup, PublicContactSettings } from "@/features/seo-pages/api";
 
 const trustBadges = [
   { Icon: ShieldCheck, label: "Verified & Experienced Pandits" },
@@ -45,14 +26,32 @@ const trustBadges = [
   { Icon: Headphones, label: "24/7 Customer Support" },
 ];
 
-const linkClass = "text-sm text-brand-cream/78 transition-all hover:translate-x-0.5 hover:text-brand-gold-soft";
+const legalLinks = [
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms & Conditions", href: "/terms-and-conditions" },
+  { label: "Refund Policy", href: "/refund-policy" },
+];
+
+const linkClass =
+  "inline-block py-0.5 text-sm text-brand-cream/75 transition-all duration-200 hover:translate-x-0.5 hover:text-brand-gold-soft focus-visible:text-brand-gold-soft focus-visible:outline-none";
+const headingClass = "font-heading text-xs font-bold uppercase tracking-[0.14em] text-brand-gold-soft";
 
 const newsletterSchema = z.object({ email: z.string().email("Enter a valid email") });
 type NewsletterValues = z.infer<typeof newsletterSchema>;
 
-export function SiteFooter() {
-  const { data: settings } = useSiteSettings();
+export function SiteFooter({
+  groups,
+  contactSettings,
+}: {
+  groups: FooterGroup[];
+  contactSettings: PublicContactSettings | null;
+}) {
+  // Server-provided settings render in the first HTML; the client hook keeps
+  // them fresh afterwards.
+  const { data: liveSettings } = useSiteSettings();
+  const settings = liveSettings ?? contactSettings ?? undefined;
   const [subscribed, setSubscribed] = useState(false);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -66,10 +65,10 @@ export function SiteFooter() {
   const address = settings?.officeAddress || siteConfig.contact.officeAddress;
 
   const socialLinks = [
-    { Icon: WhatsappIcon, href: `https://wa.me/${whatsapp.replace(/\D/g, "")}` },
-    { Icon: FacebookIcon, href: settings?.socialLinks?.facebook },
-    { Icon: InstagramIcon, href: settings?.socialLinks?.instagram },
-    { Icon: YoutubeIcon, href: settings?.socialLinks?.youtube },
+    { Icon: WhatsappIcon, href: `https://wa.me/${whatsapp.replace(/\D/g, "")}`, label: "WhatsApp" },
+    { Icon: FacebookIcon, href: settings?.socialLinks?.facebook, label: "Facebook" },
+    { Icon: InstagramIcon, href: settings?.socialLinks?.instagram, label: "Instagram" },
+    { Icon: YoutubeIcon, href: settings?.socialLinks?.youtube, label: "YouTube" },
   ].filter((link) => link.href);
 
   const onSubscribe = async (values: NewsletterValues) => {
@@ -78,8 +77,7 @@ export function SiteFooter() {
       setSubscribed(true);
       reset();
     } catch {
-      // Swallow — the form's error state below is reserved for validation only;
-      // a transient network failure just leaves the form as-is for a retry.
+      // Network failure leaves the form as-is for a retry.
     }
   };
 
@@ -104,6 +102,7 @@ export function SiteFooter() {
                   <Input
                     type="email"
                     placeholder="Enter your email"
+                    aria-label="Email address"
                     className="h-12 w-full border-white/15 bg-white/10 text-brand-cream placeholder:text-brand-cream/60 sm:w-64"
                     {...register("email")}
                   />
@@ -131,45 +130,74 @@ export function SiteFooter() {
             backgroundSize: "26px 26px",
           }}
         />
-        <Container className="relative grid grid-cols-2 gap-8 pb-12 lg:grid-cols-[1.3fr_0.8fr_0.8fr_1.1fr] lg:gap-10">
-          <div className="col-span-2 lg:col-span-1">
+
+        {/* Brand row */}
+        <Container className="relative flex flex-col gap-6 border-b border-white/10 pb-10 lg:flex-row lg:items-end lg:justify-between">
+          <div>
             <Logo light />
-            <p className="mt-4 max-w-sm text-sm text-brand-cream/75">
-              PujariDekho connects families across Delhi, Noida, Greater Noida, Ghaziabad, Gurgaon and
-              Faridabad with verified, experienced pandits for every ritual — fixed pricing, always.
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-brand-cream/75">
+              PujariDekho connects families and businesses across Noida, Greater Noida, Greater Noida West, Ghaziabad,
+              Delhi and Gurugram with verified, experienced pandits for every ritual — with the price shown before you book.
             </p>
-            <div className="mt-5 flex gap-2.5">
-              {socialLinks.map(({ Icon, href }, i) => (
+          </div>
+          {socialLinks.length > 0 ? (
+            <div className="flex gap-2.5">
+              {socialLinks.map(({ Icon, href, label }) => (
                 <a
-                  key={i}
+                  key={label}
                   href={href}
-                  target={href?.startsWith("http") ? "_blank" : undefined}
+                  target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Contact link"
+                  aria-label={label}
                   className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-brand-gold-soft transition-all hover:-translate-y-0.5 hover:bg-brand-gold hover:text-brand-cocoa-deep"
                 >
                   <Icon size={17} />
                 </a>
               ))}
             </div>
-          </div>
+          ) : null}
+        </Container>
 
-          <FooterColumn heading="Quick Links" links={quickLinks} />
+        {/* Link columns: collapsible on mobile, open on desktop. Links stay in
+            the HTML either way so search engines always see them. */}
+        <Container className="relative grid gap-x-8 gap-y-0 py-6 sm:grid-cols-2 lg:grid-cols-5 lg:gap-y-10 lg:py-12">
+          {groups.map((group) => {
+            const isOpen = openGroup === group.key;
+            return (
+              <nav key={group.key} aria-label={group.title} className="border-b border-white/10 lg:border-0">
+                <button
+                  type="button"
+                  onClick={() => setOpenGroup(isOpen ? null : group.key)}
+                  aria-expanded={isOpen}
+                  className="flex w-full items-center justify-between py-4 text-left lg:pointer-events-none lg:py-0"
+                >
+                  <h3 className={headingClass}>{group.title}</h3>
+                  <ChevronDown
+                    size={16}
+                    className={cn("text-brand-gold-soft transition-transform lg:hidden", isOpen && "rotate-180")}
+                  />
+                </button>
+                <ul className={cn("flex-col gap-1.5 pb-4 lg:mt-4 lg:flex lg:pb-0", isOpen ? "flex" : "hidden")}>
+                  {group.links.map((link) => (
+                    <li key={link.url + link.label}>
+                      <Link href={link.url} className={linkClass}>
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            );
+          })}
 
-          <div>
-            <FooterColumn heading="Company" links={companyLinks} />
-          </div>
-
-          <div className="col-span-2 lg:col-span-1">
-            <h5 className="font-heading mb-4 text-xs font-bold uppercase tracking-wider text-brand-gold-soft">
-              Get In Touch
-            </h5>
-            <ul className="flex flex-col gap-3.5">
+          <div className="py-6 sm:col-span-2 lg:col-span-1 lg:py-0">
+            <h3 className={headingClass}>Contact</h3>
+            <ul className="mt-4 flex flex-col gap-3.5">
               <li className="flex items-start gap-3">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-gold-soft">
                   <MapPin size={16} />
                 </span>
-                <span className="pt-1.5 text-sm text-brand-cream/78">{address}</span>
+                <address className="pt-1.5 text-sm not-italic text-brand-cream/78">{address}</address>
               </li>
               <li className="flex items-center gap-3">
                 <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-gold-soft">
@@ -177,6 +205,14 @@ export function SiteFooter() {
                 </span>
                 <a href={`tel:${phone.replace(/\s/g, "")}`} className={linkClass}>
                   {phone}
+                </a>
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 text-brand-gold-soft">
+                  <WhatsappIcon size={16} />
+                </span>
+                <a href={`https://wa.me/${whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className={linkClass}>
+                  WhatsApp {whatsapp}
                 </a>
               </li>
               <li className="flex items-center gap-3">
@@ -202,8 +238,11 @@ export function SiteFooter() {
         </Container>
 
         <Container className="relative flex flex-col items-center justify-between gap-3 border-t border-white/10 py-6 text-xs text-brand-cream/60 sm:flex-row">
-          <span>© 2026 PujariDekho. All rights reserved.</span>
-          <div className="flex gap-5">
+          <span>© {new Date().getFullYear()} PujariDekho. All rights reserved.</span>
+          <div className="flex flex-wrap justify-center gap-5">
+            <Link href="/seo-pages" className="hover:text-brand-gold-soft">
+              All Locations
+            </Link>
             {legalLinks.map((link) => (
               <Link key={link.href} href={link.href} className="hover:text-brand-gold-soft">
                 {link.label}
@@ -212,23 +251,6 @@ export function SiteFooter() {
           </div>
         </Container>
       </footer>
-    </div>
-  );
-}
-
-function FooterColumn({ heading, links }: { heading: string; links: { label: string; href: string }[] }) {
-  return (
-    <div>
-      <h5 className="font-heading mb-4 text-xs font-bold uppercase tracking-wider text-brand-gold-soft">{heading}</h5>
-      <ul className="flex flex-col gap-2.5">
-        {links.map((link) => (
-          <li key={link.href}>
-            <Link href={link.href} className={linkClass}>
-              {link.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }

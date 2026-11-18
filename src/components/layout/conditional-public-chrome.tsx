@@ -6,12 +6,21 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { StickyMobileCta } from "@/components/layout/sticky-mobile-cta";
 import { WhatsappFloatButton } from "@/components/shared/whatsapp-float-button";
+import type { FooterGroup, PublicContactSettings } from "@/features/seo-pages/api";
 
 // The Admin Panel and the customer Account dashboard each render their own
 // dedicated shell (sidebar/header) and must never show the public marketing
 // chrome. Kept as a client-side pathname check rather than a route-group
 // restructure, so the existing public tree is untouched.
-export function ConditionalPublicChrome({ children }: { children: React.ReactNode }) {
+export function ConditionalPublicChrome({
+  children,
+  footerGroups,
+  contactSettings,
+}: {
+  children: React.ReactNode;
+  footerGroups: FooterGroup[];
+  contactSettings: PublicContactSettings | null;
+}) {
   const pathname = usePathname();
   const isAdminRoute = pathname?.startsWith("/admin");
   const isAccountRoute = pathname?.startsWith("/account");
@@ -25,7 +34,7 @@ export function ConditionalPublicChrome({ children }: { children: React.ReactNod
       <AnnouncementBar />
       <SiteHeader />
       <main className="pb-16 md:pb-0">{children}</main>
-      <SiteFooter />
+      <SiteFooter groups={footerGroups} contactSettings={contactSettings} />
       <StickyMobileCta />
       <WhatsappFloatButton />
     </>
