@@ -52,6 +52,8 @@ export function SiteFooter({
   const settings = liveSettings ?? contactSettings ?? undefined;
   const [subscribed, setSubscribed] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const textBlocks = groups.filter((g) => g.kind === "text" && g.body);
+  const linkGroups = groups.filter((g) => g.kind !== "text");
   const {
     register,
     handleSubmit,
@@ -158,10 +160,22 @@ export function SiteFooter({
           ) : null}
         </Container>
 
+        {/* About blocks (admin-editable), e.g. "Verified Pandits", "Pandit Ji Near Me". */}
+        {textBlocks.length > 0 ? (
+          <Container className="relative grid gap-x-12 gap-y-7 border-b border-white/10 py-10 md:grid-cols-2">
+            {textBlocks.map((block) => (
+              <section key={block.key}>
+                <h2 className={headingClass}>{block.title}</h2>
+                <p className="mt-3 text-sm leading-relaxed text-brand-cream/70">{block.body}</p>
+              </section>
+            ))}
+          </Container>
+        ) : null}
+
         {/* Link columns: collapsible on mobile, open on desktop. Links stay in
             the HTML either way so search engines always see them. */}
-        <Container className="relative grid gap-x-8 gap-y-0 py-6 sm:grid-cols-2 lg:grid-cols-5 lg:gap-y-10 lg:py-12">
-          {groups.map((group) => {
+        <Container className="relative grid gap-x-8 gap-y-0 py-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-y-10 lg:py-12 xl:grid-cols-6">
+          {linkGroups.map((group) => {
             const isOpen = openGroup === group.key;
             return (
               <nav key={group.key} aria-label={group.title} className="border-b border-white/10 lg:border-0">

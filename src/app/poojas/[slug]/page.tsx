@@ -45,12 +45,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const pooja = await fetchPooja(slug);
   if (!pooja) return {};
 
-  return buildMetadata({
-    title: `${pooja.name} — Book Online`,
-    description: pooja.shortDescription || pooja.fullDescription || "Book a verified puja online with fixed pricing and samagri included.",
+  const title: string = pooja.seo?.title || `${pooja.name} — Book Online`;
+  const metadata = buildMetadata({
+    title,
+    description:
+      pooja.seo?.description ||
+      pooja.shortDescription ||
+      pooja.fullDescription ||
+      "Book a verified puja online with fixed pricing and samagri included.",
     path: `/poojas/${pooja.slug}`,
     image: resolveImage(pooja.heroBanner || pooja.featuredImage),
   });
+  // Titles that already carry the brand skip the layout's "| PujariDekho" suffix.
+  return /pujaridekho/i.test(title) ? { ...metadata, title: { absolute: title } } : metadata;
 }
 
 export default async function PoojaDetailPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -187,11 +194,15 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
             </div>
 
             <div className="mt-10 flex flex-col gap-10">
-              <Reveal>
-                <h2 className="font-heading mb-3 text-2xl">Overview</h2>
-                <p className="text-muted-foreground">{pooja.fullDescription ?? pooja.shortDescription}</p>
-              </Reveal>
+              {/* Each section renders only when the pooja has that content in the database. */}
+              {pooja.fullDescription || pooja.shortDescription ? (
+                <Reveal>
+                  <h2 className="font-heading mb-3 text-2xl">Overview</h2>
+                  <p className="whitespace-pre-line text-muted-foreground">{pooja.fullDescription || pooja.shortDescription}</p>
+                </Reveal>
+              ) : null}
 
+              {(pooja.benefits ?? []).length > 0 ? (
               <Reveal>
                 <h2 className="font-heading mb-4 text-2xl">Benefits</h2>
                 <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -203,19 +214,25 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
                   ))}
                 </ul>
               </Reveal>
+              ) : null}
 
-              <Reveal>
-                <h2 className="font-heading mb-3 text-2xl">Importance</h2>
-                <p className="text-muted-foreground">{pooja.importance}</p>
-              </Reveal>
+              {pooja.importance ? (
+                <Reveal>
+                  <h2 className="font-heading mb-3 text-2xl">Importance</h2>
+                  <p className="whitespace-pre-line text-muted-foreground">{pooja.importance}</p>
+                </Reveal>
+              ) : null}
 
+              {pooja.whoShouldPerform ? (
               <Reveal>
                 <h2 className="font-heading mb-3 flex items-center gap-2 text-2xl">
                   <User size={20} className="text-primary" /> Who Should Perform This Puja
                 </h2>
-                <p className="text-muted-foreground">{pooja.whoShouldPerform}</p>
+                <p className="whitespace-pre-line text-muted-foreground">{pooja.whoShouldPerform}</p>
               </Reveal>
+              ) : null}
 
+              {(pooja.vidhiSteps ?? []).length > 0 ? (
               <Reveal>
                 <h2 className="font-heading mb-6 text-2xl">Pooja Vidhi</h2>
                 <Timeline
@@ -226,6 +243,7 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
                   }))}
                 />
               </Reveal>
+              ) : null}
 
               {Array.isArray(pooja.faq) && pooja.faq.length > 0 ? (
                 <Reveal>

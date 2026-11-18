@@ -81,11 +81,21 @@ export type SeoPageInput = Partial<Omit<SeoPageDetail, "_id" | "wordCount" | "el
   location?: string | null;
 };
 
+export const FOOTER_GROUP_KINDS = [
+  { value: "links", label: "Links (manual list)" },
+  { value: "poojas", label: "Pujas (automatic from Puja's)" },
+  { value: "blogs", label: "Latest blogs (automatic)" },
+  { value: "text", label: "Text block (heading + paragraph)" },
+] as const;
+
 export interface FooterGroupAdmin {
   _id?: string;
   key: string;
   title: string;
   isActive: boolean;
+  kind?: "links" | "poojas" | "blogs" | "text";
+  body?: string;
+  limit?: number;
   links: { _id?: string; label: string; url: string; isActive: boolean }[];
 }
 

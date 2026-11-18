@@ -51,6 +51,14 @@ const poojaFormSchema = z.object({
   popular: z.boolean().optional(),
   sortOrder: z.coerce.number().optional(),
   packages: z.array(packageSchema),
+  duration: z.string().optional(),
+  benefits: z.array(z.object({ value: z.string() })),
+  importance: z.string().optional(),
+  whoShouldPerform: z.string().optional(),
+  vidhiSteps: z.array(z.object({ title: z.string(), description: z.string() })),
+  faq: z.array(z.object({ question: z.string(), answer: z.string() })),
+  seoTitle: z.string().max(70, "Keep it under 70 characters").optional(),
+  seoDescription: z.string().max(170, "Keep it under 170 characters").optional(),
 });
 
 export type PoojaFormValues = z.infer<typeof poojaFormSchema>;
@@ -186,11 +194,22 @@ export function PoojaForm({ pooja }: { pooja?: Pooja }) {
       popular: pooja?.popular ?? false,
       sortOrder: pooja?.sortOrder ?? 0,
       packages: pooja?.packages ?? [],
+      duration: pooja?.duration ?? "",
+      benefits: (pooja?.benefits ?? []).map((value) => ({ value })),
+      importance: pooja?.importance ?? "",
+      whoShouldPerform: pooja?.whoShouldPerform ?? "",
+      vidhiSteps: (pooja?.vidhiSteps ?? []).map((s) => ({ title: s.title ?? "", description: s.description ?? "" })),
+      faq: (pooja?.faq ?? []).map((f) => ({ question: f.question ?? "", answer: f.answer ?? "" })),
+      seoTitle: pooja?.seo?.title ?? "",
+      seoDescription: pooja?.seo?.description ?? "",
     },
   });
 
   const packagesArray = useFieldArray({ control, name: "packages" });
   const galleryArray = useFieldArray({ control, name: "gallery" });
+  const benefitsArray = useFieldArray({ control, name: "benefits" });
+  const vidhiArray = useFieldArray({ control, name: "vidhiSteps" });
+  const faqArray = useFieldArray({ control, name: "faq" });
 
   useEffect(() => {
     if (pooja) {
@@ -200,10 +219,16 @@ export function PoojaForm({ pooja }: { pooja?: Pooja }) {
 
   const onSubmit = async (values: PoojaFormValues) => {
     try {
+      const { seoTitle, seoDescription, ...rest } = values;
       const payload = {
-        ...values,
+        ...rest,
         category: values.category || undefined,
         gallery: values.gallery.map((g) => g.url).filter(Boolean),
+        // Blank rows are dropped so empty sections never show on the website.
+        benefits: values.benefits.map((b) => b.value.trim()).filter(Boolean),
+        vidhiSteps: values.vidhiSteps.filter((s) => s.title.trim() || s.description.trim()),
+        faq: values.faq.filter((f) => f.question.trim() && f.answer.trim()),
+        seo: { ...(pooja?.seo ?? {}), title: seoTitle?.trim() || undefined, description: seoDescription?.trim() || undefined },
       };
       if (pooja) {
         await updateMutation.mutateAsync({ id: pooja._id, input: payload });
@@ -319,6 +344,114 @@ export function PoojaForm({ pooja }: { pooja?: Pooja }) {
           <div className="space-y-1.5 md:col-span-2">
             <Label>Full Description</Label>
             <Textarea rows={5} {...register("fullDescription")} />
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Puja content</CardTitle>
+          <p className="text-xs text-muted-foreground">
+            Shown on the pooja page as Overview, Benefits, Importance, Who Should Perform, Pooja Vidhi and FAQs. Any section left empty is hidden on the website.
+          </p>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="space-y-1.5">
+              <Label>Duration</Label>
+              <Input {...register("duration")} placeholder="e.g. 2-3 Hours" />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label>Benefits</Label>
+              <Button type="button" variant="outline" size="sm" onClick={() => benefitsArray.append({ value: "" })}>
+                <Plus /> Add benefit
+              </Button>
+            </div>
+            {benefitsArray.fields.length === 0 && <p className="text-sm text-muted-foreground">No benefits added yet.</p>}
+            {benefitsArray.fields.map((field, index) => (
+              <div key={field.id} className="flex items-center gap-2">
+                <Input {...register(`benefits.${index}.value`)} placeholder="e.g. Brings peace and prosperity to the new home" />
+                <Button type="button" variant="ghost" size="icon-sm" onClick={() => benefitsArray.remove(index)} aria-label="Remove benefit">
+                  <Trash2 />
+                </Button>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div className="space-y-1.5">
+              <Label>Importance</Label>
+              <Textarea rows={4} {...register("importance")} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Who should perform this puja</Label>
+              <Textarea rows={4} {...register("whoShouldPerform")} />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label>Pooja vidhi (steps)</Label>
+              <Button type="button" variant="outline" size="sm" onClick={() => vidhiArray.append({ title: "", description: "" })}>
+                <Plus /> Add step
+              </Button>
+            </div>
+            {vidhiArray.fields.length === 0 && <p className="text-sm text-muted-foreground">No vidhi steps added yet.</p>}
+            {vidhiArray.fields.map((field, index) => (
+              <div key={field.id} className="flex gap-2 rounded-lg border border-border p-2.5">
+                <span className="pt-2 text-xs font-bold text-muted-foreground">{index + 1}</span>
+                <div className="flex-1 space-y-2">
+                  <Input {...register(`vidhiSteps.${index}.title`)} placeholder="Step title, e.g. Kalash Sthapana" />
+                  <Textarea rows={2} {...register(`vidhiSteps.${index}.description`)} placeholder="What happens in this step" />
+                </div>
+                <Button type="button" variant="ghost" size="icon-sm" onClick={() => vidhiArray.remove(index)} aria-label="Remove step">
+                  <Trash2 />
+                </Button>
+              </div>
+            ))}
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <Label>FAQs</Label>
+              <Button type="button" variant="outline" size="sm" onClick={() => faqArray.append({ question: "", answer: "" })}>
+                <Plus /> Add FAQ
+              </Button>
+            </div>
+            {faqArray.fields.length === 0 && <p className="text-sm text-muted-foreground">No FAQs added yet.</p>}
+            {faqArray.fields.map((field, index) => (
+              <div key={field.id} className="flex gap-2 rounded-lg border border-border p-2.5">
+                <div className="flex-1 space-y-2">
+                  <Input {...register(`faq.${index}.question`)} placeholder="Question" />
+                  <Textarea rows={2} {...register(`faq.${index}.answer`)} placeholder="Answer" />
+                </div>
+                <Button type="button" variant="ghost" size="icon-sm" onClick={() => faqArray.remove(index)} aria-label="Remove FAQ">
+                  <Trash2 />
+                </Button>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Search (SEO)</CardTitle>
+          <p className="text-xs text-muted-foreground">Optional — overrides the title and description Google shows for this pooja page.</p>
+        </CardHeader>
+        <CardContent className="grid grid-cols-1 gap-4">
+          <div className="space-y-1.5">
+            <Label>Meta title</Label>
+            <Input {...register("seoTitle")} placeholder={`${watch("name") || "Pooja name"} — Book Online`} />
+            {errors.seoTitle && <p className="text-xs text-destructive">{errors.seoTitle.message}</p>}
+          </div>
+          <div className="space-y-1.5">
+            <Label>Meta description</Label>
+            <Textarea rows={2} {...register("seoDescription")} />
+            {errors.seoDescription && <p className="text-xs text-destructive">{errors.seoDescription.message}</p>}
           </div>
         </CardContent>
       </Card>

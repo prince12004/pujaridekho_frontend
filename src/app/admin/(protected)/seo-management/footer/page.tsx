@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { AdminPageHeader } from "@/features/admin/components/page-header";
-import { type FooterGroupAdmin, useFooterGroups, useSaveFooterGroups } from "@/features/admin/api/use-seo-management";
+import { FOOTER_GROUP_KINDS, type FooterGroupAdmin, useFooterGroups, useSaveFooterGroups } from "@/features/admin/api/use-seo-management";
+import { Textarea } from "@/components/ui/textarea";
 import { getErrorMessage } from "@/features/admin/lib/get-error-message";
 
 function move<T>(list: T[], i: number, d: number) {
@@ -40,7 +41,7 @@ export default function FooterLinksPage() {
     <div className="pb-16">
       <AdminPageHeader
         title="Footer SEO Links"
-        description="Footer columns shown on every page. The Contact column always uses the details from Website Settings. Every link is checked on save — broken links are refused."
+        description="Footer blocks shown on every page: text blocks, link columns, automatic Puja and Latest Blog lists. The Contact column always uses Website Settings. Links are checked on save — broken links are refused."
         actions={
           <Button onClick={onSave} disabled={save.isPending}>
             {save.isPending ? <Loader2 className="animate-spin" /> : <Save />} Save footer
@@ -65,7 +66,23 @@ export default function FooterLinksPage() {
                 <Button variant="ghost" size="icon-sm" onClick={() => confirm(`Remove the "${group.title}" column?`) && setGroups(groups.filter((_, j) => j !== gi))} aria-label="Remove column"><Trash2 /></Button>
               </CardHeader>
               <CardContent className="grid gap-2">
-                {group.links.map((link, li) => (
+                <select
+                  value={group.kind ?? "links"}
+                  onChange={(e) => updateGroup(gi, { kind: e.target.value as FooterGroupAdmin["kind"] })}
+                  className="h-9 rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none"
+                >
+                  {FOOTER_GROUP_KINDS.map((k) => <option key={k.value} value={k.value}>{k.label}</option>)}
+                </select>
+                {group.kind === "text" ? (
+                  <Textarea rows={4} value={group.body ?? ""} onChange={(e) => updateGroup(gi, { body: e.target.value })} placeholder="Paragraph shown under the heading" />
+                ) : group.kind === "poojas" || group.kind === "blogs" ? (
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    Show up to
+                    <Input type="number" min={1} max={30} value={group.limit ?? 12} onChange={(e) => updateGroup(gi, { limit: Number(e.target.value) || 12 })} className="h-8 w-20" />
+                    {group.kind === "poojas" ? "published pujas (featured & popular first, then display order)." : "latest published blog posts."}
+                  </div>
+                ) : null}
+                {(group.kind ?? "links") === "links" ? group.links.map((link, li) => (
                   <div key={li} className="flex items-center gap-1.5">
                     <input type="checkbox" checked={link.isActive} title="Shown" onChange={(e) => updateGroup(gi, { links: group.links.map((l, j) => (j === li ? { ...l, isActive: e.target.checked } : l)) })} />
                     <Input value={link.label} placeholder="Label" onChange={(e) => updateGroup(gi, { links: group.links.map((l, j) => (j === li ? { ...l, label: e.target.value } : l)) })} />
@@ -74,17 +91,19 @@ export default function FooterLinksPage() {
                     <Button variant="ghost" size="icon-sm" onClick={() => updateGroup(gi, { links: move(group.links, li, 1) })} aria-label="Down"><ArrowDown /></Button>
                     <Button variant="ghost" size="icon-sm" onClick={() => updateGroup(gi, { links: group.links.filter((_, j) => j !== li) })} aria-label="Remove"><Trash2 /></Button>
                   </div>
-                ))}
-                <Button variant="outline" size="sm" className="w-fit" onClick={() => updateGroup(gi, { links: [...group.links, { label: "", url: "", isActive: true }] })}>
-                  <Plus /> Add link
-                </Button>
+                )) : null}
+                {(group.kind ?? "links") === "links" ? (
+                  <Button variant="outline" size="sm" className="w-fit" onClick={() => updateGroup(gi, { links: [...group.links, { label: "", url: "", isActive: true }] })}>
+                    <Plus /> Add link
+                  </Button>
+                ) : null}
               </CardContent>
             </Card>
           ))}
           <Button
             variant="outline"
             className="h-24 border-dashed"
-            onClick={() => setGroups([...groups, { key: `group-${Date.now()}`, title: "New column", isActive: true, links: [] }])}
+            onClick={() => setGroups([...groups, { key: `group-${Date.now()}`, title: "New column", isActive: true, kind: "links", links: [] }])}
           >
             <Plus /> Add column
           </Button>

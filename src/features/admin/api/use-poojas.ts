@@ -32,6 +32,13 @@ export interface Pooja {
   featured: boolean;
   popular: boolean;
   sortOrder?: number;
+  duration?: string;
+  benefits?: string[];
+  importance?: string;
+  whoShouldPerform?: string;
+  vidhiSteps?: { title?: string; description?: string }[];
+  faq?: { question?: string; answer?: string }[];
+  seo?: { title?: string; description?: string };
   createdAt: string;
 }
 
