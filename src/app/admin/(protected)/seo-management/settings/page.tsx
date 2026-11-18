@@ -232,6 +232,10 @@ export default function SeoContentSettingsPage() {
                   <Label>Services group title</Label>
                   <Input value={form.directory.servicesGroupTitle} onChange={(e) => setDirectory({ servicesGroupTitle: e.target.value })} />
                 </div>
+                <div className="space-y-1">
+                  <Label>Pujas group title</Label>
+                  <Input value={form.directory.poojasGroupTitle} onChange={(e) => setDirectory({ poojasGroupTitle: e.target.value })} />
+                </div>
               </div>
               <div className="space-y-1">
                 <Label>Text when no pages are live</Label>

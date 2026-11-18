@@ -65,12 +65,12 @@ export default async function SeoDirectoryPage() {
       <PageBanner title={copy.title} description={copy.description} breadcrumbItems={[{ label: "Locations" }]} />
 
       <Container className="flex flex-col gap-4 py-10 sm:py-14">
-        {!directory || (directory.cities.length === 0 && directory.office.length === 0) ? (
+        {!directory || (directory.cities.length === 0 && directory.office.length === 0 && !directory.poojas?.length) ? (
           <p className="text-center text-muted-foreground">{copy.emptyText}</p>
         ) : null}
 
-        {directory?.cities.map((city, i) => (
-          <Group key={city.key} icon={<MapPin size={20} className="text-primary" />} title={city.title} defaultOpen={i < 2}>
+        {directory?.cities.map((city) => (
+          <Group key={city.key} icon={<MapPin size={20} className="text-primary" />} title={city.title} defaultOpen>
             {city.main ? (
               <Link href={city.main.path} className="font-ui w-fit text-sm font-bold text-primary hover:underline">
                 {city.main.name} →
@@ -84,6 +84,12 @@ export default async function SeoDirectoryPage() {
             ))}
           </Group>
         ))}
+
+        {directory?.poojas?.length ? (
+          <Group icon={<Sparkles size={20} className="text-primary" />} title={copy.poojasGroupTitle} defaultOpen>
+            <Links links={directory.poojas} />
+          </Group>
+        ) : null}
 
         {directory && directory.office.length > 0 ? (
           <Group icon={<Briefcase size={20} className="text-primary" />} title={copy.officeGroupTitle}>
