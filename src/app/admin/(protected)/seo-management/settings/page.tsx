@@ -58,6 +58,15 @@ const LANDING_FIELDS: { group: string; fields: { key: StringKeys<Landing>; label
     ],
   },
   {
+    group: "Basic city page (city without a written SEO page — always noindex)",
+    fields: [
+      { key: "cityFallbackHeading", label: "H1" },
+      { key: "cityFallbackIntro", label: "Intro", long: true },
+      { key: "cityFallbackMetaTitle", label: "Meta title" },
+      { key: "cityFallbackMetaDescription", label: "Meta description", long: true },
+    ],
+  },
+  {
     group: "Final call-to-action",
     fields: [
       { key: "finalCtaEyebrow", label: "Small label" },

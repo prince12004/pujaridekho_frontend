@@ -196,7 +196,7 @@ export function SiteFooter({
 
         {/* Link columns: collapsible on mobile, open on desktop. Links stay in
             the HTML either way so search engines always see them. */}
-        <Container className="relative grid gap-x-8 gap-y-0 py-6 sm:grid-cols-2 lg:grid-cols-4 lg:gap-y-10 lg:py-12">
+        <Container className="relative grid gap-x-8 gap-y-0 py-6 sm:grid-cols-2 lg:grid-cols-5 lg:gap-y-10 lg:py-12">
           {linkGroups.map((group) => {
             const isOpen = openGroup === group.key;
             return (

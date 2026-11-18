@@ -75,6 +75,17 @@ export default function FooterLinksPage() {
                 </select>
                 {group.kind === "text" ? (
                   <Textarea rows={4} value={group.body ?? ""} onChange={(e) => updateGroup(gi, { body: e.target.value })} placeholder="Paragraph shown under the heading" />
+                ) : group.kind === "cities" ? (
+                  <div className="grid gap-2 text-sm text-muted-foreground">
+                    <p>
+                      Lists &quot;Pandit in &lt;city&gt;&quot; for every city in SEO Management → Cities (or, if none, Cities &amp; Service Areas). Each link opens the
+                      city&apos;s published SEO page, or a basic noindex city page until one is published.
+                    </p>
+                    <div className="flex items-center gap-2">
+                      Last link label
+                      <Input value={group.body ?? ""} placeholder="All SEO Pages" onChange={(e) => updateGroup(gi, { body: e.target.value })} className="h-8 w-48" />
+                    </div>
+                  </div>
                 ) : group.kind === "poojas" || group.kind === "blogs" || group.kind === "categories" ? (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     Show up to

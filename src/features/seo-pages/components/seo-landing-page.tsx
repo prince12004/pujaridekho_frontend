@@ -171,6 +171,7 @@ export function SeoLandingPage({
       ) : null}
 
       {/* Unique page content + 8: coverage */}
+      {page.content || hasCoverage ? (
       <section className="bg-muted/30 py-14 sm:py-16">
         <Container className={hasCoverage ? "grid gap-10 lg:grid-cols-[1fr_360px]" : ""}>
           {page.content ? (
@@ -209,6 +210,7 @@ export function SeoLandingPage({
           ) : null}
         </Container>
       </section>
+      ) : null}
 
       {/* 9: why choose */}
       <section className="py-14 sm:py-16">

@@ -60,7 +60,7 @@ export interface SeoDirectory {
 
 export interface FooterGroup {
   key: string;
-  kind?: "links" | "tags" | "categories" | "poojas" | "blogs" | "text";
+  kind?: "links" | "tags" | "cities" | "categories" | "poojas" | "blogs" | "text";
   title: string;
   body?: string;
   links: { label: string; url: string }[];
@@ -144,6 +144,10 @@ export interface SeoSettings {
     finalCtaHeading: string;
     finalCtaHeadingNoPlace: string;
     finalCtaText: string;
+    cityFallbackHeading: string;
+    cityFallbackIntro: string;
+    cityFallbackMetaTitle: string;
+    cityFallbackMetaDescription: string;
   };
   directory: { title: string; description: string; officeGroupTitle: string; servicesGroupTitle: string; emptyText: string };
   footer: {
@@ -199,6 +203,11 @@ export const FALLBACK_SEO_SETTINGS: SeoSettings = {
     finalCtaHeading: "Book your pandit in {place}",
     finalCtaHeadingNoPlace: "Book your pandit ji today",
     finalCtaText: "Choose your puja, pick a date and confirm online — or message our team on WhatsApp.",
+    cityFallbackHeading: "Book a Pandit in {place}",
+    cityFallbackIntro:
+      "Book an experienced, verified pandit ji in {place} for puja at home, in your society or at your office. Choose your puja below — the price is shown before you book.",
+    cityFallbackMetaTitle: "Pandit in {place} | Book Pandit Ji Online – PujariDekho",
+    cityFallbackMetaDescription: "Book a verified pandit in {place} for Griha Pravesh, Satyanarayan Katha, Rudrabhishek and more. Clear pricing and easy online booking.",
   },
   directory: {
     title: "Explore Pandit Booking Locations in Delhi NCR",
