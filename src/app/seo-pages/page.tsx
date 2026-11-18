@@ -68,11 +68,12 @@ export default async function SeoDirectoryPage() {
           <p className="text-center text-muted-foreground">{copy.emptyText}</p>
         ) : null}
 
-        {/* One box per city: its page first, then any published sectors / societies. */}
+        {/* One box per city: its page first, then any published sectors / societies.
+            Masonry columns: each box is as tall as its content and the next one starts right below it. */}
         {directory?.cities.length ? (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="columns-1 gap-5 sm:columns-2 lg:columns-3 xl:columns-4">
             {directory.cities.map((city) => (
-              <Box key={city.key} icon={<MapPin size={18} />} title={city.title}>
+              <Box key={city.key} icon={<MapPin size={18} />} title={city.title} className="mb-5 break-inside-avoid">
                 {city.main ? (
                   <Link
                     href={city.main.path}
@@ -99,7 +100,7 @@ export default async function SeoDirectoryPage() {
         ) : null}
 
         {directory && (directory.office.length > 0 || directory.services.length > 0) ? (
-          <div className="grid gap-5 lg:grid-cols-2">
+          <div className="grid items-start gap-5 lg:grid-cols-2">
             {directory.office.length > 0 ? (
               <Box icon={<Briefcase size={18} />} title={copy.officeGroupTitle}>
                 <LinkList links={directory.office} columns={2} />
