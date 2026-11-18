@@ -248,7 +248,7 @@ export function SiteFooter({
                   <WhatsappIcon size={16} />
                 </span>
                 <a href={`https://wa.me/${whatsapp.replace(/\D/g, "")}`} target="_blank" rel="noopener noreferrer" className={cn(linkClass, "min-w-0")}>
-                  WhatsApp {whatsapp}
+                 {whatsapp}
                 </a>
               </li>
               <li className="flex min-w-0 items-center gap-3">
