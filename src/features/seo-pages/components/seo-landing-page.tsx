@@ -30,7 +30,7 @@ function resolveImage(src?: string) {
 }
 
 function whatsappHref(number: string, page: SeoPagePublic, template: string) {
-  const place = page.location?.name ?? page.city?.name ?? page.name;
+  const place = page.location?.name ?? page.city?.name ?? page.name.replace(/^Pandit in\s+/i, "");
   const text = fillPlaceholders(template, { place });
   return `https://wa.me/${number.replace(/\D/g, "")}?text=${encodeURIComponent(text)}`;
 }
@@ -49,8 +49,10 @@ export function SeoLandingPage({
   settings: SeoSettings["landing"];
 }) {
   const bookHref = page.services[0]?.url ?? "/poojas";
-  const isBusiness = page.pageType !== "location";
-  const place = page.location?.name ?? page.city?.name;
+  // Region hubs (e.g. /pandit-in-delhi-ncr) read like a location page.
+  const isRegionHub = page.pageType === "service" && page.slug.startsWith("pandit-in-");
+  const isBusiness = page.pageType !== "location" && !isRegionHub;
+  const place = page.location?.name ?? page.city?.name ?? (isRegionHub ? page.name.replace(/^Pandit in\s+/i, "") : undefined);
   const crumbs = page.breadcrumbs.map((b) => ({ label: b.name, href: b.path }));
   const hasCoverage = page.coverageGroups.length > 0 || !!page.coverageNote;
   const t = (template: string) => fillPlaceholders(template, { place });
