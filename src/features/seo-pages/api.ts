@@ -60,7 +60,7 @@ export interface SeoDirectory {
 
 export interface FooterGroup {
   key: string;
-  kind?: "links" | "tags" | "poojas" | "blogs" | "text";
+  kind?: "links" | "tags" | "categories" | "poojas" | "blogs" | "text";
   title: string;
   body?: string;
   links: { label: string; url: string }[];

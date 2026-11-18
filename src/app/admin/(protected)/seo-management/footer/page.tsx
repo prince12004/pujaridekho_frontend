@@ -75,11 +75,15 @@ export default function FooterLinksPage() {
                 </select>
                 {group.kind === "text" ? (
                   <Textarea rows={4} value={group.body ?? ""} onChange={(e) => updateGroup(gi, { body: e.target.value })} placeholder="Paragraph shown under the heading" />
-                ) : group.kind === "poojas" || group.kind === "blogs" ? (
+                ) : group.kind === "poojas" || group.kind === "blogs" || group.kind === "categories" ? (
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     Show up to
                     <Input type="number" min={1} max={30} value={group.limit ?? 12} onChange={(e) => updateGroup(gi, { limit: Number(e.target.value) || 12 })} className="h-8 w-20" />
-                    {group.kind === "poojas" ? "published pujas (featured & popular first, then display order)." : "latest published blog posts."}
+                    {group.kind === "poojas"
+                      ? "published pujas (featured & popular first, then display order)."
+                      : group.kind === "categories"
+                        ? "columns — one per puja category (largest first); remaining pujas go in a \"More Pujas\" column. Column titles come from Pooja Categories."
+                        : "latest published blog posts."}
                   </div>
                 ) : null}
                 {["links", "tags"].includes(group.kind ?? "links") ? group.links.map((link, li) => (

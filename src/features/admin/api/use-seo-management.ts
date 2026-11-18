@@ -85,7 +85,8 @@ export type SeoPageInput = Partial<Omit<SeoPageDetail, "_id" | "wordCount" | "el
 export const FOOTER_GROUP_KINDS = [
   { value: "links", label: "Links column (manual list)" },
   { value: "tags", label: "Tag links beside the logo (manual list)" },
-  { value: "poojas", label: "Pujas (automatic from Puja's)" },
+  { value: "categories", label: "Puja categories (one automatic column per category)" },
+  { value: "poojas", label: "Pujas (one automatic column)" },
   { value: "blogs", label: "Latest blogs (automatic)" },
   { value: "text", label: "Text block (heading + paragraph)" },
 ] as const;
@@ -95,7 +96,7 @@ export interface FooterGroupAdmin {
   key: string;
   title: string;
   isActive: boolean;
-  kind?: "links" | "tags" | "poojas" | "blogs" | "text";
+  kind?: "links" | "tags" | "categories" | "poojas" | "blogs" | "text";
   body?: string;
   limit?: number;
   links: { _id?: string; label: string; url: string; isActive: boolean }[];
