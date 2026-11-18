@@ -5,7 +5,7 @@ import { AppProviders } from "@/providers/app-providers";
 import { ConditionalPublicChrome } from "@/components/layout/conditional-public-chrome";
 import { Toaster } from "@/components/ui/sonner";
 import { SERVER_API_URL } from "@/lib/server-env";
-import { fetchContactSettings, fetchFooterGroups } from "@/features/seo-pages/api";
+import { fetchContactSettings, fetchFooterGroups, fetchSeoSettings } from "@/features/seo-pages/api";
 import "./globals.css";
 
 const geistMono = Geist_Mono({
@@ -55,12 +55,12 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   // Fetched on the server so every footer link is in the initial HTML.
-  const [footerGroups, contactSettings] = await Promise.all([fetchFooterGroups(), fetchContactSettings()]);
+  const [footerGroups, contactSettings, seoSettings] = await Promise.all([fetchFooterGroups(), fetchContactSettings(), fetchSeoSettings()]);
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${fontVariables} ${geistMono.variable} antialiased`} suppressHydrationWarning>
         <AppProviders>
-          <ConditionalPublicChrome footerGroups={footerGroups ?? []} contactSettings={contactSettings}>
+          <ConditionalPublicChrome footerGroups={footerGroups ?? []} contactSettings={contactSettings} footerCopy={seoSettings.footer}>
             {children}
           </ConditionalPublicChrome>
           <Toaster />

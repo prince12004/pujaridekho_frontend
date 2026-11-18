@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { adminApiClient } from "@/lib/admin-api-client";
+import type { SeoSettings as SeoSettingsType } from "@/features/seo-pages/api";
 
 const BASE = "/seo-management";
 
@@ -239,5 +240,53 @@ export function useSitemapReport() {
           data: { included: { slug: string; name: string }[]; excluded: { slug: string; name: string; reason: string }[]; minWords: number };
         }>(`${BASE}/sitemap`)
       ).data.data,
+  });
+}
+
+// ---- Page content settings (shared copy on landing pages, directory, footer)
+export type { SeoSettings } from "@/features/seo-pages/api";
+
+export function useSeoSettings() {
+  return useQuery({
+    queryKey: key("settings"),
+    queryFn: async () => (await adminApiClient.get<{ data: SeoSettingsType }>(`${BASE}/settings`)).data.data,
+  });
+}
+
+export function useSaveSeoSettings() {
+  const invalidate = useInvalidate();
+  return useMutation({
+    mutationFn: async (input: SeoSettingsType) => (await adminApiClient.put(`${BASE}/settings`, input)).data.data as SeoSettingsType,
+    onSuccess: invalidate,
+  });
+}
+
+export function useResetSeoSettings() {
+  const invalidate = useInvalidate();
+  return useMutation({
+    mutationFn: async () => (await adminApiClient.post(`${BASE}/settings/reset`)).data.data as SeoSettingsType,
+    onSuccess: invalidate,
+  });
+}
+
+// ---- Optional starter data import
+export interface StarterImportReport {
+  dryRun: boolean;
+  locations: number;
+  draftPages: number;
+  published: number;
+  skippedExisting: number;
+  notPublished: string[];
+  footer: "created" | "kept-existing" | "skipped";
+  footerLinksOff: string[];
+  unmatchedPoojas: string[];
+}
+
+export function useImportStarterData() {
+  const invalidate = useInvalidate();
+  return useMutation({
+    mutationFn: async (options: { dryRun?: boolean; locations?: boolean; pages?: boolean; footer?: boolean }) =>
+      (await adminApiClient.post<{ data: StarterImportReport }>(`${BASE}/import-starter`, options)).data.data,
+    onSuccess: invalidate,
   });
 }

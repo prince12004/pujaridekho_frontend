@@ -22,40 +22,39 @@ import { FaqAccordion } from "@/components/shared/faq-accordion";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Button } from "@/components/ui/button";
 import { images } from "@/lib/images";
-import type { SeoPagePublic } from "@/features/seo-pages/api";
+import { fillPlaceholders, type SeoPagePublic, type SeoSettings } from "@/features/seo-pages/api";
 
 function resolveImage(src?: string) {
   if (!src) return images.bowlWoodenTable;
   return src in images ? images[src as keyof typeof images] : src;
 }
 
-function whatsappHref(number: string, page: SeoPagePublic) {
-  const place = page.location?.name ?? page.city?.name;
-  const text = place ? `Namaste, I want to book a pandit in ${place}.` : `Namaste, I want to book: ${page.name}.`;
+function whatsappHref(number: string, page: SeoPagePublic, template: string) {
+  const place = page.location?.name ?? page.city?.name ?? page.name;
+  const text = fillPlaceholders(template, { place });
   return `https://wa.me/${number.replace(/\D/g, "")}?text=${encodeURIComponent(text)}`;
 }
 
-// Claims here are limited to what the booking flow actually does.
-const WHY_CHOOSE = [
-  { Icon: ShieldCheck, title: "Verified pandits", text: "Every pandit ji is verified before being assigned to a booking." },
-  { Icon: BadgeIndianRupee, title: "Price shown upfront", text: "You see the puja price before you pay — no surprises on the day." },
-  { Icon: Package, title: "Samagri optional", text: "Add the samagri while booking and it comes with the pandit ji." },
-  { Icon: MessageCircle, title: "WhatsApp support", text: "Questions about muhurat or vidhi? Message our team any time." },
-];
+// Icons for the admin-editable "why choose" cards and booking steps (by position).
+const WHY_ICONS = [ShieldCheck, BadgeIndianRupee, Package, MessageCircle];
+const STEP_ICONS = [ClipboardList, MapPin, CalendarCheck, Sparkles];
 
-const BOOKING_STEPS = [
-  { Icon: ClipboardList, title: "Choose your puja", text: "Pick the puja and package that suits the occasion." },
-  { Icon: MapPin, title: "Add address & date", text: "Enter where the puja will happen and your preferred date." },
-  { Icon: CalendarCheck, title: "Confirm online", text: "Pay the ₹99 booking amount or the full amount to confirm." },
-  { Icon: Sparkles, title: "Pandit ji arrives", text: "Your assigned pandit ji performs the puja at your place." },
-];
-
-export function SeoLandingPage({ page, whatsappNumber }: { page: SeoPagePublic; whatsappNumber: string }) {
+export function SeoLandingPage({
+  page,
+  whatsappNumber,
+  settings,
+}: {
+  page: SeoPagePublic;
+  whatsappNumber: string;
+  settings: SeoSettings["landing"];
+}) {
   const bookHref = page.services[0]?.url ?? "/poojas";
   const isBusiness = page.pageType !== "location";
   const place = page.location?.name ?? page.city?.name;
   const crumbs = page.breadcrumbs.map((b) => ({ label: b.name, href: b.path }));
   const hasCoverage = page.coverageGroups.length > 0 || !!page.coverageNote;
+  const t = (template: string) => fillPlaceholders(template, { place });
+  const waHref = whatsappHref(whatsappNumber, page, settings.whatsappMessage);
 
   return (
     <>
@@ -99,7 +98,7 @@ export function SeoLandingPage({ page, whatsappNumber }: { page: SeoPagePublic; 
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
             <Button size="lg" className="font-ui h-12 font-bold" asChild>
               <Link href={bookHref}>
-                Book Pandit Ji <ArrowRight size={16} />
+                {settings.bookButtonLabel} <ArrowRight size={16} />
               </Link>
             </Button>
             <Button
@@ -108,8 +107,8 @@ export function SeoLandingPage({ page, whatsappNumber }: { page: SeoPagePublic; 
               className="font-ui h-12 border-white/25 bg-white/5 font-bold text-brand-cream hover:bg-white/15 hover:text-brand-cream"
               asChild
             >
-              <a href={whatsappHref(whatsappNumber, page)} target="_blank" rel="noopener noreferrer">
-                <MessageCircle size={16} /> Book on WhatsApp
+              <a href={waHref} target="_blank" rel="noopener noreferrer">
+                <MessageCircle size={16} /> {settings.whatsappButtonLabel}
               </a>
             </Button>
           </div>
@@ -121,8 +120,8 @@ export function SeoLandingPage({ page, whatsappNumber }: { page: SeoPagePublic; 
         <section className="py-14 sm:py-16">
           <Container>
             <SectionHeading
-              eyebrow={isBusiness ? "Business Pujas" : "Popular Pujas"}
-              title={place ? `Pujas we perform in ${place}` : "Pujas for this occasion"}
+              eyebrow={isBusiness ? settings.businessServicesEyebrow : settings.servicesEyebrow}
+              title={place ? t(settings.servicesHeading) : settings.servicesHeadingNoPlace}
             />
             <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
               {page.services.map((service) => (
@@ -180,7 +179,7 @@ export function SeoLandingPage({ page, whatsappNumber }: { page: SeoPagePublic; 
           {hasCoverage ? (
             <aside className="h-fit rounded-2xl border border-border bg-card p-6 lg:sticky lg:top-24">
               <h2 className="font-heading flex items-center gap-2 text-lg font-bold">
-                <MapPin size={18} className="text-primary" /> {place ? `Areas we cover in ${place}` : "Areas we cover"}
+                <MapPin size={18} className="text-primary" /> {place ? t(settings.coverageHeading) : t(settings.coverageHeading).replace(/\s+in\s*$/, "")}
               </h2>
               {page.coverageNote ? <p className="mt-2 text-sm text-muted-foreground">{page.coverageNote}</p> : null}
               {page.coverageGroups.map((group) => (
@@ -214,17 +213,20 @@ export function SeoLandingPage({ page, whatsappNumber }: { page: SeoPagePublic; 
       {/* 9: why choose */}
       <section className="py-14 sm:py-16">
         <Container>
-          <SectionHeading eyebrow="Why PujariDekho" title="Why families book with us" align="center" />
+          <SectionHeading eyebrow={settings.whyEyebrow} title={settings.whyHeading} align="center" />
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {WHY_CHOOSE.map(({ Icon, title, text }) => (
-              <div key={title} className="rounded-2xl border border-border bg-card p-5">
+            {settings.whyItems.map(({ title, text }, i) => {
+              const Icon = WHY_ICONS[i % WHY_ICONS.length];
+              return (
+              <div key={title + i} className="rounded-2xl border border-border bg-card p-5">
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
                   <Icon size={20} />
                 </span>
                 <h3 className="font-heading mt-4 text-base font-bold">{title}</h3>
                 <p className="mt-1.5 text-sm text-muted-foreground">{text}</p>
               </div>
-            ))}
+              );
+            })}
           </div>
         </Container>
       </section>
@@ -232,16 +234,19 @@ export function SeoLandingPage({ page, whatsappNumber }: { page: SeoPagePublic; 
       {/* 10: booking process */}
       <section className="bg-muted/30 py-14 sm:py-16">
         <Container>
-          <SectionHeading eyebrow="How It Works" title="Book in four simple steps" align="center" />
+          <SectionHeading eyebrow={settings.stepsEyebrow} title={settings.stepsHeading} align="center" />
           <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {BOOKING_STEPS.map(({ Icon, title, text }, i) => (
-              <li key={title} className="relative rounded-2xl border border-border bg-card p-5">
+            {settings.steps.map(({ title, text }, i) => {
+              const Icon = STEP_ICONS[i % STEP_ICONS.length];
+              return (
+              <li key={title + i} className="relative rounded-2xl border border-border bg-card p-5">
                 <span className="font-heading absolute right-5 top-4 text-3xl font-bold text-primary/15">{i + 1}</span>
                 <Icon size={22} className="text-primary" />
                 <h3 className="font-heading mt-3 text-base font-bold">{title}</h3>
                 <p className="mt-1.5 text-sm text-muted-foreground">{text}</p>
               </li>
-            ))}
+              );
+            })}
           </ol>
         </Container>
       </section>
@@ -250,7 +255,7 @@ export function SeoLandingPage({ page, whatsappNumber }: { page: SeoPagePublic; 
       {page.reviews.length > 0 ? (
         <section className="py-14 sm:py-16">
           <Container>
-            <SectionHeading eyebrow="Reviews" title="What our customers say" />
+            <SectionHeading eyebrow={settings.reviewsEyebrow} title={settings.reviewsHeading} />
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {page.reviews.map((review, i) => (
                 <figure key={i} className="rounded-2xl border border-border bg-card p-5">
@@ -275,7 +280,7 @@ export function SeoLandingPage({ page, whatsappNumber }: { page: SeoPagePublic; 
       {page.faqs.length > 0 ? (
         <section className="py-14 sm:py-16">
           <Container className="max-w-4xl">
-            <SectionHeading eyebrow="FAQs" title={place ? `Questions about booking a pandit in ${place}` : "Frequently asked questions"} />
+            <SectionHeading eyebrow={settings.faqEyebrow} title={place ? t(settings.faqHeading) : settings.faqHeadingNoPlace} />
             <FaqAccordion items={page.faqs} className="mt-8" />
           </Container>
         </section>
@@ -285,7 +290,7 @@ export function SeoLandingPage({ page, whatsappNumber }: { page: SeoPagePublic; 
       <section className="border-t border-border py-14 sm:py-16">
         <Container className="grid gap-10 md:grid-cols-2">
           <LinkList
-            title={isBusiness ? "Related puja services" : "Office & business pujas"}
+            title={isBusiness ? settings.relatedHeadingBusiness : settings.relatedHeadingHome}
             links={[
               ...(page.officeCityPage ? [page.officeCityPage] : []),
               ...(page.cityPage ? [page.cityPage] : []),
@@ -293,17 +298,17 @@ export function SeoLandingPage({ page, whatsappNumber }: { page: SeoPagePublic; 
               ...page.relatedServices,
             ]}
           />
-          <LinkList title={page.pageType === "service" ? "Available in these cities" : "Nearby locations"} links={page.nearby} />
+          <LinkList title={page.pageType === "service" ? settings.citiesHeading : settings.nearbyHeading} links={page.nearby} />
         </Container>
       </section>
 
       {/* 15: final CTA */}
       <CtaBanner
-        eyebrow="Book Now"
-        title={place ? `Book your pandit in ${place}` : "Book your pandit ji today"}
-        description="Choose your puja, pick a date and confirm online — or message our team on WhatsApp."
-        primaryAction={{ label: "Book Pandit Ji", href: bookHref }}
-        secondaryAction={{ label: "Chat on WhatsApp", href: whatsappHref(whatsappNumber, page) }}
+        eyebrow={settings.finalCtaEyebrow}
+        title={place ? t(settings.finalCtaHeading) : settings.finalCtaHeadingNoPlace}
+        description={t(settings.finalCtaText)}
+        primaryAction={{ label: settings.bookButtonLabel, href: bookHref }}
+        secondaryAction={{ label: settings.whatsappButtonLabel, href: waHref }}
       />
     </>
   );

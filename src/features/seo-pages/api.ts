@@ -109,3 +109,119 @@ export interface PublicContactSettings {
 export function fetchContactSettings() {
   return getJson<PublicContactSettings>("/settings");
 }
+
+export interface TitledText {
+  title: string;
+  text: string;
+}
+
+export interface SeoSettings {
+  landing: {
+    bookButtonLabel: string;
+    whatsappButtonLabel: string;
+    whatsappMessage: string;
+    servicesEyebrow: string;
+    businessServicesEyebrow: string;
+    servicesHeading: string;
+    servicesHeadingNoPlace: string;
+    coverageHeading: string;
+    whyEyebrow: string;
+    whyHeading: string;
+    whyItems: TitledText[];
+    stepsEyebrow: string;
+    stepsHeading: string;
+    steps: TitledText[];
+    reviewsEyebrow: string;
+    reviewsHeading: string;
+    faqEyebrow: string;
+    faqHeading: string;
+    faqHeadingNoPlace: string;
+    relatedHeadingHome: string;
+    relatedHeadingBusiness: string;
+    nearbyHeading: string;
+    citiesHeading: string;
+    finalCtaEyebrow: string;
+    finalCtaHeading: string;
+    finalCtaHeadingNoPlace: string;
+    finalCtaText: string;
+  };
+  directory: { title: string; description: string; officeGroupTitle: string; servicesGroupTitle: string; emptyText: string };
+  footer: {
+    blurb: string;
+    newsletterTitle: string;
+    newsletterText: string;
+    trustBadges: string[];
+    copyright: string;
+    showAllLocationsLink: boolean;
+  };
+}
+
+// Used only if the settings request fails, so pages never break. The real
+// copy is edited in Admin → SEO Management → Page Content Settings.
+export const FALLBACK_SEO_SETTINGS: SeoSettings = {
+  landing: {
+    bookButtonLabel: "Book Pandit Ji",
+    whatsappButtonLabel: "Book on WhatsApp",
+    whatsappMessage: "Namaste, I want to book a pandit in {place}.",
+    servicesEyebrow: "Popular Pujas",
+    businessServicesEyebrow: "Business Pujas",
+    servicesHeading: "Pujas we perform in {place}",
+    servicesHeadingNoPlace: "Pujas for this occasion",
+    coverageHeading: "Areas we cover in {place}",
+    whyEyebrow: "Why PujariDekho",
+    whyHeading: "Why families book with us",
+    whyItems: [
+      { title: "Verified pandits", text: "Every pandit ji is verified before being assigned to a booking." },
+      { title: "Price shown upfront", text: "You see the puja price before you pay — no surprises on the day." },
+      { title: "Samagri optional", text: "Add the samagri while booking and it comes with the pandit ji." },
+      { title: "WhatsApp support", text: "Questions about muhurat or vidhi? Message our team any time." },
+    ],
+    stepsEyebrow: "How It Works",
+    stepsHeading: "Book in four simple steps",
+    steps: [
+      { title: "Choose your puja", text: "Pick the puja and package that suits the occasion." },
+      { title: "Add address & date", text: "Enter where the puja will happen and your preferred date." },
+      { title: "Confirm online", text: "Pay the ₹99 booking amount or the full amount to confirm." },
+      { title: "Pandit ji arrives", text: "Your assigned pandit ji performs the puja at your place." },
+    ],
+    reviewsEyebrow: "Reviews",
+    reviewsHeading: "What our customers say",
+    faqEyebrow: "FAQs",
+    faqHeading: "Questions about booking a pandit in {place}",
+    faqHeadingNoPlace: "Frequently asked questions",
+    relatedHeadingHome: "Office & business pujas",
+    relatedHeadingBusiness: "Related puja services",
+    nearbyHeading: "Nearby locations",
+    citiesHeading: "Available in these cities",
+    finalCtaEyebrow: "Book Now",
+    finalCtaHeading: "Book your pandit in {place}",
+    finalCtaHeadingNoPlace: "Book your pandit ji today",
+    finalCtaText: "Choose your puja, pick a date and confirm online — or message our team on WhatsApp.",
+  },
+  directory: {
+    title: "Explore Pandit Booking Locations in Delhi NCR",
+    description:
+      "Find and book experienced Pandit Ji for Hindu puja ceremonies across Noida, Greater Noida, Ghaziabad, Delhi and Gurugram. Explore our location-wise services covering residential sectors, popular societies and commercial areas.",
+    officeGroupTitle: "Office Puja Locations",
+    servicesGroupTitle: "Office & Business Puja Services",
+    emptyText: "Location pages are being prepared. Please check back soon.",
+  },
+  footer: {
+    blurb:
+      "PujariDekho connects families and businesses across Noida, Greater Noida, Greater Noida West, Ghaziabad, Delhi and Gurugram with verified, experienced pandits for every ritual — with the price shown before you book.",
+    newsletterTitle: "Subscribe to Our Newsletter",
+    newsletterText: "Vidhi guides, festival muhurat dates and special offers — straight to your inbox.",
+    trustBadges: ["Verified & Experienced Pandits", "Secure & Encrypted Payments", "Trusted by Thousands of Families", "24/7 Customer Support"],
+    copyright: "© {year} PujariDekho. All rights reserved.",
+    showAllLocationsLink: true,
+  },
+};
+
+export async function fetchSeoSettings(): Promise<SeoSettings> {
+  return (await getJson<SeoSettings>("/seo-pages/settings")) ?? FALLBACK_SEO_SETTINGS;
+}
+
+/** Replaces {place} / {year} placeholders in admin-edited copy. */
+export function fillPlaceholders(text: string, values: { place?: string }) {
+  return text.replace(/\{place\}/g, values.place ?? "").replace(/\{year\}/g, String(new Date().getFullYear()));
+}

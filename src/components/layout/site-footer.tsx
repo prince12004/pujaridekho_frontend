@@ -17,14 +17,10 @@ import { siteConfig } from "@/lib/constants";
 import { useSiteSettings } from "@/lib/use-site-settings";
 import { apiClient } from "@/lib/api-client";
 import { cn } from "@/lib/utils";
-import type { FooterGroup, PublicContactSettings } from "@/features/seo-pages/api";
+import { fillPlaceholders, type FooterGroup, type PublicContactSettings, type SeoSettings } from "@/features/seo-pages/api";
 
-const trustBadges = [
-  { Icon: ShieldCheck, label: "Verified & Experienced Pandits" },
-  { Icon: Lock, label: "Secure & Encrypted Payments" },
-  { Icon: Users, label: "Trusted by Thousands of Families" },
-  { Icon: Headphones, label: "24/7 Customer Support" },
-];
+// Icons for the admin-editable trust badges (by position).
+const TRUST_ICONS = [ShieldCheck, Lock, Users, Headphones];
 
 const legalLinks = [
   { label: "Privacy Policy", href: "/privacy-policy" },
@@ -42,9 +38,11 @@ type NewsletterValues = z.infer<typeof newsletterSchema>;
 export function SiteFooter({
   groups,
   contactSettings,
+  copy,
 }: {
   groups: FooterGroup[];
   contactSettings: PublicContactSettings | null;
+  copy: SeoSettings["footer"];
 }) {
   // Server-provided settings render in the first HTML; the client hook keeps
   // them fresh afterwards.
@@ -89,10 +87,8 @@ export function SiteFooter({
         <Reveal>
           <div className="flex flex-col items-start gap-6 rounded-[1.75rem] bg-gradient-to-r from-brand-purple-deep to-brand-cocoa-deep p-8 shadow-xl sm:flex-row sm:items-center sm:justify-between sm:p-10">
             <div>
-              <h2 className="font-heading text-2xl font-bold text-brand-cream sm:text-[1.75rem]">Subscribe to Our Newsletter</h2>
-              <p className="mt-2 max-w-md text-sm text-brand-cream/75">
-                Vidhi guides, festival muhurat dates and special offers — straight to your inbox.
-              </p>
+              <h2 className="font-heading text-2xl font-bold text-brand-cream sm:text-[1.75rem]">{copy.newsletterTitle}</h2>
+              <p className="mt-2 max-w-md text-sm text-brand-cream/75">{copy.newsletterText}</p>
             </div>
             {subscribed ? (
               <p className="flex items-center gap-2 rounded-xl bg-white/10 px-4 py-3 text-sm font-bold text-brand-gold-soft">
@@ -137,10 +133,7 @@ export function SiteFooter({
         <Container className="relative flex flex-col gap-6 border-b border-white/10 pb-10 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <Logo light />
-            <p className="mt-4 max-w-xl text-sm leading-relaxed text-brand-cream/75">
-              PujariDekho connects families and businesses across Noida, Greater Noida, Greater Noida West, Ghaziabad,
-              Delhi and Gurugram with verified, experienced pandits for every ritual — with the price shown before you book.
-            </p>
+            <p className="mt-4 max-w-xl text-sm leading-relaxed text-brand-cream/75">{copy.blurb}</p>
           </div>
           {socialLinks.length > 0 ? (
             <div className="flex gap-2.5">
@@ -243,20 +236,25 @@ export function SiteFooter({
 
         <Container className="relative border-t border-white/10 py-6">
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-center text-xs font-semibold text-brand-cream/75 sm:justify-between">
-            {trustBadges.map(({ Icon, label }) => (
-              <span key={label} className="flex items-center gap-2">
-                <Icon size={15} className="text-accent" /> {label}
-              </span>
-            ))}
+            {copy.trustBadges.filter(Boolean).map((label, i) => {
+              const Icon = TRUST_ICONS[i % TRUST_ICONS.length];
+              return (
+                <span key={label + i} className="flex items-center gap-2">
+                  <Icon size={15} className="text-accent" /> {label}
+                </span>
+              );
+            })}
           </div>
         </Container>
 
         <Container className="relative flex flex-col items-center justify-between gap-3 border-t border-white/10 py-6 text-xs text-brand-cream/60 sm:flex-row">
-          <span>© {new Date().getFullYear()} PujariDekho. All rights reserved.</span>
+          <span>{fillPlaceholders(copy.copyright, {})}</span>
           <div className="flex flex-wrap justify-center gap-5">
-            <Link href="/seo-pages" className="hover:text-brand-gold-soft">
-              All Locations
-            </Link>
+            {copy.showAllLocationsLink ? (
+              <Link href="/seo-pages" className="hover:text-brand-gold-soft">
+                All Locations
+              </Link>
+            ) : null}
             {legalLinks.map((link) => (
               <Link key={link.href} href={link.href} className="hover:text-brand-gold-soft">
                 {link.label}

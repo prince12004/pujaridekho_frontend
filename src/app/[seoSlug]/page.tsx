@@ -4,7 +4,7 @@ import { JsonLd, breadcrumbSchema, faqSchema } from "@/components/shared/json-ld
 import { buildMetadata } from "@/lib/seo";
 import { env } from "@/lib/env";
 import { siteConfig } from "@/lib/constants";
-import { fetchContactSettings, fetchSeoPage } from "@/features/seo-pages/api";
+import { fetchContactSettings, fetchSeoPage, fetchSeoSettings } from "@/features/seo-pages/api";
 import { SeoLandingPage } from "@/features/seo-pages/components/seo-landing-page";
 
 // Location / office / service landing pages managed in Admin → SEO
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function SeoSlugPage({ params }: Params) {
   const { seoSlug } = await params;
-  const [page, settings] = await Promise.all([fetchSeoPage(seoSlug), fetchContactSettings()]);
+  const [page, settings, seoSettings] = await Promise.all([fetchSeoPage(seoSlug), fetchContactSettings(), fetchSeoSettings()]);
   if (!page) notFound();
 
   const siteUrl = env.NEXT_PUBLIC_SITE_URL;
@@ -70,7 +70,7 @@ export default async function SeoSlugPage({ params }: Params) {
         }}
       />
       {page.faqs.length > 0 ? <JsonLd data={faqSchema(page.faqs)} /> : null}
-      <SeoLandingPage page={page} whatsappNumber={whatsapp} />
+      <SeoLandingPage page={page} whatsappNumber={whatsapp} settings={seoSettings.landing} />
     </>
   );
 }

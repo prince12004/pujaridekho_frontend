@@ -140,6 +140,7 @@ export const ADMIN_NAV: AdminNavSection[] = [
       { label: "Cities, Sectors & Societies", href: "/admin/seo-management/locations", icon: Building2, permission: "seo:manage" },
       { label: "SEO Pages", href: "/admin/seo-management/pages", icon: FileText, permission: "seo:manage" },
       { label: "Office Puja Pages", href: "/admin/seo-management/pages?pageType=office_location", icon: Store, permission: "seo:manage" },
+      { label: "Page Content Settings", href: "/admin/seo-management/settings", icon: Settings, permission: "seo:manage" },
       { label: "Footer SEO Links", href: "/admin/seo-management/footer", icon: PanelBottom, permission: "seo:manage" },
       { label: "SEO Directory", href: "/admin/seo-management/directory", icon: Network, permission: "seo:manage" },
       { label: "Sitemap", href: "/admin/seo-management/sitemap", icon: FileCode2, permission: "seo:manage" },

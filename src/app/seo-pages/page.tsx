@@ -6,19 +6,14 @@ import { PageBanner } from "@/components/shared/page-banner";
 import { JsonLd, breadcrumbSchema } from "@/components/shared/json-ld";
 import { buildMetadata } from "@/lib/seo";
 import { env } from "@/lib/env";
-import { fetchSeoDirectory, type SeoLink } from "@/features/seo-pages/api";
+import { fetchSeoDirectory, fetchSeoSettings, type SeoLink } from "@/features/seo-pages/api";
 
 export const revalidate = 300;
 
-const TITLE = "Explore Pandit Booking Locations in Delhi NCR";
-const DESCRIPTION =
-  "Find and book experienced Pandit Ji for Hindu puja ceremonies across Noida, Greater Noida, Ghaziabad, Delhi and Gurugram. Explore our location-wise services covering residential sectors, popular societies and commercial areas.";
-
-export const metadata: Metadata = buildMetadata({
-  title: TITLE,
-  description: DESCRIPTION.slice(0, 160),
-  path: "/seo-pages",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const { directory } = await fetchSeoSettings();
+  return buildMetadata({ title: directory.title, description: directory.description.slice(0, 160), path: "/seo-pages" });
+}
 
 function Links({ links }: { links: SeoLink[] }) {
   return (
@@ -60,17 +55,18 @@ function Group({
 }
 
 export default async function SeoDirectoryPage() {
-  const directory = await fetchSeoDirectory();
+  const [directory, settings] = await Promise.all([fetchSeoDirectory(), fetchSeoSettings()]);
+  const copy = settings.directory;
   const siteUrl = env.NEXT_PUBLIC_SITE_URL;
 
   return (
     <>
       <JsonLd data={breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Locations", path: "/seo-pages" }], siteUrl)} />
-      <PageBanner title={TITLE} description={DESCRIPTION} breadcrumbItems={[{ label: "Locations" }]} />
+      <PageBanner title={copy.title} description={copy.description} breadcrumbItems={[{ label: "Locations" }]} />
 
       <Container className="flex flex-col gap-4 py-10 sm:py-14">
         {!directory || (directory.cities.length === 0 && directory.office.length === 0) ? (
-          <p className="text-center text-muted-foreground">Location pages are being prepared. Please check back soon.</p>
+          <p className="text-center text-muted-foreground">{copy.emptyText}</p>
         ) : null}
 
         {directory?.cities.map((city, i) => (
@@ -90,13 +86,13 @@ export default async function SeoDirectoryPage() {
         ))}
 
         {directory && directory.office.length > 0 ? (
-          <Group icon={<Briefcase size={20} className="text-primary" />} title="Office Puja Locations">
+          <Group icon={<Briefcase size={20} className="text-primary" />} title={copy.officeGroupTitle}>
             <Links links={directory.office} />
           </Group>
         ) : null}
 
         {directory && directory.services.length > 0 ? (
-          <Group icon={<Sparkles size={20} className="text-primary" />} title="Office & Business Puja Services">
+          <Group icon={<Sparkles size={20} className="text-primary" />} title={copy.servicesGroupTitle}>
             <Links links={directory.services} />
           </Group>
         ) : null}
