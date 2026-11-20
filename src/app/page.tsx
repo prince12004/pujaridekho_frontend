@@ -14,12 +14,14 @@ import { ReligiousProducts } from "@/features/home/components/religious-products
 import { TestimonialsSection } from "@/features/home/components/testimonials-section";
 import { BlogSection } from "@/features/home/components/blog-section";
 import { FaqSection } from "@/features/home/components/faq-section";
+import { fetchSiteStats } from "@/features/home/site-stats";
 
-export default function Home() {
+export default async function Home() {
+  const stats = await fetchSiteStats();
   return (
     <>
       <HomepageBannerStrip />
-      <HeroSection />
+      <HeroSection stats={stats} />
       <TrustNumbers />
       <FeaturedPoojas />
       {/* <FestivalPoojasSection /> */}

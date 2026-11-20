@@ -8,6 +8,8 @@ import { BookingWidget, type BookingOption } from "@/components/shared/booking-w
 import { images } from "@/lib/images";
 import { usePublicCities } from "@/features/cities/api/use-cities";
 import { usePoojas } from "@/features/poojas/api/use-poojas";
+import { plus } from "@/features/home/stats-format";
+import type { SiteStats } from "@/features/home/site-stats";
 
 const heroPoints = [
   "Verified & background-checked pandits",
@@ -16,14 +18,18 @@ const heroPoints = [
   "Same-day booking across Delhi NCR",
 ];
 
-const heroBadges = [
-  { icon: ShieldCheck, label: "10+ Verified Pandits", iconClassName: "text-primary" },
-  { icon: Star, label: "4.8 Rated by Families", iconClassName: "fill-accent text-accent" },
-  { icon: Package, label: "Top Rated Puja Samagiri", iconClassName: "text-primary" },
-  { icon: CheckCircle2, label: "97+ Puja Completed Last Month", iconClassName: "text-accent" },
-];
+function buildHeroBadges(stats: SiteStats | null) {
+  return [
+    stats && stats.verifiedPandits > 0 ? { icon: ShieldCheck, label: `${plus(stats.verifiedPandits)} Verified Pandits`, iconClassName: "text-primary" } : null,
+    stats?.rating ? { icon: Star, label: `${stats.rating.value.toFixed(1)} Rated by Families`, iconClassName: "fill-accent text-accent" } : null,
+    { icon: Package, label: "Top Rated Puja Samagiri", iconClassName: "text-primary" },
+    // Only once it is a number worth showing.
+    stats && stats.poojasLast30Days >= 10 ? { icon: CheckCircle2, label: `${plus(stats.poojasLast30Days)} Puja Completed Last Month`, iconClassName: "text-accent" } : null,
+  ].filter((b): b is { icon: typeof ShieldCheck; label: string; iconClassName: string } => !!b);
+}
 
-export function HeroSection() {
+export function HeroSection({ stats }: { stats: SiteStats | null }) {
+  const heroBadges = buildHeroBadges(stats);
   const { data: poojasData } = usePoojas({ limit: 100 });
   const poojaOptions: BookingOption[] =
     poojasData?.items.map((p) => ({ label: p.name, value: p.slug })) ?? [];
@@ -114,7 +120,7 @@ export function HeroSection() {
                 </span>
               ))}
             </div>
-            Trusted by 1,000+ families across Delhi NCR
+            {stats && stats.familiesServed > 0 ? `Trusted by ${plus(stats.familiesServed)} families across Delhi NCR` : "Trusted by families across Delhi NCR"}
           </div>
         </div>
 

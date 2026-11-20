@@ -1,13 +1,6 @@
 import type { TimelineItem } from "@/components/shared/timeline";
 import { Award, Handshake, HeartHandshake, ShieldCheck } from "lucide-react";
 
-export const aboutStats = [
-  { value: "10+", label: "Verified Pandits" },
-  { value: "1,000+", label: "Puja's Completed" },
-  { value: "10", label: "Cities Served" },
-  { value: "4.8★", label: "Average Rating" },
-];
-
 export const journeyItems: TimelineItem[] = [
   {
     label: "2025",

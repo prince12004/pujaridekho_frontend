@@ -13,6 +13,7 @@ export interface SiteSettings {
   socialLinks: { facebook?: string; instagram?: string; youtube?: string; twitter?: string };
   maintenanceMode: boolean;
   maintenanceMessage: string;
+  statsOffsets: { verifiedPandits: number; poojas: number; families: number };
   app: {
     android: AppPlatformSettings;
     ios: AppPlatformSettings;

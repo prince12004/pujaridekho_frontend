@@ -39,6 +39,7 @@ export default function SettingsPage() {
       socialLinks: { facebook: "", instagram: "", youtube: "", twitter: "" },
       maintenanceMode: false,
       maintenanceMessage: "",
+      statsOffsets: { verifiedPandits: 5, poojas: 1000, families: 0 },
       app: {
         android: { minVersion: "1.0.0", latestVersion: "1.0.0", storeUrl: "" },
         ios: { minVersion: "1.0.0", latestVersion: "1.0.0", storeUrl: "" },
@@ -152,6 +153,30 @@ export default function SettingsPage() {
             <div className="space-y-1.5">
               <Label>Maintenance Message</Label>
               <Input {...register("maintenanceMessage")} placeholder="We'll be back shortly." />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Homepage Numbers</CardTitle>
+            <p className="text-xs text-muted-foreground">
+              The homepage, hero and About page count verified pandits, completed pujas and families live from the database. The numbers below are
+              added on top (e.g. pujas done before the website). Rating and cities are always fully live. Changes show within about 10 minutes.
+            </p>
+          </CardHeader>
+          <CardContent className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="space-y-1.5">
+              <Label>Add to verified pandits</Label>
+              <Input type="number" min={0} {...register("statsOffsets.verifiedPandits", { valueAsNumber: true, min: 0 })} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Add to completed pujas</Label>
+              <Input type="number" min={0} {...register("statsOffsets.poojas", { valueAsNumber: true, min: 0 })} />
+            </div>
+            <div className="space-y-1.5">
+              <Label>Add to families served</Label>
+              <Input type="number" min={0} {...register("statsOffsets.families", { valueAsNumber: true, min: 0 })} />
             </div>
           </CardContent>
         </Card>

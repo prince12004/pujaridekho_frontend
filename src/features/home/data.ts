@@ -9,17 +9,8 @@ import type {
   Product,
   ShopCategory,
   Testimonial,
-  TrustStat,
   WhyChooseItem,
 } from "./types";
-
-export const trustStats: TrustStat[] = [
-  { value: "10+", label: "Verified Pandits" },
-  { value: "4.9★", label: "Customer Rating" },
-  { value: "1,000+", label: "Completed Poojas" },
-  { value: "24×7", label: "Support Available" },
-  { value: "100%", label: "Verified Priests" },
-];
 
 export const featuredPoojas: Pooja[] = [
   { slug: "satyanarayan-puja", name: "Satyanarayan Puja", duration: "2–3 hrs", location: "Home Visit · Delhi NCR", price: 2100, marketPrice: 2800, image: "roundBowlCandle", tag: "Most Booked" },

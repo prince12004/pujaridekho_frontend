@@ -12,7 +12,8 @@ import { WhyChooseAbout } from "@/features/about/components/why-choose-about";
 import { JourneySection } from "@/features/about/components/journey-section";
 import { TeamSection } from "@/features/about/components/team-section";
 import { CustomerTrust } from "@/features/about/components/customer-trust";
-import { aboutFaq, aboutStats } from "@/features/about/data";
+import { aboutFaq } from "@/features/about/data";
+import { fetchSiteStats, plus, stars } from "@/features/home/site-stats";
 import { buildMetadata } from "@/lib/seo";
 import { images } from "@/lib/images";
 import { env } from "@/lib/env";
@@ -24,7 +25,17 @@ export const metadata: Metadata = buildMetadata({
   path: "/about",
 });
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  // Live numbers (same source as the homepage) so the two pages never disagree.
+  const stats = await fetchSiteStats();
+  const aboutStats = stats
+    ? [
+        stats.verifiedPandits > 0 ? { value: plus(stats.verifiedPandits), label: "Verified Pandits" } : null,
+        stats.poojasCompleted > 0 ? { value: plus(stats.poojasCompleted), label: "Puja's Completed" } : null,
+        stats.cities > 0 ? { value: String(stats.cities), label: "Cities Served" } : null,
+        stats.rating ? { value: stars(stats.rating.value), label: "Average Rating" } : null,
+      ].filter((s): s is { value: string; label: string } => !!s)
+    : [];
   return (
     <>
       <JsonLd
@@ -42,7 +53,7 @@ export default function AboutPage() {
       <MissionVision />
       <WhyChooseAbout />
       <JourneySection />
-      <StatsBand stats={aboutStats} />
+      {aboutStats.length > 0 ? <StatsBand stats={aboutStats} /> : null}
       <CustomerTrust />
       <TeamSection />
 
