@@ -4,13 +4,17 @@ import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 
 /**
- * Animates the numeric portion of a stat string (e.g. "1,000+", "4.9★", "24×7")
+ * Shows a stat string (e.g. "1,000+", "4.9★", "24×7") and, in the browser,
+ * animates the numeric portion of a stat string (e.g. "1,000+", "4.9★", "24×7")
  * from 0 up to its target while preserving whatever prefix/suffix surrounds it.
  */
 export function AnimatedCounter({ value, duration = 1400 }: { value: string; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
-  const [display, setDisplay] = useState(() => zeroed(value));
+  // Start from the real value so the server-rendered HTML (what Google, link
+  // previews and no-JS visitors see) shows the actual number — never "0+".
+  // The count-up animation only runs in the browser once the stat scrolls into view.
+  const [display, setDisplay] = useState(value);
 
   useEffect(() => {
     if (!inView) return;
@@ -42,13 +46,4 @@ export function AnimatedCounter({ value, duration = 1400 }: { value: string; dur
   }, [inView, value, duration]);
 
   return <span ref={ref}>{display}</span>;
-}
-
-function zeroed(value: string): string {
-  const match = value.match(/[\d,.]+/);
-  if (!match) return value;
-  const numStr = match[0];
-  const decimals = numStr.includes(".") ? numStr.split(".")[1].length : 0;
-  const zero = decimals > 0 ? (0).toFixed(decimals) : "0";
-  return `${value.slice(0, match.index)}${zero}${value.slice((match.index ?? 0) + numStr.length)}`;
 }
