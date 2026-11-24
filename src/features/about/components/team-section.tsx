@@ -4,6 +4,7 @@ import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/shared/reveal";
 import { TeamPhotoMotion } from "@/features/about/components/team-photo-motion";
+import { TeamProfileDialog } from "@/features/about/components/team-profile-dialog";
 import { SERVER_API_URL } from "@/lib/server-env";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +15,7 @@ export interface TeamMember {
   name: string;
   designation: string;
   bio?: string;
+  profile?: string;
   group?: "leadership" | "advisor";
   photo?: string;
   photoPosition?: "top" | "center" | "bottom";
@@ -72,6 +74,10 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-brand-purple-deep/35 to-transparent opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
             <span className="pointer-events-none absolute left-3 top-3 h-5 w-5 rounded-tl-md border-l-2 border-t-2 border-white/80 transition-all duration-500 group-hover:h-9 group-hover:w-9 group-hover:border-white" />
             <span className="pointer-events-none absolute bottom-3 right-3 h-5 w-5 rounded-br-md border-b-2 border-r-2 border-white/80 transition-all duration-500 group-hover:h-9 group-hover:w-9 group-hover:border-white" />
+            {/* PujariDekho mark on every portrait, including photos uploaded later from admin. */}
+            <span className="pointer-events-none absolute bottom-3 left-3 flex h-6 w-6 items-center justify-center rounded-full bg-white/95 shadow-md ring-1 ring-black/5 transition-transform duration-500 group-hover:scale-110">
+              <Image src="/brand/icon.png" alt="" width={16} height={16} className="h-4 w-4 object-contain" />
+            </span>
           </div>
         </div>
         <figcaption className="px-1 pt-4 text-center lg:flex-1 lg:px-0 lg:pt-0 lg:text-left">
@@ -79,9 +85,34 @@ function TeamCard({ member, index }: { member: TeamMember; index: number }) {
           <p className="font-ui mt-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-primary">{member.designation}</p>
           <span className="mx-auto mt-3 block h-[2px] w-6 rounded-full bg-primary/40 transition-all duration-300 group-hover:w-12 group-hover:bg-primary lg:mx-0" />
           {member.bio ? <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground lg:text-sm">{member.bio}</p> : null}
+          {member.profile ? (
+            <TeamProfileDialog name={member.name} designation={member.designation} photo={member.photo} profile={member.profile} />
+          ) : null}
         </figcaption>
       </figure>
     </Reveal>
+  );
+}
+
+
+/** Line-art mandala used as a faint background ornament. */
+function Mandala({ className }: { className?: string }) {
+  const petals = Array.from({ length: 16 }, (_, i) => i * 22.5);
+  const outer = Array.from({ length: 32 }, (_, i) => i * 11.25);
+  return (
+    <svg viewBox="0 0 400 400" fill="none" stroke="currentColor" aria-hidden className={className}>
+      <circle cx="200" cy="200" r="196" strokeWidth="1" />
+      <circle cx="200" cy="200" r="170" strokeWidth="0.8" strokeDasharray="2 6" />
+      {outer.map((a) => (
+        <path key={`o${a}`} d="M200 30 Q212 48 200 66 Q188 48 200 30Z" strokeWidth="0.8" transform={`rotate(${a} 200 200)`} />
+      ))}
+      <circle cx="200" cy="200" r="128" strokeWidth="1" />
+      {petals.map((a) => (
+        <path key={`p${a}`} d="M200 72 Q232 120 200 168 Q168 120 200 72Z" strokeWidth="1" transform={`rotate(${a} 200 200)`} />
+      ))}
+      <circle cx="200" cy="200" r="32" strokeWidth="1" />
+      <circle cx="200" cy="200" r="12" strokeWidth="1" />
+    </svg>
   );
 }
 
@@ -94,10 +125,20 @@ export async function TeamSection() {
   ].filter((g) => g.members.length > 0);
 
   return (
-    <section className="relative overflow-hidden bg-muted/30 py-16 sm:py-20">
+    <section className="relative isolate overflow-hidden bg-muted/30 py-16 sm:py-20">
+      {/* Background ornaments: mandala behind the heading, soft brand glows, gold edge lines. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <Mandala className="absolute left-1/2 top-[-9rem] h-[34rem] w-[34rem] -translate-x-1/2 text-brand-gold/[0.12] motion-safe:animate-[spin_160s_linear_infinite] sm:h-[42rem] sm:w-[42rem]" />
+        <span className="absolute -left-40 top-1/3 h-[28rem] w-[28rem] rounded-full bg-primary/10 blur-3xl" />
+        <span className="absolute -right-40 bottom-0 h-[30rem] w-[30rem] rounded-full bg-secondary/10 blur-3xl" />
+        <Mandala className="absolute -bottom-40 -left-32 hidden h-80 w-80 text-primary/10 lg:block" />
+        <Mandala className="absolute -right-28 top-1/3 hidden h-72 w-72 text-secondary/10 lg:block" />
+        <span className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-gold/50 to-transparent" />
+        <span className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-brand-gold/50 to-transparent" />
+      </div>
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-50"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-50"
         style={{
           backgroundImage: "radial-gradient(circle at 1px 1px, rgba(217,164,65,0.18) 1.2px, transparent 1.4px)",
           backgroundSize: "28px 28px",

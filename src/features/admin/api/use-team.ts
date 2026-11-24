@@ -6,6 +6,7 @@ export interface TeamMemberAdmin {
   name: string;
   designation: string;
   bio?: string;
+  profile?: string;
   group: "leadership" | "advisor";
   photo?: string;
   photoPosition: "top" | "center" | "bottom";

@@ -31,6 +31,7 @@ const schema = z.object({
   designation: z.string().trim().min(1, "Designation is required").max(80),
   bio: z.string().trim().max(240, "Keep the bio under 240 characters"),
   group: z.enum(["leadership", "advisor"]),
+  profile: z.string().trim().max(4000, "Keep the profile under 4000 characters"),
   photo: z.string().optional(),
   photoPosition: z.enum(["top", "center", "bottom"]),
   featured: z.boolean(),
@@ -38,7 +39,7 @@ const schema = z.object({
 });
 type FormValues = z.infer<typeof schema>;
 
-const EMPTY: FormValues = { name: "", designation: "", bio: "", group: "leadership", photo: "", photoPosition: "top", featured: false, isActive: true };
+const EMPTY: FormValues = { name: "", designation: "", bio: "", group: "leadership", profile: "", photo: "", photoPosition: "top", featured: false, isActive: true };
 const POSITION_CLASS = { top: "object-top", center: "object-center", bottom: "object-bottom" } as const;
 
 function Portrait({ src, position, className }: { src?: string; position: FormValues["photoPosition"]; className: string }) {
@@ -83,6 +84,7 @@ export default function TeamMembersPage() {
       designation: m.designation,
       bio: m.bio ?? "",
       group: m.group ?? "leadership",
+      profile: m.profile ?? "",
       photo: m.photo ?? "",
       photoPosition: m.photoPosition ?? "top",
       featured: m.featured,
@@ -255,6 +257,12 @@ export default function TeamMembersPage() {
               <Textarea rows={3} maxLength={240} placeholder="One or two lines about their role at PujariDekho" {...register("bio")} />
               <p className="text-xs text-muted-foreground">{(watch("bio") ?? "").length}/240 — shown under the name on the About page.</p>
               {errors.bio && <p className="text-xs text-destructive">{errors.bio.message}</p>}
+            </div>
+            <div className="space-y-1.5">
+              <Label>Full profile (optional)</Label>
+              <Textarea rows={6} maxLength={4000} placeholder="Longer background, experience and achievements. Leave a blank line between paragraphs." {...register("profile")} />
+              <p className="text-xs text-muted-foreground">Shown in a “View full profile” popup on the card. {(watch("profile") ?? "").length}/4000</p>
+              {errors.profile && <p className="text-xs text-destructive">{errors.profile.message}</p>}
             </div>
             <div className="space-y-1.5">
               <Label>Photo</Label>
