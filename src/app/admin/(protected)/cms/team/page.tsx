@@ -30,6 +30,7 @@ const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(80),
   designation: z.string().trim().min(1, "Designation is required").max(80),
   bio: z.string().trim().max(240, "Keep the bio under 240 characters"),
+  group: z.enum(["leadership", "advisor"]),
   photo: z.string().optional(),
   photoPosition: z.enum(["top", "center", "bottom"]),
   featured: z.boolean(),
@@ -37,7 +38,7 @@ const schema = z.object({
 });
 type FormValues = z.infer<typeof schema>;
 
-const EMPTY: FormValues = { name: "", designation: "", bio: "", photo: "", photoPosition: "top", featured: false, isActive: true };
+const EMPTY: FormValues = { name: "", designation: "", bio: "", group: "leadership", photo: "", photoPosition: "top", featured: false, isActive: true };
 const POSITION_CLASS = { top: "object-top", center: "object-center", bottom: "object-bottom" } as const;
 
 function Portrait({ src, position, className }: { src?: string; position: FormValues["photoPosition"]; className: string }) {
@@ -81,6 +82,7 @@ export default function TeamMembersPage() {
       name: m.name,
       designation: m.designation,
       bio: m.bio ?? "",
+      group: m.group ?? "leadership",
       photo: m.photo ?? "",
       photoPosition: m.photoPosition ?? "top",
       featured: m.featured,
@@ -163,6 +165,7 @@ export default function TeamMembersPage() {
                 <TableRow>
                   <TableHead className="w-20">Order</TableHead>
                   <TableHead>Member</TableHead>
+                  <TableHead>Group</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -170,7 +173,7 @@ export default function TeamMembersPage() {
               <TableBody>
                 {members?.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={4} className="text-center text-muted-foreground">
+                    <TableCell colSpan={5} className="text-center text-muted-foreground">
                       No team members yet. The section is hidden on the website until you add one.
                     </TableCell>
                   </TableRow>
@@ -199,6 +202,9 @@ export default function TeamMembersPage() {
                           {m.bio ? <p className="mt-0.5 max-w-md truncate text-xs text-muted-foreground/80">{m.bio}</p> : null}
                         </div>
                       </div>
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {m.group === "advisor" ? "Mentors & Advisors" : "Leadership Team"}
                     </TableCell>
                     <TableCell>
                       <button type="button" onClick={() => toggleActive(m)} title="Click to show / hide on the website">
@@ -236,6 +242,13 @@ export default function TeamMembersPage() {
               <Label>Designation</Label>
               <Input placeholder="e.g. Founder, Mentor, App Developer" {...register("designation")} />
               {errors.designation && <p className="text-xs text-destructive">{errors.designation.message}</p>}
+            </div>
+            <div className="space-y-1.5">
+              <Label>Group</Label>
+              <select {...register("group")} className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none">
+                <option value="leadership">Leadership Team</option>
+                <option value="advisor">Mentors &amp; Advisors</option>
+              </select>
             </div>
             <div className="space-y-1.5">
               <Label>Short bio</Label>
