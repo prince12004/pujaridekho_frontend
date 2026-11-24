@@ -1,7 +1,7 @@
 import { Compass, Target } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/shared/reveal";
-import { missionPoints, visionPoints } from "@/features/about/data";
+import { missionPoints, missionStatement, visionPoints, visionStatement } from "@/features/about/data";
 
 export function MissionVision() {
   return (
@@ -13,6 +13,8 @@ export function MissionVision() {
               <Target size={22} />
             </span>
             <h2 className="font-heading text-2xl">Our Mission</h2>
+            <p className="font-heading text-lg leading-snug text-foreground">{missionStatement}</p>
+            <span className="h-px w-full bg-border" />
             <ul className="flex flex-col gap-3">
               {missionPoints.map((point) => (
                 <li key={point} className="flex gap-2.5 text-sm text-muted-foreground">
@@ -29,6 +31,8 @@ export function MissionVision() {
               <Compass size={22} />
             </span>
             <h2 className="font-heading text-2xl">Our Vision</h2>
+            <p className="font-heading text-lg leading-snug text-foreground">{visionStatement}</p>
+            <span className="h-px w-full bg-border" />
             <ul className="flex flex-col gap-3">
               {visionPoints.map((point) => (
                 <li key={point} className="flex gap-2.5 text-sm text-muted-foreground">

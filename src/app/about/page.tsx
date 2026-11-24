@@ -31,7 +31,7 @@ export default async function AboutPage() {
   const aboutStats = stats
     ? [
         stats.verifiedPandits > 0 ? { value: plus(stats.verifiedPandits), label: "Verified Pandits" } : null,
-        stats.poojasCompleted > 0 ? { value: plus(stats.poojasCompleted), label: "Puja's Completed" } : null,
+        stats.poojasCompleted > 0 ? { value: plus(stats.poojasCompleted), label: "Pujas Completed" } : null,
         stats.cities > 0 ? { value: String(stats.cities), label: "Cities Served" } : null,
         stats.rating ? { value: stars(stats.rating.value), label: "Average Rating" } : null,
       ].filter((s): s is { value: string; label: string } => !!s)
@@ -43,8 +43,8 @@ export default async function AboutPage() {
       />
       <PageBanner
         eyebrow="Our Story"
-        title="Built by people who plan their own family's poojas"
-        description="PujariDekho exists because finding a genuinely trustworthy pandit shouldn't take four days of phone calls."
+        title="Bringing trusted pandits to every family's doorstep"
+        description="PujariDekho connects families with verified, experienced pandits for every puja and sanskar — with fixed prices and no last-minute surprises."
         breadcrumbItems={[{ label: "About Us" }]}
         image={images.heroTemple}
       />

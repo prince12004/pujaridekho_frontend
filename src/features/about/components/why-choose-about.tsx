@@ -9,8 +9,8 @@ export function WhyChooseAbout() {
       <Container>
         <SectionHeading
           eyebrow="Why Choose PujariDekho"
-          title="Trust, built deliberately"
-          description="Four commitments we hold ourselves to on every single booking."
+          title="Trust You Can Count On"
+          description="Four commitments we keep on every booking."
           className="mb-12"
         />
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

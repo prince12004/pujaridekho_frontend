@@ -281,6 +281,27 @@
   }
 }
 
+/* About → Meet Our Team: slowly rotating brand ring on the featured card. */
+@property --team-ring-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes team-ring-spin {
+  to {
+    --team-ring-angle: 360deg;
+  }
+}
+.team-ring-featured {
+  background: conic-gradient(from var(--team-ring-angle), var(--primary), var(--brand-gold), var(--primary), var(--brand-gold), var(--primary));
+  animation: team-ring-spin 6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .team-ring-featured {
+    animation: none;
+  }
+}
+
 /*
  * Rich-text typography for long-form content (Blog Detail, Policy pages).
  * Additive only — does not alter any existing token or component style.

@@ -124,6 +124,7 @@ export const ADMIN_NAV: AdminNavSection[] = [
     items: [
       { label: "Homepage CMS", href: "/admin/cms/homepage", icon: LayoutTemplate, permission: "cms:manage" },
       { label: "Pages CMS", href: "/admin/cms/pages", icon: FileText, permission: "cms:manage" },
+      { label: "Team Members", href: "/admin/cms/team", icon: Users, permission: "cms:manage" },
       { label: "Media Library", href: "/admin/cms/media", icon: ImageIcon, permission: "media:manage" },
     ],
   },

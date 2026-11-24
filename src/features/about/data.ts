@@ -1,61 +1,66 @@
 import type { TimelineItem } from "@/components/shared/timeline";
-import { Award, Handshake, HeartHandshake, ShieldCheck } from "lucide-react";
+import { Award, BadgeCheck, Handshake, HeartHandshake, Lightbulb, ShieldCheck, Sparkles, Trophy } from "lucide-react";
 
 export const journeyItems: TimelineItem[] = [
   {
     label: "2025",
+    icon: Lightbulb,
     title: "The Idea Takes Shape",
     description:
-      "After struggling to find a reliable, verified pandit for a family Griha Pravesh in Noida, our founder started mapping local pandits across Delhi NCR by hand.",
+      "A difficult search for a verified pandit for a family Griha Pravesh in Noida led our founder to start mapping trusted pandits across Delhi NCR.",
   },
   {
     label: "2025",
-    title: "First 10 Verified Pandits Onboarded",
+    icon: BadgeCheck,
+    title: "Verification Process & First Pandits",
     description:
-      "We built our verification process — identity checks, ritual experience review, and family references — and onboarded our first cohort of pandits across Delhi NCR.",
+      "We built a structured verification process — identity, ritual experience and family references — and onboarded our first verified pandits.",
   },
   {
     label: "2025–26",
-    title: "1,000+ Puja's Completed",
+    icon: Trophy,
+    title: "1,000+ Pujas Completed",
     description:
-      "Crossed 1,000 completed poojas across Delhi NCR, with fixed, transparent pricing on every booking.",
+      "Crossed 1,000 completed pujas across Delhi NCR, with fixed and transparent pricing on every booking.",
   },
   {
     label: "2026",
-    title: "Astrology & Puja Essentials",
+    icon: Sparkles,
+    title: "Puja Essentials Store",
     description:
-      "Added free Kundli generation, live astrologer consultations, and a curated shop for temple-grade puja samagri, murtis and rudraksha.",
+      "Launched a curated shop for puja samagri, murtis and rudraksha, delivered to your doorstep.",
   },
 ];
 
+export const missionStatement =
+  "To make every sacred ceremony simple, authentic and stress-free by connecting families with verified pandits at transparent prices.";
+
 export const missionPoints = [
-  "Make it effortless for any family to find a genuinely verified, experienced pandit — no matter which city they're in.",
-  "Remove the anxiety of last-minute samagri shopping by including everything a ritual needs in one fixed price.",
-  "Treat every ritual with the same seriousness and respect it holds in the household performing it.",
+  "Help every family find a verified, experienced pandit for the ritual, language and tradition they follow.",
+  "Keep pricing fixed and transparent, with optional samagri kits so families never have to rush to the market.",
+  "Perform every ritual with the care and respect it holds for the family celebrating it.",
 ];
 
+export const visionStatement =
+  "To become India's most trusted platform for Hindu rituals — preserving tradition while making it accessible to every family.";
+
 export const visionPoints = [
-  "A Bharat where every family, in every city, can book a trusted pandit as easily as they book a cab.",
-  "A living, digital record of Vedic ritual knowledge — vidhi, muhurat and samagri — accessible to the next generation.",
-  "A dignified, well-paying platform for thousands of pandits to practice their craft on their own terms.",
+  "A Bharat where every family, in every city, can book a trusted pandit with complete confidence.",
+  "A reliable, digital source of Vedic ritual knowledge — vidhi, muhurat and samagri — for the next generation.",
+  "A respected, fairly paid livelihood for pandits, with the tools to grow their practice."
 ];
 
 export const whyChooseAbout = [
-  { icon: ShieldCheck, title: "Verification, Not Just Listing", description: "Every pandit is background-checked and reviewed before they ever appear on the platform." },
+  { icon: ShieldCheck, title: "Verification, Not Just Listing", description: "Every pandit's identity, ritual experience and references are verified before they are assigned to a booking." },
   { icon: Handshake, title: "Fixed Price, No Renegotiation", description: "The price you see at booking is the price you pay — samagri is an optional add-on, priced upfront." },
-  { icon: HeartHandshake, title: "Built By a Family, For Families", description: "Our own team has planned Griha Pravesh, Mundan and Vivah ceremonies — we design for the person booking, not just the transaction." },
-  { icon: Award, title: "Accountable Service", description: "Every completed puja is rated by the family that booked it — ratings are public and permanent." },
-];
-
-export const teamMembers = [
-  { name: "Akhilanand Mishra", role: "Founder", initials: "AM" },
-  { name: "Anurag Pandey", role: "App Developer", initials: "AP" },
-  { name: "Prince Kushwah", role: "Frontend Developer", initials: "PK" },
+  { icon: HeartHandshake, title: "Built Around Families", description: "From choosing the muhurat to the final aarti, every step is designed around the family performing the ritual." },
+  { icon: Award, title: "Accountable Service", description: "Families rate every completed puja, and a backup pandit or reschedule is arranged if a pandit cannot attend." },
 ];
 
 export const aboutFaq = [
-  { question: "How does PujariDekho verify its pandits?", answer: "Every pandit submits identity documents and proof of ritual training or lineage, which our team personally verifies. We also collect references from prior families they've served before listing them on the platform." },
+  { question: "How does PujariDekho verify its pandits?", answer: "Every pandit submits identity documents and details of their ritual training and experience, which our team verifies. We also check references from families they have served before assigning them to bookings." },
   { question: "Is PujariDekho affiliated with any particular temple or sect?", answer: "No — we work with pandits across traditions (Vedic, Purohit, regional) and let families choose based on the specific ritual, language and tradition they need." },
-  { question: "Can I trust the pricing shown on the platform?", answer: "Yes. The price shown at the time of booking is fixed and includes samagri for that specific ritual — there are no hidden charges added afterward." },
-  { question: "How can my business or temple partner with PujariDekho?", answer: "Reach out through our Become a Partner section below or email partners@pujaridekho.com — we work with samagri suppliers, temples and community organizations." },
+  { question: "Can I trust the pricing shown on the platform?", answer: "Yes. The price shown at the time of booking is fixed — there are no hidden charges added afterward. Samagri is optional: you can bring your own or add our samagri kit, priced upfront." },
+  { question: "How can my business or temple partner with PujariDekho?", answer: "Use the Get in Touch button in the Become a Partner section above or visit our Contact page. We work with samagri suppliers, temples and community organisations." },
+  { question: "What happens if my pandit cannot attend?", answer: "We arrange a verified backup pandit or reschedule the puja at a time that suits you. If neither works, you receive a full refund." },
 ];
