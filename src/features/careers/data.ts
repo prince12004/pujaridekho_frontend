@@ -13,7 +13,7 @@ export const openPositions: JobOpening[] = [
   { title: "Pandit Relations Manager", department: "Operations", location: "New Delhi", type: "Full-time" },
   { title: "Customer Experience Associate", department: "Support", location: "Noida", type: "Full-time" },
   { title: "Content Writer — Astrology & Rituals", department: "Content", location: "Remote", type: "Contract" },
-  { title: "City Operations Lead — Gurgaon", department: "Operations", location: "Gurgaon", type: "Full-time" },
+  { title: "City Operations Lead — Gurugram", department: "Operations", location: "Gurugram", type: "Full-time" },
 ];
 
 export const cultureValues = [

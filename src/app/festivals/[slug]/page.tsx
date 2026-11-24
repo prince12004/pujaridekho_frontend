@@ -115,21 +115,9 @@ export default async function FestivalDetailPage({ params }: { params: Promise<{
                 </div>
               </div>
               <div className="text-right">
-                <div className="flex items-baseline justify-end gap-2">
-                  {festival.marketPrice ? (
-                    <span className="text-sm text-muted-foreground line-through">
-                      ₹{Number(festival.marketPrice).toLocaleString("en-IN")}
-                    </span>
-                  ) : null}
-                  <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-bold text-emerald-600">
-                    {festival.marketPrice
-                      ? Math.round(((Number(festival.marketPrice) - Number(festival.startingPrice)) / Number(festival.marketPrice)) * 100)
-                      : 0}
-                    % OFF
-                  </span>
-                </div>
+                {/* One fixed price only — no comparison "market price" or "% OFF". */}
                 <div className="font-heading text-3xl text-secondary">₹{Number(festival.startingPrice).toLocaleString("en-IN")}</div>
-                <div className="text-xs font-semibold text-muted-foreground">PujariDekho Price · Samagri not included</div>
+                <div className="text-xs font-semibold text-muted-foreground">Fixed price · Samagri optional (add at checkout)</div>
               </div>
             </div>
 

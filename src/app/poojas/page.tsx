@@ -11,7 +11,7 @@ import { env } from "@/lib/env";
 export const metadata: Metadata = buildMetadata({
   title: "All Puja's — Book Verified Pandits Online",
   description:
-    "Browse every puja on PujariDekho — Satyanarayan, Griha Pravesh, Navgraha Shanti and more, with fixed pricing and samagri included.",
+    "Browse every puja on PujariDekho — Satyanarayan, Griha Pravesh, Navgraha Shanti and more, with fixed pricing and an optional samagri kit.",
   path: "/poojas",
 });
 

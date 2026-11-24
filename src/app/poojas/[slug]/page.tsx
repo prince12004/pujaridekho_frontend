@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       pooja.seo?.description ||
       pooja.shortDescription ||
       pooja.fullDescription ||
-      "Book a verified puja online with fixed pricing and samagri included.",
+      "Book a verified puja online with fixed pricing and an optional samagri kit.",
     path: `/poojas/${pooja.slug}`,
     image: resolveImage(pooja.heroBanner || pooja.featuredImage),
   });
@@ -129,18 +129,9 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
                 </div>
               </div>
               <div className="text-right price_right">
-                <div className="flex items-baseline price_right justify-end gap-2">
-                  {pooja.marketPrice ? (
-                    <span className="text-sm text-muted-foreground line-through">
-                      ₹{Number(pooja.marketPrice).toLocaleString("en-IN")}
-                    </span>
-                  ) : null}
-                  <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-bold text-emerald-600">
-                    {pooja.marketPrice ? Math.round(((Number(pooja.marketPrice) - Number(pooja.startingPrice)) / Number(pooja.marketPrice)) * 100) : 0}% OFF
-                  </span>
-                </div>
+                {/* One fixed price only — no comparison "market price" or "% OFF". */}
                 <div className="font-heading text-3xl text-secondary">₹{Number(pooja.startingPrice).toLocaleString("en-IN")}</div>
-                <div className="text-xs font-semibold text-muted-foreground">PujariDekho Price · Samagri not included</div>
+                <div className="text-xs font-semibold text-muted-foreground">Fixed price · Samagri optional (add at checkout)</div>
               </div>
             </div>
 

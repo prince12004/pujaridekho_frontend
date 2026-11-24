@@ -12,7 +12,7 @@ export const poojaCategories = [
 ];
 
 const defaultFaqExtra = [
-  { question: "Is samagri really included, or do I need to buy anything?", answer: "Everything listed under \"Samagri Included\" is brought by the pandit — you don't need to purchase anything separately." },
+  { question: "Is samagri included, or do I need to buy anything?", answer: "Samagri is optional. The puja price covers the pandit ji's service; while booking you can add the complete samagri kit for that ritual and it comes with the pandit ji. If you don't add it, the pandit ji shares the list in advance so you can arrange it yourself." },
   { question: "What if I need to reschedule?", answer: "Free rescheduling up to 24 hours before the scheduled time, per our Refund Policy." },
 ];
 

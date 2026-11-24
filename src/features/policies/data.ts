@@ -48,6 +48,7 @@ export const termsContent = `
 
 <h2 id="cancellations">Cancellations & Rescheduling</h2>
 <p>Bookings can be rescheduled or cancelled free of charge up to 24 hours before the scheduled time. Cancellations within 24 hours may be subject to a partial charge to compensate the assigned pandit, as detailed in our Refund Policy.</p>
+<p><strong>Backup pandit:</strong> If your assigned pandit can't make it, we send another verified pandit on the same day. If that isn't possible, you can reschedule free of charge or take a full refund — your choice.</p>
 
 <h2 id="user-conduct">User Conduct</h2>
 <p>Users agree to provide accurate booking information, treat assigned pandits with respect, and not use the platform for any unlawful purpose. Abusive behaviour toward pandits or staff may result in account suspension.</p>
@@ -73,12 +74,14 @@ export const termsToc = [
 ];
 
 export const refundScenarios = [
-  { title: "Full Refund", description: "Cancel 24+ hours before your scheduled puja time, or if we're unable to assign a verified pandit.", icon: "full" as const },
+  { title: "Full Refund", description: "Cancel 24+ hours before your scheduled puja time — or if your pandit can't make it and neither a same-day backup pandit nor a new date works for you.", icon: "full" as const },
   { title: "Partial Refund", description: "Cancel within 24 hours of the scheduled time — a partial charge covers the pandit's reserved time.", icon: "partial" as const },
   { title: "No Refund", description: "No-shows without prior cancellation, or cancellations after the pandit has already arrived.", icon: "none" as const },
 ];
 
 export const refundContent = `
+<h2 id="backup-pandit">Backup Pandit Promise</h2>
+<p>If your assigned pandit can't make it, we send another verified pandit on the same day. If that isn't possible, you can reschedule free of charge or take a full refund — your choice.</p>
 <h2 id="how-refunds-work">How Refunds Work</h2>
 <p>Refund eligibility for puja bookings depends on how far in advance you cancel, as summarised in the scenarios above. All approved refunds are issued to the original payment method — we do not offer cash refunds or store credit unless you specifically request it in place of a refund.</p>
 <h2 id="processing-time">Processing Time</h2>
@@ -87,6 +90,7 @@ export const refundContent = `
 
 export const refundToc = [
   { id: "refund-scenarios", label: "Refund Scenarios" },
+  { id: "backup-pandit", label: "Backup Pandit Promise" },
   { id: "how-refunds-work", label: "How Refunds Work" },
   { id: "processing-time", label: "Processing Time" },
   { id: "refund-faq", label: "FAQ" },
@@ -119,7 +123,7 @@ export const shippingSteps = [
 ];
 
 export const shippingZones = [
-  { zone: "Delhi, Noida, Gurgaon", time: "2–3 business days", charge: "Free above ₹999" },
+  { zone: "Delhi, Noida, Gurugram", time: "2–3 business days", charge: "Free above ₹999" },
   { zone: "Ghaziabad, Faridabad, Greater Noida", time: "3–4 business days", charge: "Free above ₹999" },
   { zone: "Rest of Delhi NCR", time: "4–5 business days", charge: "₹79 flat" },
 ];

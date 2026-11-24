@@ -53,7 +53,7 @@ export async function CitiesSection() {
                 <div>
                   <div className="font-heading text-sm leading-tight">{city.name}</div>
                   <div className="text-xs font-semibold text-muted-foreground">
-                    {city.panditCount > 0 ? `${city.panditCount}+ Pandits` : "Pandits available"}
+                    Verified pandits available
                   </div>
                 </div>
               </Link>

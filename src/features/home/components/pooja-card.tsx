@@ -59,11 +59,6 @@ export function PoojaCard({
           <div>
             <div className="flex items-baseline gap-1.5">
               <span className="font-heading text-lg text-secondary">₹{pooja.price.toLocaleString("en-IN")}</span>
-              {pooja.marketPrice ? (
-                <span className="text-xs text-muted-foreground line-through">
-                  ₹{pooja.marketPrice.toLocaleString("en-IN")}
-                </span>
-              ) : null}
             </div>
             <div className="text-[11px] font-semibold text-muted-foreground">Fixed price · Samagri optional</div>
           </div>

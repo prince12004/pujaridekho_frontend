@@ -126,7 +126,7 @@ export function PanditForm({ pandit }: { pandit?: Pandit }) {
           </div>
           <div className="space-y-1.5">
             <Label>Cities served (comma separated)</Label>
-            <Input {...register("cities")} placeholder="Delhi, Noida, Gurgaon" />
+            <Input {...register("cities")} placeholder="Delhi, Noida, Gurugram" />
           </div>
           <div className="space-y-1.5">
             <Label>Specializations (comma separated)</Label>

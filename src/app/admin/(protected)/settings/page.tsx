@@ -39,7 +39,7 @@ export default function SettingsPage() {
       socialLinks: { facebook: "", instagram: "", youtube: "", twitter: "" },
       maintenanceMode: false,
       maintenanceMessage: "",
-      statsOffsets: { verifiedPandits: 5, poojas: 1000, families: 1000 },
+      statsOffsets: { verifiedPandits: 0, poojas: 0, families: 0 },
       app: {
         android: { minVersion: "1.0.0", latestVersion: "1.0.0", storeUrl: "" },
         ios: { minVersion: "1.0.0", latestVersion: "1.0.0", storeUrl: "" },

@@ -13,7 +13,7 @@ import type { SiteStats } from "@/features/home/site-stats";
 
 const heroPoints = [
   "Verified & background-checked pandits",
-  "Complete puja samagri included",
+  "Complete puja samagri available as an add-on",
   "Fixed, transparent pricing — no surprises",
   "Same-day booking across Delhi NCR",
 ];

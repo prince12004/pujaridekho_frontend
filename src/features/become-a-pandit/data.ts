@@ -40,7 +40,7 @@ export const earningsBreakdown = [
 export const panditTestimonials = [
   { name: "Pandit Ramesh Sharma Ji", location: "Delhi", rating: 5, quote: "I used to depend entirely on word-of-mouth. Now I get 8-10 bookings a month through PujariDekho, and families already know my specialization before they call." },
   { name: "Pandit Vinod Mishra Ji", location: "Faridabad", rating: 5, quote: "The verification process was thorough but fair — and it means the families I meet already trust me before I arrive." },
-  { name: "Pandit Anil Shastri Ji", location: "Gurgaon", rating: 4, quote: "Payouts are exactly what was agreed at booking. No last-minute negotiation, which I genuinely appreciate." },
+  { name: "Pandit Anil Shastri Ji", location: "Gurugram", rating: 4, quote: "Payouts are exactly what was agreed at booking. No last-minute negotiation, which I genuinely appreciate." },
 ];
 
 export const panditFaq = [

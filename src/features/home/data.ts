@@ -52,7 +52,7 @@ export const cities: City[] = [
   { slug: "noida", name: "Noida", panditCount: "65+ Pandits" },
   { slug: "greater-noida", name: "Greater Noida", panditCount: "40+ Pandits" },
   { slug: "ghaziabad", name: "Ghaziabad", panditCount: "55+ Pandits" },
-  { slug: "gurgaon", name: "Gurgaon", panditCount: "70+ Pandits" },
+  { slug: "gurgaon", name: "Gurugram", panditCount: "70+ Pandits" },
   { slug: "faridabad", name: "Faridabad", panditCount: "38+ Pandits" },
   { slug: "dwarka", name: "Dwarka", panditCount: "32+ Pandits" },
   { slug: "rohini", name: "Rohini", panditCount: "29+ Pandits" },
@@ -80,7 +80,7 @@ export const religiousProducts: Product[] = [
 
 export const testimonials: Testimonial[] = [
   { name: "Ritu Kapoor", location: "Dwarka, Delhi", rating: 5, quote: "The pandit ji arrived exactly on time with everything needed for our Griha Pravesh. Every ritual was explained to us — felt authentic and unhurried." },
-  { name: "Sanjay Malhotra", location: "Gurgaon", rating: 5, quote: "Booked a Satyanarayan Puja the same evening for the next morning. Samagri was complete and pricing matched exactly what was quoted." },
+  { name: "Sanjay Malhotra", location: "Gurugram", rating: 5, quote: "Booked a Satyanarayan Puja the same evening for the next morning. Samagri was complete and pricing matched exactly what was quoted." },
   { name: "Anita Verma", location: "Rohini, Delhi", rating: 5, quote: "Used PujariDekho for my son's Mundan ceremony. The pandit was warm, patient, and clearly experienced. Highly recommend." },
   { name: "Deepak Chauhan", location: "Noida", rating: 4, quote: "Great experience overall — samagri and pandit both on point. Would love more evening slots on weekdays." },
   { name: "Meera Iyer", location: "Vaishali, Ghaziabad", rating: 5, quote: "The free Kundli tool was surprisingly detailed, and the astrologer consultation helped us pick the right muhurat." },
@@ -94,8 +94,8 @@ export const blogPosts: BlogPost[] = [
 
 export const faqItems: FaqItem[] = [
   { question: "Are all pandits on PujariDekho verified?", answer: "Yes — every pandit undergoes identity verification, background checks and a review of their ritual experience before being listed on the platform." },
-  { question: "Is puja samagri included in the price?", answer: "Every booking marked \"Samagri Included\" comes with complete, temple-grade materials for that specific ritual — no separate shopping needed." },
-  { question: "Which cities do you currently serve?", answer: "We currently serve Delhi, Noida, Greater Noida, Ghaziabad, Gurgaon, Faridabad, Dwarka, Rohini, Indirapuram and Vaishali, with more cities being added regularly." },
+  { question: "Is puja samagri included in the price?", answer: "Samagri is optional. The puja price covers the pandit ji's service; while booking you can add the complete samagri kit for that ritual and it comes with the pandit ji. If you don't add it, the pandit ji shares the list in advance so you can arrange it yourself." },
+  { question: "Which cities do you currently serve?", answer: "We currently serve Noida, Greater Noida (including Greater Noida West), Ghaziabad, Delhi and Gurugram — including localities such as Indirapuram, Vaishali, Dwarka and Rohini." },
   { question: "Can I reschedule or cancel my booking?", answer: "Yes, bookings can be rescheduled or cancelled free of charge up to 24 hours before the scheduled puja time." },
   { question: "Is my payment secure?", answer: "All payments are processed through encrypted, PCI-compliant gateways — your card and banking details are never stored on our servers." },
   { question: "How do I register as a pandit on PujariDekho?", answer: "Click \"Become a Pandit\" in the header, complete the verification form with your credentials and experience, and our team will onboard you within 3–5 business days." },

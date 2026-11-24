@@ -18,7 +18,7 @@ export const journeyItems: TimelineItem[] = [
     label: "2025–26",
     title: "1,000+ Puja's Completed",
     description:
-      "Crossed 1,000 completed poojas across Delhi NCR, with fixed, transparent pricing and samagri included in every booking.",
+      "Crossed 1,000 completed poojas across Delhi NCR, with fixed, transparent pricing on every booking.",
   },
   {
     label: "2026",
@@ -42,7 +42,7 @@ export const visionPoints = [
 
 export const whyChooseAbout = [
   { icon: ShieldCheck, title: "Verification, Not Just Listing", description: "Every pandit is background-checked and reviewed before they ever appear on the platform." },
-  { icon: Handshake, title: "Fixed Price, No Renegotiation", description: "The price you see at booking is the price you pay — samagri included." },
+  { icon: Handshake, title: "Fixed Price, No Renegotiation", description: "The price you see at booking is the price you pay — samagri is an optional add-on, priced upfront." },
   { icon: HeartHandshake, title: "Built By a Family, For Families", description: "Our own team has planned Griha Pravesh, Mundan and Vivah ceremonies — we design for the person booking, not just the transaction." },
   { icon: Award, title: "Accountable Service", description: "Every completed puja is rated by the family that booked it — ratings are public and permanent." },
 ];
