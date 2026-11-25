@@ -2,8 +2,9 @@
 
 import { cn } from "@/lib/utils";
 
-export const ADVANCE_AMOUNT = 99;
-export const DISTANCE_CHARGE = 149;
+import { ADVANCE_AMOUNT } from "@/lib/booking-fees";
+
+export { ADVANCE_AMOUNT, DISTANCE_CHARGE } from "@/lib/booking-fees";
 
 export type PaymentOption = "advance" | "full";
 
@@ -28,9 +29,9 @@ export function PaymentOptionSelector({
         )}
       >
         <span className={cn("font-heading text-base font-bold", value === "advance" && "text-primary")}>
-          ₹{ADVANCE_AMOUNT}
+          ₹{ADVANCE_AMOUNT} now
         </span>
-        <span className="text-[11px] font-semibold text-muted-foreground">Booking Amount</span>
+        <span className="text-[11px] font-semibold text-muted-foreground">Booking fee · rest later</span>
       </button>
       <button
         type="button"
@@ -41,7 +42,7 @@ export function PaymentOptionSelector({
         )}
       >
         <span className={cn("font-heading text-base font-bold", value === "full" && "text-primary")}>{fullAmountLabel}</span>
-        <span className="text-[11px] font-semibold text-muted-foreground">Full Amount</span>
+        <span className="text-[11px] font-semibold text-muted-foreground">Pay full amount now</span>
       </button>
     </div>
   );

@@ -6,6 +6,7 @@ import { MediaCard, MediaCardBody, MediaCardFooter, MediaCardImage } from "@/com
 import { images } from "@/lib/images";
 import type { Pooja } from "@/features/home/types";
 import type { ImageKey } from "@/lib/images";
+import { ADVANCE_AMOUNT } from "@/lib/booking-fees";
 
 function resolveImage(src: string) {
   return (src in images ? images[src as ImageKey] : src) || images.bowlWoodenTable;
@@ -58,9 +59,10 @@ export function PoojaCard({
         <MediaCardFooter>
           <div>
             <div className="flex items-baseline gap-1.5">
+              <span className="text-[11px] font-semibold text-muted-foreground">Starting at</span>
               <span className="font-heading text-lg text-secondary">₹{pooja.price.toLocaleString("en-IN")}</span>
             </div>
-            <div className="text-[11px] font-semibold text-muted-foreground">Fixed price · Samagri optional</div>
+            <div className="text-[11px] font-semibold text-muted-foreground">+ ₹{ADVANCE_AMOUNT} booking fee · Samagri optional</div>
           </div>
           {comingSoon ? (
             <Button size="sm" className="font-ui font-bold" variant="outline" disabled>

@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 
 const DEFAULT_TITLE = "PujariDekho — Book Verified Pandits & Puja's Online";
 const DEFAULT_DESCRIPTION =
-  "PujariDekho is a premium Hindu religious services marketplace — verified pandits, complete puja samagri, fixed pricing and same-day booking.";
+  "PujariDekho is a premium Hindu religious services marketplace — verified pandits, fixed pricing and optional puja samagri kits across Delhi NCR.";
 
 interface HomeSeoOverride {
   title?: string;

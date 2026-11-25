@@ -12,17 +12,17 @@ import { plus } from "@/features/home/stats-format";
 import type { SiteStats } from "@/features/home/site-stats";
 
 const heroPoints = [
-  "Verified & background-checked pandits",
-  "Complete puja samagri available as an add-on",
-  "Fixed, transparent pricing — no surprises",
-  "Same-day booking across Delhi NCR",
+  "Identity-verified, experienced pandits",
+  "Optional samagri kit — add it at checkout",
+  "Price shown before you pay — no hidden charges",
+  "Noida, Greater Noida, Ghaziabad, Delhi & Gurugram",
 ];
 
 function buildHeroBadges(stats: SiteStats | null) {
   return [
     stats && stats.verifiedPandits > 0 ? { icon: ShieldCheck, label: `${plus(stats.verifiedPandits)} Verified Pandits`, iconClassName: "text-primary" } : null,
     stats?.rating ? { icon: Star, label: `${stats.rating.value.toFixed(1)} Rated by Families`, iconClassName: "fill-accent text-accent" } : null,
-    { icon: Package, label: "Top Rated Puja Samagiri", iconClassName: "text-primary" },
+    { icon: Package, label: "Optional Samagri Kits", iconClassName: "text-primary" },
     // Only once it is a number worth showing.
     stats && stats.poojasLast30Days >= 10 ? { icon: CheckCircle2, label: `${plus(stats.poojasLast30Days)} Puja Completed Last Month`, iconClassName: "text-accent" } : null,
   ].filter((b): b is { icon: typeof ShieldCheck; label: string; iconClassName: string } => !!b);
@@ -75,8 +75,8 @@ export function HeroSection({ stats }: { stats: SiteStats | null }) {
           </h1>
 
           <p className="mt-5 max-w-lg text-lg leading-relaxed text-brand-cream/85">
-            Book verified pandits and complete pooja samagri for every ritual — from Griha Pravesh
-            to Satyanarayan Katha — with fixed pricing and a priest at your door, the same day.
+            Book verified pandits for every ritual — from Griha Pravesh to Satyanarayan Katha — at
+            a fixed price, with an optional samagri kit delivered with the pandit ji.
           </p>
 
           <ul className="mt-7 flex flex-col gap-2.5">

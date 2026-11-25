@@ -9,7 +9,8 @@ import { toast } from "sonner";
 import { CalendarDays, ChevronDown, ChevronUp, Loader2, MapPinned, Pencil, Sparkles, User, X } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Breadcrumb } from "@/components/shared/breadcrumb";
-import { PaymentOptionSelector, ADVANCE_AMOUNT, DISTANCE_CHARGE, type PaymentOption } from "@/components/shared/payment-option-selector";
+import { PaymentOptionSelector, ADVANCE_AMOUNT, type PaymentOption } from "@/components/shared/payment-option-selector";
+import { BookingPolicyNote } from "@/components/shared/booking-policy-note";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useAuthModal } from "@/providers/auth-modal-provider";
@@ -224,7 +225,6 @@ export function CheckoutClient() {
   const poojaPrice = servicePackage
     ? resolvePackagePrice(servicePackage, prefill?.city)
     : (prefill?.selectedPackage?.price ?? Number(service?.startingPrice ?? 0));
-  const distanceChargeMrp = DISTANCE_CHARGE;
   const distanceCharge = 0;
 
   const platformFee = ADVANCE_AMOUNT;
@@ -461,14 +461,11 @@ export function CheckoutClient() {
                 </div>
               )}
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Distance Charge</span>
-                <span className="flex items-center gap-1.5">
-                  <span className="text-xs text-muted-foreground line-through">₹{distanceChargeMrp.toLocaleString("en-IN")}</span>
-                  <span className="font-semibold text-emerald-600">FREE</span>
-                </span>
+                <span className="text-muted-foreground">Travel Charge</span>
+                <span className="font-semibold text-emerald-600">Free</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Booking amount</span>
+                <span className="text-muted-foreground">Booking fee</span>
                 <span className="font-semibold text-foreground">₹{platformFee.toLocaleString("en-IN")}</span>
               </div>
             </div>
@@ -486,6 +483,8 @@ export function CheckoutClient() {
                 fullAmountLabel={estimatedTotal > 0 ? `₹${estimatedTotal.toLocaleString("en-IN")}` : "Full Amount"}
               />
             </div>
+
+            <BookingPolicyNote className="mt-5" />
 
             <Button
               type="button"

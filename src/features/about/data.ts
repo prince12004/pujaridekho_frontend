@@ -62,5 +62,5 @@ export const aboutFaq = [
   { question: "Is PujariDekho affiliated with any particular temple or sect?", answer: "No — we work with pandits across traditions (Vedic, Purohit, regional) and let families choose based on the specific ritual, language and tradition they need." },
   { question: "Can I trust the pricing shown on the platform?", answer: "Yes. The price shown at the time of booking is fixed — there are no hidden charges added afterward. Samagri is optional: you can bring your own or add our samagri kit, priced upfront." },
   { question: "How can my business or temple partner with PujariDekho?", answer: "Use the Get in Touch button in the Become a Partner section above or visit our Contact page. We work with samagri suppliers, temples and community organisations." },
-  { question: "What happens if my pandit cannot attend?", answer: "We arrange a verified backup pandit or reschedule the puja at a time that suits you. If neither works, you receive a full refund." },
+  { question: "What happens if my pandit cannot attend?", answer: "If your assigned pandit becomes unavailable, we will try to arrange another verified pandit for the same date and time. If we cannot, you can choose to reschedule free of charge or cancel for a full refund." },
 ];

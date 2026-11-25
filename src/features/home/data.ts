@@ -47,19 +47,6 @@ export const shopCategories: ShopCategory[] = [
   { slug: "books", name: "Books", itemCount: "New", icon: "book" },
 ];
 
-export const cities: City[] = [
-  { slug: "delhi", name: "Delhi", panditCount: "180+ Pandits" },
-  { slug: "noida", name: "Noida", panditCount: "65+ Pandits" },
-  { slug: "greater-noida", name: "Greater Noida", panditCount: "40+ Pandits" },
-  { slug: "ghaziabad", name: "Ghaziabad", panditCount: "55+ Pandits" },
-  { slug: "gurgaon", name: "Gurugram", panditCount: "70+ Pandits" },
-  { slug: "faridabad", name: "Faridabad", panditCount: "38+ Pandits" },
-  { slug: "dwarka", name: "Dwarka", panditCount: "32+ Pandits" },
-  { slug: "rohini", name: "Rohini", panditCount: "29+ Pandits" },
-  { slug: "indirapuram", name: "Indirapuram", panditCount: "24+ Pandits" },
-  { slug: "vaishali", name: "Vaishali", panditCount: "20+ Pandits" },
-];
-
 export const topPandits: Pandit[] = [
   { slug: "ramesh-sharma", name: "Pandit Ramesh Sharma Ji", initials: "RS", specialization: "Vedic Rituals & Griha Pravesh", experience: "18 yrs experience", languages: "Hindi, Sanskrit, English", rating: 4.9, completedPoojas: "2,400+ Poojas" },
   { slug: "suresh-trivedi", name: "Pandit Suresh Trivedi Ji", initials: "ST", specialization: "Satyanarayan & Navgraha", experience: "22 yrs experience", languages: "Hindi, Sanskrit", rating: 4.8, completedPoojas: "3,100+ Poojas" },
@@ -96,15 +83,15 @@ export const faqItems: FaqItem[] = [
   { question: "Are all pandits on PujariDekho verified?", answer: "Yes — every pandit undergoes identity verification, background checks and a review of their ritual experience before being listed on the platform." },
   { question: "Is puja samagri included in the price?", answer: "Samagri is optional. The puja price covers the pandit ji's service; while booking you can add the complete samagri kit for that ritual and it comes with the pandit ji. If you don't add it, the pandit ji shares the list in advance so you can arrange it yourself." },
   { question: "Which cities do you currently serve?", answer: "We currently serve Noida, Greater Noida (including Greater Noida West), Ghaziabad, Delhi and Gurugram — including localities such as Indirapuram, Vaishali, Dwarka and Rohini." },
-  { question: "Can I reschedule or cancel my booking?", answer: "Yes, bookings can be rescheduled or cancelled free of charge up to 24 hours before the scheduled puja time." },
+  { question: "Can I reschedule or cancel my booking?", answer: "Yes, bookings can be rescheduled or cancelled free of charge up to 24 hours before the scheduled puja time. The ₹99 booking fee is non-refundable, except when we cannot provide a pandit." },
   { question: "Is my payment secure?", answer: "All payments are processed through encrypted, PCI-compliant gateways — your card and banking details are never stored on our servers." },
   { question: "How do I register as a pandit on PujariDekho?", answer: "Click \"Become a Pandit\" in the header, complete the verification form with your credentials and experience, and our team will onboard you within 3–5 business days." },
 ];
 
 export const processSteps: ProcessStep[] = [
   { title: "Choose Your Puja", description: "Pick a ritual, festival puja, or consultation from our catalog of verified offerings." },
-  { title: "Book a Date & Time", description: "Select a convenient slot — same-day and next-day booking available in most cities." },
-  { title: "Pandit Ji Visits Home", description: "A verified priest arrives with complete samagri and performs the puja as per vidhi." },
+  { title: "Book a Date & Time", description: "Pick your preferred date and time — we confirm the slot based on pandit availability." },
+  { title: "Pandit Ji Visits Home", description: "A verified pandit ji arrives (with the samagri kit, if you added it) and performs the puja as per vidhi." },
 ];
 
 export const whyChooseItems: WhyChooseItem[] = [
@@ -113,5 +100,5 @@ export const whyChooseItems: WhyChooseItem[] = [
   { title: "Experienced Priests", description: "Average 15+ years performing traditional Vedic rituals." },
   { title: "Complete Puja Samagri", description: "Temple-grade materials arranged and delivered with the pandit." },
   { title: "Secure Payments", description: "Encrypted, PCI-compliant checkout on every booking." },
-  { title: "24×7 Support", description: "Real people on call or WhatsApp whenever you need help." },
+  { title: "Call & WhatsApp Support", description: "Real people on call or WhatsApp to help with your booking." },
 ];

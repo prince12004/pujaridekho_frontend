@@ -5,8 +5,9 @@ import { ArrowRight, CheckCircle2, PackageCheck, ShieldCheck, Sparkles } from "l
 import { Button } from "@/components/ui/button";
 import { usePoojaBookingSelection } from "@/features/poojas/components/pooja-booking-context";
 import { readCheckoutPrefillForSlug, saveCheckoutPrefill } from "@/features/checkout/checkout-storage";
+import { ADVANCE_AMOUNT } from "@/lib/booking-fees";
 
-const trustBadges = ["100% Verified Pandits", "No Hidden Charges", "Samagri Delivered on Time"];
+const trustBadges = ["100% Verified Pandits", "No Hidden Charges", "Optional Samagri Kit"];
 
 export function CheckoutCta({
   slug,
@@ -29,7 +30,8 @@ export function CheckoutCta({
   const samagriTotal = selectedSamagri.reduce((sum, item) => sum + item.price, 0);
   const bookingPrice = selectedPackage?.price ?? basePrice;
 
-  const estimatedTotal = bookingPrice + samagriTotal;
+  // Same total the checkout charges: package + samagri + booking fee.
+  const estimatedTotal = bookingPrice + samagriTotal + ADVANCE_AMOUNT;
 
   function handleBookNow() {
     readCheckoutPrefillForSlug(slug);
@@ -81,6 +83,10 @@ export function CheckoutCta({
             <span className="font-semibold text-foreground">₹{samagriTotal.toLocaleString("en-IN")}</span>
           </div>
         ) : null}
+        <div className="flex items-center justify-between">
+          <span className="text-muted-foreground">Booking fee</span>
+          <span className="font-semibold text-foreground">₹{ADVANCE_AMOUNT}</span>
+        </div>
         <div className="mt-1 flex items-center justify-between border-t border-dashed border-border pt-2">
           <span className="font-semibold text-foreground">Estimated Total</span>
           <span className="font-heading text-lg text-primary">₹{estimatedTotal.toLocaleString("en-IN")}</span>

@@ -44,11 +44,11 @@ export const termsContent = `
 <p>By accessing or booking through PujariDekho, you agree to these Terms & Conditions. If you don't agree with any part of these terms, please don't use the platform.</p>
 
 <h2 id="bookings">Bookings & Services</h2>
-<p>PujariDekho acts as a marketplace connecting families with independently verified pandits, and as a retailer for puja essentials. All puja pricing shown at the time of booking is final and includes the samagri explicitly listed on that booking's page. Booking confirmations are sent via SMS/WhatsApp and are also visible in your dashboard.</p>
+<p>PujariDekho acts as a marketplace connecting families with independently verified pandits, and as a retailer for puja essentials. All puja pricing shown at the time of booking is final. Puja prices cover the pandit's service; samagri is included only if you add the optional samagri kit to your booking. A ₹99 booking fee is added to every puja booking and shown at checkout. The ₹99 booking fee is non-refundable, except when we cannot provide a pandit — then it is refunded along with the rest of your payment. Booking confirmations are sent via SMS/WhatsApp and are also visible in your dashboard.</p>
 
 <h2 id="cancellations">Cancellations & Rescheduling</h2>
-<p>Bookings can be rescheduled or cancelled free of charge up to 24 hours before the scheduled time. Cancellations within 24 hours may be subject to a partial charge to compensate the assigned pandit, as detailed in our Refund Policy.</p>
-<p><strong>Backup pandit:</strong> If your assigned pandit can't make it, we send another verified pandit on the same day. If that isn't possible, you can reschedule free of charge or take a full refund — your choice.</p>
+<p>Bookings can be rescheduled or cancelled free of charge up to 24 hours before the scheduled time. Reschedule requests made within 24 hours are accepted subject to pandit availability. Cancellations within 24 hours may be subject to a partial charge to compensate the assigned pandit, as detailed in our Refund Policy. Requests are made from your account and confirmed by our team.</p>
+<p><strong>Backup pandit:</strong> If your assigned pandit becomes unavailable, we will try to arrange another verified pandit for the same date and time. If we cannot, you can choose to reschedule free of charge or cancel for a full refund.</p>
 
 <h2 id="user-conduct">User Conduct</h2>
 <p>Users agree to provide accurate booking information, treat assigned pandits with respect, and not use the platform for any unlawful purpose. Abusive behaviour toward pandits or staff may result in account suspension.</p>
@@ -74,14 +74,18 @@ export const termsToc = [
 ];
 
 export const refundScenarios = [
-  { title: "Full Refund", description: "Cancel 24+ hours before your scheduled puja time — or if your pandit can't make it and neither a same-day backup pandit nor a new date works for you.", icon: "full" as const },
+  { title: "Full Refund", description: "If your pandit becomes unavailable and neither a backup pandit nor a new date works for you — everything you paid, including the ₹99 booking fee. Cancelling yourself 24+ hours before the puja: full refund of the puja amount (the ₹99 booking fee is non-refundable).", icon: "full" as const },
   { title: "Partial Refund", description: "Cancel within 24 hours of the scheduled time — a partial charge covers the pandit's reserved time.", icon: "partial" as const },
   { title: "No Refund", description: "No-shows without prior cancellation, or cancellations after the pandit has already arrived.", icon: "none" as const },
 ];
 
 export const refundContent = `
-<h2 id="backup-pandit">Backup Pandit Promise</h2>
-<p>If your assigned pandit can't make it, we send another verified pandit on the same day. If that isn't possible, you can reschedule free of charge or take a full refund — your choice.</p>
+<h2 id="backup-pandit">If Your Pandit Becomes Unavailable</h2>
+<p>If your assigned pandit becomes unavailable, we will try to arrange another verified pandit for the same date and time. If we cannot, you can choose to reschedule free of charge or cancel for a full refund. We will inform you as early as possible by call or WhatsApp.</p>
+<h2 id="rescheduling">Rescheduling</h2>
+<p>You can request a new date from your account. Requests made 24+ hours before the puja are free; requests within 24 hours are accepted subject to pandit availability. The new date is confirmed by our team.</p>
+<h2 id="booking-fee">Booking Fee</h2>
+<p>The ₹99 booking fee is non-refundable, except when we cannot provide a pandit — then it is refunded along with the rest of your payment.</p>
 <h2 id="how-refunds-work">How Refunds Work</h2>
 <p>Refund eligibility for puja bookings depends on how far in advance you cancel, as summarised in the scenarios above. All approved refunds are issued to the original payment method — we do not offer cash refunds or store credit unless you specifically request it in place of a refund.</p>
 <h2 id="processing-time">Processing Time</h2>

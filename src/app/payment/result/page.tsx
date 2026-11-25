@@ -4,6 +4,7 @@ import { CheckCircle2, XCircle } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import { buildMetadata } from "@/lib/seo";
+import { BookingPolicyNote } from "@/components/shared/booking-policy-note";
 
 export const metadata: Metadata = buildMetadata({
   title: "Payment Result",
@@ -41,6 +42,7 @@ function ResultContent({ status, entityType, entityId }: { status: string; entit
             ? "We couldn't confirm your payment status right away. If any amount was deducted, it will reflect in your booking shortly — please check there before retrying, or contact support."
             : "Your payment could not be completed. No amount has been deducted for a failed transaction — please try again or contact support."}
       </p>
+      {succeeded && entityType === "booking" ? <BookingPolicyNote className="mt-6 max-w-md" /> : null}
       <div className="mt-6 flex flex-wrap justify-center gap-3">
         {href ? (
           <Button asChild>

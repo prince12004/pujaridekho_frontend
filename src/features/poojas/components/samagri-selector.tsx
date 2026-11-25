@@ -100,7 +100,9 @@ export function SamagriSelector({
             <span className={cn("block text-xs", expanded ? "text-white/85" : "text-muted-foreground")}>
               {expanded
                 ? `${checkedItems.length} of ${includedItems.length} items selected — ₹${samagriTotal.toLocaleString("en-IN")}`
-                : "Tap to add complete samagri kit to your order"}
+                : fullTotal > 0
+                  ? `Optional — complete kit ₹${fullTotal.toLocaleString("en-IN")}, delivered with the pandit ji`
+                  : "Optional — tap to add the complete samagri kit to your order"}
             </span>
           </span>
         </span>

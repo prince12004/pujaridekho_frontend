@@ -8,7 +8,6 @@ import { BenefitsGrid } from "@/features/become-a-pandit/components/benefits-gri
 import { EligibilityDocuments } from "@/features/become-a-pandit/components/eligibility-documents";
 import { RegistrationProcess } from "@/features/become-a-pandit/components/registration-process";
 import { EarningsSection } from "@/features/become-a-pandit/components/earnings-section";
-import { PanditTestimonials } from "@/features/become-a-pandit/components/pandit-testimonials";
 import { RegistrationForm } from "@/features/become-a-pandit/components/registration-form";
 import { panditFaq } from "@/features/become-a-pandit/data";
 import { buildMetadata } from "@/lib/seo";
@@ -38,7 +37,6 @@ export default function BecomeAPanditPage() {
       <EligibilityDocuments />
       <RegistrationProcess />
       <EarningsSection />
-      <PanditTestimonials />
       <RegistrationForm />
 
       <section className="bg-muted/40 pb-20 sm:pb-28">

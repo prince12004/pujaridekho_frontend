@@ -48,7 +48,7 @@ const fieldControlClass =
 const trustBadges = [
   { icon: ShieldCheck, label: "100% Verified Pandits" },
   { icon: CheckCircle2, label: "No Hidden Charges" },
-  { icon: CalendarDays, label: "Same-Day Booking Available" },
+  { icon: CalendarDays, label: "Price Shown Before You Pay" },
 ];
 
 /** Homepage "quick start" widget — collects just enough to hand off to

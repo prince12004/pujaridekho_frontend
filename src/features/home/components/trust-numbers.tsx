@@ -9,7 +9,7 @@ export function buildTrustStats(stats: SiteStats | null) {
     stats.verifiedPandits > 0 ? { value: plus(stats.verifiedPandits), label: "Verified Pandits" } : null,
     stats.rating ? { value: stars(stats.rating.value), label: "Customer Rating" } : null,
     stats.poojasCompleted > 0 ? { value: plus(stats.poojasCompleted), label: "Completed Poojas" } : null,
-    { value: "24×7", label: "Support Available" },
+    stats.cities > 0 ? { value: String(stats.cities), label: "Cities Served" } : null,
     { value: "100%", label: "Verified Priests" },
   ].filter((s): s is { value: string; label: string } => !!s);
 }

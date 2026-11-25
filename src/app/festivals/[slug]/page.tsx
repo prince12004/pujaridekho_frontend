@@ -17,6 +17,7 @@ import { buildMetadata } from "@/lib/seo";
 import { images } from "@/lib/images";
 import { env } from "@/lib/env";
 import { SERVER_API_URL } from "@/lib/server-env";
+import { ADVANCE_AMOUNT } from "@/lib/booking-fees";
 
 async function fetchFestival(slug: string) {
   const response = await fetch(`${SERVER_API_URL}/festivals/${slug}`, { next: { revalidate: 45 } });
@@ -117,7 +118,8 @@ export default async function FestivalDetailPage({ params }: { params: Promise<{
               <div className="text-right">
                 {/* One fixed price only — no comparison "market price" or "% OFF". */}
                 <div className="font-heading text-3xl text-secondary">₹{Number(festival.startingPrice).toLocaleString("en-IN")}</div>
-                <div className="text-xs font-semibold text-muted-foreground">Fixed price · Samagri optional (add at checkout)</div>
+                <div className="text-xs font-semibold text-muted-foreground">Pandit service · + ₹{ADVANCE_AMOUNT} booking fee</div>
+                <div className="text-xs font-semibold text-muted-foreground">Samagri not included — optional kit at checkout</div>
               </div>
             </div>
 

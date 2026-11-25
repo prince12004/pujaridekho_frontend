@@ -36,7 +36,7 @@ export async function CitiesSection() {
         <SectionHeading
           eyebrow="Where We Serve"
           title="Service Cities"
-          description="Pandits available for home visits across Delhi NCR."
+          description="Our current service area. Pandit availability for your chosen date and time is confirmed after you book."
           className="mb-12"
         />
 
@@ -53,7 +53,7 @@ export async function CitiesSection() {
                 <div>
                   <div className="font-heading text-sm leading-tight">{city.name}</div>
                   <div className="text-xs font-semibold text-muted-foreground">
-                    Verified pandits available
+                    Serviceable area
                   </div>
                 </div>
               </Link>

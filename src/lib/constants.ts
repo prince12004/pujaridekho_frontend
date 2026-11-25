@@ -3,7 +3,7 @@ export const siteConfig = {
   tagline: "Verified & Trusted",
   taglineHi: "पूजा हो तो,",
   description:
-    "PujariDekho is a premium Hindu religious services marketplace — verified pandits, complete puja samagri, fixed pricing and same-day booking.",
+    "PujariDekho is a premium Hindu religious services marketplace — verified pandits, fixed pricing and optional puja samagri kits across Delhi NCR.",
   contact: {
     phone: "+91 9211241314",
     whatsapp: "+91 9211241314",

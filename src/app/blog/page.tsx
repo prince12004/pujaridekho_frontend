@@ -54,7 +54,7 @@ export default async function BlogListingPage() {
       <CtaBanner
         eyebrow="Need a Pandit?"
         title="Book a Verified Pandit Today"
-        description="Fixed pricing, complete samagri, same-day availability across Delhi NCR."
+        description="Verified pandits, fixed pricing and optional samagri kits across Delhi NCR."
         primaryAction={{ label: "Book a Puja", href: "/poojas" }}
         secondaryAction={{ label: "Browse Pandits", href: "/pandits" }}
       />

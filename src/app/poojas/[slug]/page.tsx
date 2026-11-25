@@ -21,6 +21,7 @@ import { buildMetadata } from "@/lib/seo";
 import { images } from "@/lib/images";
 import { env } from "@/lib/env";
 import { SERVER_API_URL } from "@/lib/server-env";
+import { ADVANCE_AMOUNT } from "@/lib/booking-fees";
 
 async function fetchPooja(slug: string) {
   const response = await fetch(`${SERVER_API_URL}/poojas/${slug}`, {
@@ -130,8 +131,12 @@ export default async function PoojaDetailPage({ params }: { params: Promise<{ sl
               </div>
               <div className="text-right price_right">
                 {/* One fixed price only — no comparison "market price" or "% OFF". */}
-                <div className="font-heading text-3xl text-secondary">₹{Number(pooja.startingPrice).toLocaleString("en-IN")}</div>
-                <div className="text-xs font-semibold text-muted-foreground">Fixed price · Samagri optional (add at checkout)</div>
+                <div className="font-heading text-3xl text-secondary">
+                  {(pooja.packages ?? []).length > 1 ? <span className="mr-1 text-sm font-semibold text-muted-foreground">From</span> : null}
+                  ₹{Number(pooja.startingPrice).toLocaleString("en-IN")}
+                </div>
+                <div className="text-xs font-semibold text-muted-foreground">Pandit service · + ₹{ADVANCE_AMOUNT} booking fee</div>
+                <div className="text-xs font-semibold text-muted-foreground">Samagri not included — optional kit at checkout</div>
               </div>
             </div>
 

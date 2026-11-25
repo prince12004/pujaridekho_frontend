@@ -7,6 +7,7 @@ import type { PoojaPackage } from "@/features/poojas/types";
 import { usePoojaBookingSelection } from "@/features/poojas/components/pooja-booking-context";
 import { readCheckoutPrefill } from "@/features/checkout/checkout-storage";
 import { resolvePackagePrice } from "@/lib/pooja-pricing";
+import { ADVANCE_AMOUNT } from "@/lib/booking-fees";
 
 export function PoojaPackages({ packages }: { packages: PoojaPackage[] }) {
   const { selectedPackage, setSelectedPackage } = usePoojaBookingSelection();
@@ -31,6 +32,12 @@ export function PoojaPackages({ packages }: { packages: PoojaPackage[] }) {
   }, [packages, selectedPackage, setSelectedPackage]);
 
   return (
+    <div className="flex flex-col gap-4">
+    <p className="rounded-xl border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+      {packages.length > 1 ? "Packages differ in the rituals performed, duration and number of pandits. " : ""}
+      Package prices are for the pandit&apos;s service. <strong className="text-foreground">Samagri is not included</strong> — add the
+      optional kit below or arrange it yourself. A non-refundable ₹{ADVANCE_AMOUNT} booking fee is added at checkout.
+    </p>
     <div className={`grid grid-cols-1 gap-5 ${packages.length > 1 ? "sm:grid-cols-2" : ""}`}>
       {packages.map((pkg) => {
         const isSelected = selectedPackage?.name === pkg.name;
@@ -46,7 +53,10 @@ export function PoojaPackages({ packages }: { packages: PoojaPackage[] }) {
               <h3 className="font-heading text-lg">{pkg.name}</h3>
               <span className="text-xs font-semibold text-muted-foreground">{pkg.duration}</span>
             </div>
-            <div className="font-heading text-3xl text-secondary">₹{price.toLocaleString("en-IN")}</div>
+            <div>
+              <div className="font-heading text-3xl text-secondary">₹{price.toLocaleString("en-IN")}</div>
+              <span className="text-xs text-muted-foreground">Pandit service · samagri not included</span>
+            </div>
             <ul className="flex flex-col gap-2.5">
               {pkg.features.map((feature) => (
                 <li key={feature} className="flex gap-2 text-sm text-muted-foreground">
@@ -72,6 +82,7 @@ export function PoojaPackages({ packages }: { packages: PoojaPackage[] }) {
           </div>
         );
       })}
+    </div>
     </div>
   );
 }
