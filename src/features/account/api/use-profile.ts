@@ -47,3 +47,12 @@ export function useUpdateProfile() {
     },
   });
 }
+
+/** Permanently deletes the logged-in customer's account. */
+export function useDeleteAccount() {
+  return useMutation({
+    mutationFn: async () => {
+      await customerApiClient.delete("/profile", { data: { confirm: "DELETE" } });
+    },
+  });
+}

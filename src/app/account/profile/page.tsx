@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
-import { CalendarDays, LogOut, Mail, MapPin, Phone, Save, ShieldCheck, User as UserIcon } from "lucide-react";
+import { CalendarDays, LogOut, Mail, MapPin, Phone, Save, ShieldCheck, Trash2, User as UserIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { AccountPageHeader } from "@/features/account/components/account-page-header";
 import { AccountLoadingSkeleton, AccountErrorState } from "@/features/account/components/state-blocks";
-import { type UpdateProfileInput, useMyProfile, useUpdateProfile } from "@/features/account/api/use-profile";
+import { type UpdateProfileInput, useDeleteAccount, useMyProfile, useUpdateProfile } from "@/features/account/api/use-profile";
 import { getErrorMessage } from "@/features/account/lib/get-error-message";
 import { env } from "@/lib/env";
 import { CUSTOMER_ACCESS_TOKEN_KEY } from "@/lib/customer-api-client";
@@ -174,7 +174,86 @@ export default function ProfilePage() {
           </Button>
         </CardContent>
       </Card>
+
+      <Card className="border-destructive/30">
+        <CardContent className="p-5">
+          <p className="mb-1 flex items-center gap-2 font-heading text-sm font-bold text-destructive">
+            <Trash2 className="size-4" /> Delete Account
+          </p>
+          <p className="mb-4 text-sm text-muted-foreground">
+            Permanently delete your PujariDekho account and personal details. This cannot be undone.
+          </p>
+          <DeleteAccountDialog
+            onDeleted={() => {
+              logout();
+              window.location.href = "/";
+            }}
+          />
+        </CardContent>
+      </Card>
     </div>
+  );
+}
+
+function DeleteAccountDialog({ onDeleted }: { onDeleted: () => void }) {
+  const [open, setOpen] = useState(false);
+  const [confirmText, setConfirmText] = useState("");
+  const deleteAccount = useDeleteAccount();
+  const confirmed = confirmText.trim().toUpperCase() === "DELETE";
+
+  async function handleDelete() {
+    try {
+      await deleteAccount.mutateAsync();
+      toast.success("Your account has been deleted");
+      setOpen(false);
+      onDeleted();
+    } catch (err) {
+      toast.error(getErrorMessage(err, "Could not delete your account"));
+    }
+  }
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next);
+        if (!next) setConfirmText("");
+      }}
+    >
+      <DialogTrigger asChild>
+        <Button variant="destructive" className="font-ui font-bold">
+          <Trash2 className="size-4" />
+          Delete My Account
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Delete your account permanently?</DialogTitle>
+          <DialogDescription>
+            This removes your profile, saved addresses, wishlist, saved Kundlis and notifications, and logs you out on all
+            devices. Records of past bookings and orders are kept for accounting, without your personal details. This cannot be
+            undone.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-2">
+          <p className="text-sm text-muted-foreground">
+            If you have an upcoming puja or an order on its way, please cancel it first.
+          </p>
+          <Label htmlFor="delete-confirm" className="mb-1.5">
+            Type <span className="font-bold text-destructive">DELETE</span> to confirm
+          </Label>
+          <Input id="delete-confirm" value={confirmText} onChange={(e) => setConfirmText(e.target.value)} placeholder="DELETE" autoComplete="off" />
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Keep My Account
+          </Button>
+          <Button variant="destructive" disabled={!confirmed || deleteAccount.isPending} onClick={handleDelete} className="font-ui font-bold">
+            {deleteAccount.isPending ? "Deleting..." : "Delete Permanently"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 

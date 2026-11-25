@@ -17,6 +17,7 @@ export interface Order {
   total: number;
   paymentStatus: "unpaid" | "paid" | "refunded";
   status: "pending" | "confirmed" | "processing" | "shipped" | "delivered" | "cancelled" | "returned";
+  cancelRequest?: { reason: string; notes?: string; status: "requested" | "approved" | "rejected"; requestedAt?: string; resolutionNote?: string } | null;
   createdAt: string;
 }
 
@@ -28,7 +29,7 @@ export interface OrderListResult {
   totalPages: number;
 }
 
-export function useOrders(params: { search?: string; status?: string; page?: number; limit?: number } = {}) {
+export function useOrders(params: { search?: string; status?: string; cancelRequest?: string; page?: number; limit?: number } = {}) {
   return useQuery({
     queryKey: ["admin", "orders", params],
     queryFn: async () => {
@@ -54,6 +55,17 @@ export function useDeleteOrder() {
   return useMutation({
     mutationFn: async (id: string) => {
       await adminApiClient.delete(`/orders/${id}`);
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin", "orders"] }),
+  });
+}
+
+export function useResolveOrderCancelRequest() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, decision, note }: { id: string; decision: "approve" | "reject"; note?: string }) => {
+      const res = await adminApiClient.patch(`/orders/${id}/cancel-request`, { decision, note });
+      return res.data.data as Order;
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin", "orders"] }),
   });

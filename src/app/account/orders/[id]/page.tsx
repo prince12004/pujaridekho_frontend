@@ -1,14 +1,19 @@
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
+import { toast } from "sonner";
 import Link from "next/link";
 import { Check } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { getErrorMessage } from "@/features/account/lib/get-error-message";
 import { AccountPageHeader } from "@/features/account/components/account-page-header";
 import { AccountLoadingSkeleton, AccountErrorState } from "@/features/account/components/state-blocks";
-import { useMyOrder } from "@/features/account/api/use-orders";
+import { ORDER_CANCELLABLE_STATUSES, useMyOrder, useRequestOrderCancellation } from "@/features/account/api/use-orders";
 import { ORDER_STATUS_LABELS, badgeToneForStatus } from "@/features/account/lib/status-labels";
 import { formatCurrency, formatDateTime } from "@/features/account/lib/format";
 
@@ -17,9 +22,29 @@ const ORDER_TIMELINE_ORDER = ["pending", "confirmed", "processing", "shipped", "
 export default function OrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const { data: order, isLoading, isError, refetch } = useMyOrder(id);
+  const cancelMutation = useRequestOrderCancellation();
+  const [cancelOpen, setCancelOpen] = useState(false);
+  const [cancelReason, setCancelReason] = useState("");
 
   if (isLoading) return <AccountLoadingSkeleton rows={4} />;
   if (isError || !order) return <AccountErrorState onRetry={() => refetch()} />;
+
+  const canCancel = ORDER_CANCELLABLE_STATUSES.includes(order.status) && order.cancelRequest?.status !== "requested";
+
+  async function submitCancel() {
+    if (!order || !cancelReason.trim()) {
+      toast.error("Please tell us why you'd like to cancel");
+      return;
+    }
+    try {
+      await cancelMutation.mutateAsync({ id: order._id, reason: cancelReason.trim() });
+      toast.success("Cancellation request sent to our team");
+      setCancelOpen(false);
+      setCancelReason("");
+    } catch (err) {
+      toast.error(getErrorMessage(err, "Could not submit cancellation request"));
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -74,6 +99,21 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
         </CardContent>
       </Card>
 
+      {order.cancelRequest && (
+        <Card className="border-destructive/30 bg-destructive/5">
+          <CardContent className="p-5">
+            <p className="font-heading text-sm font-bold text-secondary">
+              Cancellation Request —{" "}
+              {order.cancelRequest.status === "requested" ? "under review" : order.cancelRequest.status}
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">{order.cancelRequest.reason}</p>
+            {order.cancelRequest.resolutionNote ? (
+              <p className="mt-1 text-xs text-muted-foreground">Note from our team: {order.cancelRequest.resolutionNote}</p>
+            ) : null}
+          </CardContent>
+        </Card>
+      )}
+
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <Card>
           <CardContent className="space-y-2 p-5">
@@ -98,6 +138,40 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
           </CardContent>
         </Card>
       </div>
+
+      {canCancel && (
+        <Dialog open={cancelOpen} onOpenChange={setCancelOpen}>
+          <DialogTrigger asChild>
+            <Button variant="ghost" className="font-ui font-bold text-destructive hover:text-destructive">
+              Request Cancellation
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Cancel this Order</DialogTitle>
+              <DialogDescription>
+                Orders can be cancelled until they are shipped. Our team reviews every request; if you have already paid, the
+                refund is processed after approval. Submitting this sends a cancellation request — it does not cancel the order
+                immediately.
+              </DialogDescription>
+            </DialogHeader>
+            <div>
+              <Label htmlFor="order-cancel-reason" className="mb-1.5">Reason for cancellation</Label>
+              <Textarea
+                id="order-cancel-reason"
+                placeholder="Tell us why you're cancelling..."
+                value={cancelReason}
+                onChange={(e) => setCancelReason(e.target.value)}
+              />
+            </div>
+            <DialogFooter>
+              <Button variant="destructive" onClick={submitCancel} disabled={cancelMutation.isPending} className="font-ui font-bold">
+                {cancelMutation.isPending ? "Submitting..." : "Confirm Cancellation Request"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
 
       {order.status === "delivered" && (
         <div className="flex flex-wrap gap-2">

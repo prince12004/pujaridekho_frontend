@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { customerApiClient } from "@/lib/customer-api-client";
 
 export interface MyOrder {
@@ -14,6 +14,7 @@ export interface MyOrder {
   paymentStatus: string;
   status: string;
   timeline: { status: string; note?: string; changedAt: string }[];
+  cancelRequest?: { reason: string; notes?: string; status: "requested" | "approved" | "rejected"; resolutionNote?: string } | null;
   createdAt: string;
 }
 
@@ -43,5 +44,19 @@ export function useMyOrder(id: string | undefined) {
       return res.data.data;
     },
     enabled: !!id,
+  });
+}
+
+/** Orders that haven't shipped yet can be cancelled (after review by our team). */
+export const ORDER_CANCELLABLE_STATUSES = ["pending", "confirmed", "processing"];
+
+export function useRequestOrderCancellation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, reason }: { id: string; reason: string }) => {
+      const res = await customerApiClient.post<{ data: MyOrder }>(`/orders/${id}/cancel-request`, { reason });
+      return res.data.data;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["account"] }),
   });
 }
