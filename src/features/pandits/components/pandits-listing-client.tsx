@@ -2,13 +2,41 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
+import { Loader2, ShieldCheck } from "lucide-react";
 import { SearchBar } from "@/components/shared/search-bar";
 import { Reveal } from "@/components/shared/reveal";
-import { MediaCard, MediaCardBody, MediaCardFooter, MediaCardImage } from "@/components/shared/media-card";
+import { MediaCard, MediaCardBody, MediaCardFooter } from "@/components/shared/media-card";
 import { Button } from "@/components/ui/button";
 import { usePandits, type PublicPandit } from "@/features/pandits/api/use-pandits";
 import { useInfiniteScrollSentinel } from "@/lib/use-infinite-scroll";
+
+/** Whole photo (never cropped, uploaded photos are framed differently); initials when there is no photo. */
+function PanditPhoto({ photo, name }: { photo?: string; name: string }) {
+    if (!photo) {
+        const initials = name
+            .replace(/^pandit\s+/i, "")
+            .split(/\s+/)
+            .slice(0, 2)
+            .map((w) => w[0]?.toUpperCase() ?? "")
+            .join("");
+        return (
+            <div className="flex h-64 items-center justify-center bg-gradient-to-br from-primary/15 via-brand-gold/15 to-secondary/10">
+                <span className="font-heading flex size-24 items-center justify-center rounded-full bg-card text-3xl font-bold text-primary shadow-sm">
+                    {initials}
+                </span>
+            </div>
+        );
+    }
+    return (
+        <div className="relative h-64 overflow-hidden bg-muted">
+            {/* Whole photo, never cropped; a blurred copy fills the sides. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={photo} alt="" aria-hidden className="absolute inset-0 h-full w-full scale-110 object-cover opacity-60 blur-xl" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={photo} alt={name} className="relative h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]" />
+        </div>
+    );
+}
 
 export function PanditsListingClient() {
     const [search, setSearch] = useState("");
@@ -42,11 +70,7 @@ export function PanditsListingClient() {
                     {accumulated.map((pandit) => (
                         <Reveal key={pandit._id} delay={0}>
                             <MediaCard>
-                                <MediaCardImage
-                                    src={pandit.photo || "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80"}
-                                    alt={pandit.fullName}
-                                    height="h-60"
-                                />
+                                <PanditPhoto photo={pandit.photo} name={pandit.fullName} />
                                 <MediaCardBody>
                                     <h3 className="font-heading text-lg leading-snug">{pandit.fullName}</h3>
                                     <p className="text-sm text-muted-foreground">
@@ -59,12 +83,15 @@ export function PanditsListingClient() {
                                             {pandit.rating > 0 ? `Rating: ${pandit.rating.toFixed(1)} ★` : "New profile — no reviews yet"}
                                         </div>
                                     </div>
+                                    <MediaCardFooter>
+                                        <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
+                                            <ShieldCheck size={14} /> Verified pandit
+                                        </span>
+                                        <Button size="sm" className="main_books font-ui font-bold" asChild>
+                                            <Link href="/poojas">Book a Puja</Link>
+                                        </Button>
+                                    </MediaCardFooter>
                                 </MediaCardBody>
-                                <MediaCardFooter>
-                                    <Button size="sm" className="main_books font-ui font-bold" asChild>
-                                        <Link href="/poojas">Book a Puja</Link>
-                                    </Button>
-                                </MediaCardFooter>
                             </MediaCard>
                         </Reveal>
                     ))}

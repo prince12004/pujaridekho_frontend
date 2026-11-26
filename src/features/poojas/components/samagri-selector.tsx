@@ -11,6 +11,7 @@ export interface SamagriIncludedItem {
   unit?: string;
   estimatedPrice: number;
   mrp?: number;
+  image?: string;
 }
 
 export function SamagriSelector({
@@ -142,6 +143,17 @@ export function SamagriSelector({
               </button>
             )}
           </div>
+          <div aria-hidden className="mb-1 grid grid-cols-1 gap-2 border-b border-border pb-1.5 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground sm:grid-cols-2">
+            {[0, 1].map((col) => (
+              <div key={col} className={cn("flex items-center justify-between gap-2 px-2", col === 1 && "hidden sm:flex")}>
+                <span className="flex items-center gap-2">
+                  <span className="w-6 text-right">S.No.</span>
+                  <span>Item</span>
+                </span>
+                <span>Price</span>
+              </div>
+            ))}
+          </div>
           <ul className="samagiri_selct grid grid-cols-1 gap-2 sm:grid-cols-2">
             {includedItems.map((item, index) => {
               const checked = checkedNames.has(item.itemName);
@@ -156,7 +168,16 @@ export function SamagriSelector({
                     )}
                   >
                     <span className="flex min-w-0 items-center gap-2">
-                      <span className="w-5 shrink-0 text-right text-xs font-medium text-muted-foreground/50">{index + 1}.</span>
+                      <span className="w-6 shrink-0 text-right text-xs font-semibold text-muted-foreground/70">{index + 1}.</span>
+                      {item.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={item.image}
+                          alt=""
+                          loading="lazy"
+                          className={cn("size-9 shrink-0 rounded-md border border-border object-cover", !checked && "opacity-40 grayscale")}
+                        />
+                      ) : null}
                       <span className={cn("truncate", !checked && "line-through decoration-muted-foreground/40")}>
                         {item.itemName}
                         {item.quantity ? ` — ${item.quantity}${item.unit ?? ""}` : ""}

@@ -7,7 +7,7 @@ export function LogoMark({ light = false, className }: { light?: boolean; classN
     <Image
       src="/brand/logo.png"
       alt="PujariDekho — Aapki Har Puja Ke Pujari"
-      width={586}
+      width={640}
       height={129}
       className={cn("h-10 w-auto shrink-0", className)}
       priority

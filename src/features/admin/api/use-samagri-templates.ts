@@ -25,6 +25,7 @@ export interface IncludedItem {
   category?: string;
   arrangedBy?: string;
   required?: boolean;
+  image?: string;
 }
 
 export interface SamagriTemplate {

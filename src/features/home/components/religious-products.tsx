@@ -17,7 +17,7 @@ interface PublicProduct {
 }
 
 async function fetchProducts(): Promise<PublicProduct[]> {
-  const res = await fetch(`${SERVER_API_URL}/products?limit=6`, { next: { revalidate: 45 } });
+  const res = await fetch(`${SERVER_API_URL}/products?limit=8`, { next: { revalidate: 45 } });
   if (!res.ok) return [];
   const json = await res.json();
   return json.data?.items ?? [];
@@ -42,11 +42,11 @@ export async function ReligiousProducts() {
           className="mb-12"
         />
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {products.map((product, i) => (
             <Reveal key={product._id} delay={(i % 3) * 0.08}>
               <MediaCard>
-                <MediaCardImage src={product.images?.[0] ?? FALLBACK_IMAGE} alt={product.name} height="h-55" />
+                <MediaCardImage src={product.images?.[0] ?? FALLBACK_IMAGE} alt={product.name} height="aspect-square" sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" />
                 <MediaCardBody>
                   <h3 className="font-heading text-base leading-snug">{product.name}</h3>
                   <MediaCardFooter className="border-t-0 pt-0">

@@ -20,6 +20,7 @@ import {
   useUpdateSamagriTemplate,
 } from "@/features/admin/api/use-samagri-templates";
 import { getErrorMessage } from "@/features/admin/lib/get-error-message";
+import { ItemImageInput } from "@/features/admin/components/item-image-input";
 
 const includedItemSchema = z.object({
   itemName: z.string().min(1, "Required"),
@@ -30,6 +31,7 @@ const includedItemSchema = z.object({
   mrp: z.preprocess((v) => (v === "" || v === undefined ? undefined : Number(v)), z.number().min(0).optional()),
   category: z.string().optional(),
   required: z.boolean().optional(),
+  image: z.string().optional(),
 });
 
 const formSchema = z.object({
@@ -176,7 +178,14 @@ export function SamagriTemplateForm({ template }: { template?: SamagriTemplate }
         <CardContent className="space-y-3">
           {itemsArray.fields.length === 0 && <p className="text-sm text-muted-foreground">No items added yet.</p>}
           {itemsArray.fields.map((field, index) => (
-            <div key={field.id} className="grid grid-cols-1 gap-3 rounded-lg border border-border p-3 md:grid-cols-8">
+            <div key={field.id} className="grid grid-cols-1 gap-3 rounded-lg border border-border p-3 md:grid-cols-9">
+              <div className="space-y-1">
+                <Label className="text-xs">Photo</Label>
+                <ItemImageInput
+                  value={includedItems?.[index]?.image ?? ""}
+                  onChange={(url) => setValue(`includedItems.${index}.image`, url, { shouldDirty: true })}
+                />
+              </div>
               <div className="space-y-1 md:col-span-2">
                 <Label className="text-xs">Item name</Label>
                 <Input {...register(`includedItems.${index}.itemName`)} />

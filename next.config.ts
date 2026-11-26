@@ -37,6 +37,12 @@ const nextConfig: NextConfig = {
         hostname: "www.pujaridekho.com",
         pathname: "/uploads/**",
       },
+
+      // Product and samagri photos shipped with the website (public/products, public/samagri),
+      // stored as full URLs so the mobile app can load them too.
+      ...["pujaridekho.com", "www.pujaridekho.com"].flatMap((hostname) =>
+        ["/products/**", "/samagri/**"].map((pathname) => ({ protocol: "https" as const, hostname, pathname })),
+      ),
     ],
   },
 };
