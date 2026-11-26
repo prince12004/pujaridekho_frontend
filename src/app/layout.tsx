@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { SERVER_API_URL } from "@/lib/server-env";
 import { fetchContactSettings, fetchFooterGroups, fetchSeoSettings } from "@/features/seo-pages/api";
 import "./globals.css";
+import { ClarityAnalytics } from "@/components/shared/clarity-analytics";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -65,6 +66,7 @@ export default async function RootLayout({
           </ConditionalPublicChrome>
           <Toaster />
         </AppProviders>
+        <ClarityAnalytics />
       </body>
     </html>
   );
