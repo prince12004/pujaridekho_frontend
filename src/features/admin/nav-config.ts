@@ -68,12 +68,12 @@ export const ADMIN_NAV: AdminNavSection[] = [
     ],
   },
   {
-    title: "Puja's",
+    title: "Pujas",
     items: [
-      { label: "All Puja's", href: "/admin/poojas", icon: Sparkles, permission: "poojas:view" },
+      { label: "All Pujas", href: "/admin/poojas", icon: Sparkles, permission: "poojas:view" },
       { label: "Pooja Categories", href: "/admin/pooja-categories", icon: FolderTree, permission: "poojas:view" },
       { label: "Samagri Templates", href: "/admin/samagri-templates", icon: ClipboardList, permission: "poojas:view" },
-      { label: "Festival Puja's", href: "/admin/festivals", icon: PartyPopper, permission: "festivals:manage" },
+      { label: "Festival Pujas", href: "/admin/festivals", icon: PartyPopper, permission: "festivals:manage" },
       { label: "Muhurat Management", href: "/admin/muhurats", icon: Clock, permission: "poojas:manage" },
     ],
   },

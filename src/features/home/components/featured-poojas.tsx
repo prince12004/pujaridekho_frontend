@@ -32,7 +32,7 @@ export async function FeaturedPoojas() {
       <Container>
         <SectionHeading
           eyebrow="Most Booked"
-          title="Popular Puja's"
+          title="Popular Pujas"
           description="Traditional rituals performed by verified pandits at a fixed price — add the complete samagri kit at checkout if you need it."
           action={
             <Button variant="outline" size="sm" className="font-ui font-bold sm:h-8 sm:px-2.5 sm:text-sm" asChild>

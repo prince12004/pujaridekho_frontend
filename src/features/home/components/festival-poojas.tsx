@@ -29,7 +29,7 @@ export async function FestivalPoojasSection() {
       <Container>
         <SectionHeading
           eyebrow="Seasonal"
-          title="Festival Puja's"
+          title="Festival Pujas"
           description="Book ahead for upcoming festivals — pandits and samagri arranged in advance so you're never rushed."
           className="mb-0"
         />

@@ -18,18 +18,8 @@ import { SearchOverlay } from "@/components/shared/search-overlay";
 import { useAuthModal } from "@/providers/auth-modal-provider";
 import { useCart } from "@/features/cart/cart-context";
 import { usePoojas } from "@/features/poojas/api/use-poojas";
-import { shopCategories } from "@/features/home/data";
+import { useProductCategories } from "@/features/products/api/use-products";
 
-const shopColumns = [
-  {
-    heading: "Shop by Category",
-    links: shopCategories.slice(0, 4).map((c) => ({ label: c.name, href: `/products?category=${c.slug}` })),
-  },
-  {
-    heading: "More Categories",
-    links: shopCategories.slice(4, 9).map((c) => ({ label: c.name, href: `/products?category=${c.slug}` })),
-  },
-];
 
 const navLinks = [
   { label: "Pandit Ji", href: "/pandits" },
@@ -42,17 +32,24 @@ const navLinks = [
 
 export function SiteHeader() {
   const [searchOpen, setSearchOpen] = useState(false);
+  // Only categories that have products (the API leaves empty ones out).
+  const { data: productCategories = [] } = useProductCategories();
+  const categoryLinks = productCategories.map((c) => ({ label: c.name, href: `/products?category=${c.slug}` }));
+  const shopColumns = [
+    { heading: "Shop by Category", links: categoryLinks.slice(0, 4) },
+    { heading: "More Categories", links: categoryLinks.slice(4, 9) },
+  ].filter((col) => col.links.length > 0);
   const { isLoggedIn, mobile, openLogin } = useAuthModal();
   const { count: cartCount } = useCart();
   const { data: poojaData } = usePoojas({ limit: 8 });
   const poojas = poojaData?.items ?? [];
   const poojaColumns = [
     {
-      heading: "Popular Puja's",
+      heading: "Popular Pujas",
       links: poojas.slice(0, 4).map((p) => ({ label: p.name, href: `/poojas/${p.slug}` })),
     },
     {
-      heading: "More Puja's",
+      heading: "More Pujas",
       links: poojas.slice(4, 8).map((p) => ({ label: p.name, href: `/poojas/${p.slug}` })),
     },
   ];
@@ -72,7 +69,7 @@ export function SiteHeader() {
                 <MegaMenuContent
                   columns={poojaColumns}
                   // promo={{
-                  //   title: "Festival Puja's",
+                  //   title: "Festival Pujas",
                   //   description: "Book ahead for upcoming festivals",
                   //   href: "/festivals",
                   //   image: "candlesCircleFloor",
@@ -136,6 +133,7 @@ export function SiteHeader() {
             <Button variant="ghost" size="icon" className="text-secondary" aria-label="Cart" asChild>
               <Link href="/cart">
                 <ShoppingCart />
+                <span className="sr-only">Cart</span>
               </Link>
             </Button>
             {cartCount > 0 && (

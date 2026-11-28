@@ -68,7 +68,7 @@ export function HeroSection({ stats }: { stats: SiteStats | null }) {
           </div>
 
           <h1 className="mt-6 text-balance">
-            <span className="lang-hi block text-3xl text-primary sm:text-4xl">पूजा हो तो,</span>
+            <span className="lang-hi block text-3xl text-primary sm:text-4xl">पूजा हो तो,</span>{" "}
             <span className="block font-heading text-5xl font-bold text-brand-cream sm:text-6xl">
               Pujari Dekho
             </span>
@@ -109,14 +109,14 @@ export function HeroSection({ stats }: { stats: SiteStats | null }) {
           </div>
 
           <div className="mt-7 flex items-center gap-3 text-sm font-semibold text-brand-cream/80">
-            <div className="flex">
-              {["RK", "SM", "AV"].map((initials, i) => (
+            <div className="flex" aria-hidden>
+              {[User, Flame, ShieldCheck].map((Icon, i) => (
                 <span
-                  key={initials}
+                  key={i}
                   style={{ marginLeft: i === 0 ? 0 : -10 }}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-brand-purple-deep bg-gradient-to-br from-primary to-accent text-[11px] font-bold text-white"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-brand-purple-deep bg-gradient-to-br from-primary to-accent text-white"
                 >
-                  {initials}
+                  <Icon size={14} />
                 </span>
               ))}
             </div>

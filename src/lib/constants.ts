@@ -20,7 +20,7 @@ export const FREE_DELIVERY_THRESHOLD = 0;
 export const DELIVERY_CHARGE = 0;
 
 export const mainNav = [
-  { label: "Puja's", href: "/poojas" },
+  { label: "Pujas", href: "/poojas" },
   { label: "Pandit Ji", href: "/pandits" },
   { label: "Festival Pooja", href: "/festivals" },
   { label: "Consultation", href: "/consultation" },

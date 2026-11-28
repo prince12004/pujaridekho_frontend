@@ -11,7 +11,7 @@ import { siteConfig } from "@/lib/constants";
 
 const links = [
   { label: "Home", href: "/" },
-  { label: "Puja's", href: "/poojas" },
+  { label: "Pujas", href: "/poojas" },
   { label: "Pandit Ji", href: "/pandits" },
   // { label: "Festival Pooja", href: "/festivals" }, // hidden for now
   { label: "Consultation", href: "/consultation" },

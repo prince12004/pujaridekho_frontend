@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 
-const DEFAULT_TITLE = "PujariDekho — Book Verified Pandits & Puja's Online";
+const DEFAULT_TITLE = "Book Verified Pandit in Noida & Greater Noida | PujariDekho";
 const DEFAULT_DESCRIPTION =
-  "PujariDekho is a premium Hindu religious services marketplace — verified pandits, fixed pricing and optional puja samagri kits across Delhi NCR.";
+  "Book experienced, verified pandits for Griha Pravesh, Satyanarayan Katha, Rudrabhishek and more in Noida, Greater Noida, Ghaziabad, Delhi and Gurugram. Fixed prices, optional samagri kit.";
 
 interface HomeSeoOverride {
   title?: string;
