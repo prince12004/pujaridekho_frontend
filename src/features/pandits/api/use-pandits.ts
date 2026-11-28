@@ -10,6 +10,9 @@ export interface PublicPandit {
     languages: string[];
     rating: number;
     completedPoojas?: number;
+    slug?: string;
+    experienceYears?: number;
+    reviewCount?: number;
 }
 
 export interface PublicPanditListResult {

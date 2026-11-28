@@ -72,21 +72,26 @@ export function PanditsListingClient() {
                             <MediaCard>
                                 <PanditPhoto photo={pandit.photo} name={pandit.fullName} />
                                 <MediaCardBody>
-                                    <h3 className="font-heading text-lg leading-snug">{pandit.fullName}</h3>
+                                    <h3 className="font-heading text-lg leading-snug">
+                                        <Link href={`/pandits/${pandit.slug}`} className="hover:text-primary">{pandit.fullName}</Link>
+                                    </h3>
                                     <p className="text-sm text-muted-foreground">
                                         {pandit.specializations.length > 0 ? pandit.specializations.join(", ") : "Verified ritual specialist"}
                                     </p>
                                     <div className="mt-3 space-y-1 text-xs text-muted-foreground">
                                         {pandit.cities.length > 0 && <div>Serves: {pandit.cities.join(", ")}</div>}
                                         {pandit.languages.length > 0 && <div>Languages: {pandit.languages.join(", ")}</div>}
+                                        {pandit.experienceYears ? <div>Experience: {pandit.experienceYears} years</div> : null}
                                         <div>
-                                            {pandit.rating > 0 ? `Rating: ${pandit.rating.toFixed(1)} ★` : "New profile — no reviews yet"}
+                                            {pandit.rating > 0
+                                                ? `Rating: ${pandit.rating.toFixed(1)} ★ (${pandit.reviewCount} review${pandit.reviewCount === 1 ? "" : "s"})`
+                                                : "New on PujariDekho — no reviews yet"}
                                         </div>
                                     </div>
                                     <MediaCardFooter>
-                                        <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
-                                            <ShieldCheck size={14} /> Verified pandit
-                                        </span>
+                                        <Link href={`/pandits/${pandit.slug}`} className="flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline">
+                                            <ShieldCheck size={14} /> View profile
+                                        </Link>
                                         <Button size="sm" className="main_books font-ui font-bold" asChild>
                                             <Link href="/poojas">Book a Puja</Link>
                                         </Button>

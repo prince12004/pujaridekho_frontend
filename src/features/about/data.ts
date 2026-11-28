@@ -19,9 +19,9 @@ export const journeyItems: TimelineItem[] = [
   {
     label: "2025–26",
     icon: Trophy,
-    title: "1,000+ Pujas Completed",
+    title: "200+ Pujas Completed",
     description:
-      "Crossed 1,000 completed pujas across Delhi NCR, with fixed and transparent pricing on every booking.",
+      "Crossed 200 pujas across Delhi NCR, with fixed and transparent pricing on every booking.",
   },
   {
     label: "2026",

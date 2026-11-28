@@ -59,6 +59,8 @@ async function resolveLegacy(path: string): Promise<string | null> {
   if (p === "/about-us") return "/about";
   if (p === "/blogs" || p === "/blogs/read") return "/blog";
   if (p === "/contact-us") return "/contact";
+  // "Noida Extension" is the common name for Greater Noida West.
+  if (p === "/pandit-in-noida-extension") return "/pandit-in-greater-noida-west";
 
   let candidate: { to: string; check: string; fallback: string } | null = null;
   const blog = /^\/blogs?\/read\/([a-z0-9-]+)$/.exec(p) ?? /^\/blogs\/([a-z0-9-]+)$/.exec(p);

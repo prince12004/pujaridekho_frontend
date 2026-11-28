@@ -18,6 +18,7 @@ interface PublicPandit {
   rating: number;
   languages: string[];
   completedPoojas: number;
+  slug?: string;
 }
 
 async function fetchTopPandits(): Promise<PublicPandit[]> {
@@ -117,10 +118,12 @@ export async function TopPandits() {
 
                 <div className="mt-auto flex items-center justify-between">
                   <span className="text-sm font-bold text-secondary">
-                    {pandit.completedPoojas > 0 ? `${pandit.completedPoojas}+ Puja&apos;s` : "New priest"}
+                    {pandit.completedPoojas > 0
+                      ? `${pandit.completedPoojas} puja${pandit.completedPoojas === 1 ? "" : "s"} completed`
+                      : "New on PujariDekho"}
                   </span>
                   <Button size="sm" variant="outline" className="main_books font-ui font-bold" asChild>
-                    <Link href="/poojas">Book Now</Link>
+                    <Link href={pandit.slug ? `/pandits/${pandit.slug}` : "/pandits"}>View Profile</Link>
                   </Button>
                 </div>
               </div>
